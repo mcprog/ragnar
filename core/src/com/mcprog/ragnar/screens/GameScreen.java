@@ -3,7 +3,6 @@ package com.mcprog.ragnar.screens;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -96,9 +95,9 @@ public class GameScreen implements Screen, ContactListener {
 		batch.setProjectionMatrix(fontCamera.combined);
 		batch.begin();
 		font.draw(batch, "Score: " + (int)this.timeInGame, -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
-		font.draw(batch, "Pitch: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getPitch() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .9f);
-		font.draw(batch, "Roll: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getRoll() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .85f);
-		font.draw(batch, "Azimuth: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getAzimuth() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
+//		font.draw(batch, "Pitch: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getPitch() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .9f);
+//		font.draw(batch, "Roll: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getRoll() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .85f);
+//		font.draw(batch, "Azimuth: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getAzimuth() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
 		batch.end();
 		
 		batch.setProjectionMatrix(camera.combined);
