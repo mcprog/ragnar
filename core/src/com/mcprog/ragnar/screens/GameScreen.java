@@ -1,0 +1,220 @@
+package com.mcprog.ragnar.screens;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.mcprog.ragnar.Ragnar;
+import com.mcprog.ragnar.world.ArrowSpawner;
+import com.mcprog.ragnar.world.Bounds;
+import com.mcprog.ragnar.world.Player;
+
+public class GameScreen implements Screen, ContactListener {
+
+	private World world;
+	private Ragnar game;
+	private SpriteBatch batch;
+	private SpriteBatch fontBatch;
+	private OrthographicCamera camera;
+	private OrthographicCamera fontCamera;
+	private Box2DDebugRenderer renderer;
+	private Array<Body> bodies;
+	private TextureRegion frame;
+	private Sprite frameSprite;
+	private Player player;
+	private ArrowSpawner spawner;
+	private float stateTime;
+	private float spawnTimer;
+	private Array<Body> bodiesToDelete;
+	private BitmapFont font;
+	public float timeBetweenArrows = 1;
+	private Bounds bounds;
+	
+	public float timeInGame;
+	
+	public GameScreen(Ragnar gameInstance) {
+		game = gameInstance;
+	}
+	
+	@Override
+	public void render(float delta) {
+		Gdx.gl.glClearColor(0, 0, 0, 1);//Black
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		timeInGame += delta;
+		
+		world.step(1/60f, 8, 3);
+		world.getBodies(bodies);
+		if (!world.isLocked()) {
+			for (int i = 0; i < bodiesToDelete.size; ++i) {
+				if (bodiesToDelete.get(i) != null) {
+					world.destroyBody(bodiesToDelete.get(i));
+				}
+				bodiesToDelete.removeIndex(i);
+			}
+		}
+		
+//		renderer.render(world, camera.combined);
+		stateTime += delta;
+		player.update(delta);
+		
+		spawnTimer += delta;
+		if (spawnTimer > timeBetweenArrows) {
+			spawner.spawn();
+			spawnTimer = 0;
+			if (timeBetweenArrows > .5) {
+				timeBetweenArrows -= .001;
+//				System.out.println("Decreasing" + timeBetweenArrows);
+			} else {
+				System.out.println("Done");
+			}
+		}
+		
+		if (player.getBody().getWorldCenter().x < -camera.viewportWidth / 2 || player.getBody().getWorldCenter().x > camera.viewportWidth / 2 || player.getBody().getWorldCenter().y > camera.viewportHeight / 2 || player.getBody().getWorldCenter().y < -camera.viewportHeight / 2) {
+			game.setToKillScreen("You got too close to the english and they speared you");
+		}
+		
+		batch.setProjectionMatrix(fontCamera.combined);
+		batch.begin();
+		font.draw(batch, "Score: " + (int)this.timeInGame, -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
+		batch.end();
+		
+		batch.setProjectionMatrix(camera.combined);
+		batch.begin();
+		for (Body b : bodies) {
+			if (b.getUserData() instanceof Sprite) {
+				
+				Sprite spr = (Sprite) b.getUserData();
+				if (spr != null) {
+					spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
+					spr.setPosition(b.getPosition().x - spr.getWidth() / 2, b.getPosition().y - spr.getHeight() / 2);
+					spr.setRotation(b.getAngle() * MathUtils.radiansToDegrees);
+					spr.setSize(3, .5f);
+					spr.draw(batch);
+				}
+			}
+			else if (b.getUserData() instanceof Animation[]) {
+				Animation[] animations = (Animation[]) b.getUserData();
+				if (animations != null) {
+					frame = animations[player.getDirection()].getKeyFrame(stateTime, true);
+					frameSprite = new Sprite(frame);
+					frameSprite.setCenter(b.getPosition().x, b.getPosition().y);
+					frameSprite.setScale(.125f);
+					frameSprite.draw(batch);
+				}
+			}
+			
+		}
+		batch.end();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		camera.viewportWidth = width / 16;
+		camera.viewportHeight = height / 16;
+		camera.update();
+		fontCamera.viewportWidth = width;
+		fontCamera.viewportHeight = height;
+		fontCamera.update();
+	}
+
+	@Override
+	public void show() {
+		batch = new SpriteBatch();
+		fontBatch = new SpriteBatch();
+		world = new World(Vector2.Zero, true);
+		camera = new OrthographicCamera();
+		fontCamera = new OrthographicCamera();
+		renderer = new Box2DDebugRenderer();
+		bodies = new Array<Body>();
+		player = new Player(world, Vector2.Zero);
+		spawner = new ArrowSpawner(world, player);
+		font = new BitmapFont();
+		font.setColor(Color.WHITE);
+		bounds = new Bounds(world);
+		
+		bodiesToDelete = new Array<Body>();
+		world.setContactListener(this);
+		
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void beginContact(Contact contact) {
+		Fixture a = contact.getFixtureA();
+		Fixture b = contact.getFixtureB();
+		
+		if (a.getBody() != null && b.getBody() != null && a.getBody().getUserData() instanceof Sprite) {
+			bodiesToDelete.add(a.getBody());
+		}
+		if (a.getBody() != null && b.getBody() != null && b.getBody().getUserData() instanceof Sprite) {
+			bodiesToDelete.add(b.getBody());
+		}
+		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
+			if (!player.invincible) {
+				
+				game.setToKillScreen("You got shot by the bowmen");
+			}
+		}
+		
+		
+	}
+
+	@Override
+	public void endContact(Contact contact) {
+		
+	}
+
+	@Override
+	public void preSolve(Contact contact, Manifold oldManifold) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postSolve(Contact contact, ContactImpulse impulse) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
