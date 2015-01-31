@@ -1,7 +1,9 @@
 package com.mcprog.ragnar.screens;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -94,6 +96,9 @@ public class GameScreen implements Screen, ContactListener {
 		batch.setProjectionMatrix(fontCamera.combined);
 		batch.begin();
 		font.draw(batch, "Score: " + (int)this.timeInGame, -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
+		font.draw(batch, "Pitch: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getPitch() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .9f);
+		font.draw(batch, "Roll: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getRoll() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .85f);
+		font.draw(batch, "Azimuth: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getAzimuth() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
 		batch.end();
 		
 		batch.setProjectionMatrix(camera.combined);
@@ -104,9 +109,10 @@ public class GameScreen implements Screen, ContactListener {
 				Sprite spr = (Sprite) b.getUserData();
 				if (spr != null) {
 					spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
-					spr.setPosition(b.getPosition().x - spr.getWidth() / 2, b.getPosition().y - spr.getHeight() / 2);
+					spr.setBounds(b.getPosition().x - spr.getWidth() / 2, b.getPosition().y - spr.getHeight() / 2, 3, .5f);
+//					spr.setPosition(b.getPosition().x - spr.getWidth() / 2, b.getPosition().y - spr.getHeight() / 2);
 					spr.setRotation(b.getAngle() * MathUtils.radiansToDegrees);
-					spr.setSize(3, .5f);
+//					spr.setSize(3, .5f);
 					spr.draw(batch);
 				}
 			}
@@ -127,12 +133,21 @@ public class GameScreen implements Screen, ContactListener {
 
 	@Override
 	public void resize(int width, int height) {
-		camera.viewportWidth = width / 16;
-		camera.viewportHeight = height / 16;
-		camera.update();
-		fontCamera.viewportWidth = width;
-		fontCamera.viewportHeight = height;
-		fontCamera.update();
+		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
+			camera.viewportWidth = width / 32;
+			camera.viewportHeight = height / 32;
+			camera.update();
+			fontCamera.viewportWidth = width / 2;
+			fontCamera.viewportHeight = height / 2;
+			fontCamera.update();
+		} else {
+			camera.viewportWidth = width / 16;
+			camera.viewportHeight = height / 16;
+			camera.update();
+			fontCamera.viewportWidth = width;
+			fontCamera.viewportHeight = height;
+			fontCamera.update();
+		}
 	}
 
 	@Override

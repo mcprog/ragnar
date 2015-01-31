@@ -24,6 +24,7 @@ public class Player {
 	private float invincibleTimer = 10;
 	public boolean invincible;
 	private ShapeRenderer shapeRenderer;
+	private int accelerometerLimit = 15;
 	
 	public static final int LEFT = 			0;
 	public static final int RIGHT = 		1;
@@ -67,6 +68,25 @@ public class Player {
 	
 	public void handleInput () {
 		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
+			if (Gdx.input.getPitch() > accelerometerLimit) {
+				body.setLinearVelocity(-8, 0);
+				direction = Player.LEFT;
+			}
+			if (Gdx.input.getPitch() < -accelerometerLimit) {
+				body.setLinearVelocity(8, 0);
+				direction = Player.RIGHT;
+			}
+			if (Gdx.input.getRoll() > accelerometerLimit) {
+				body.setLinearVelocity(0, 8);
+				direction = Player.UP;
+			}
+			if (Gdx.input.getRoll() < -accelerometerLimit) {
+				body.setLinearVelocity(0, -8);
+				direction = Player.DOWN;
+			}
+			if (Math.abs(Gdx.input.getPitch()) <= accelerometerLimit && Math.abs(Gdx.input.getRoll()) <= accelerometerLimit) {
+				body.setLinearVelocity(Vector2.Zero);
+			}
 		} else {
 				if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
 					body.setLinearVelocity(-8, 0);

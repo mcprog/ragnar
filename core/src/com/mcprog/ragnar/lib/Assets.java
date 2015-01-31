@@ -3,12 +3,17 @@ package com.mcprog.ragnar.lib;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class Assets {
 	
 	private static TextureRegion[][] map;
 	public static Animation[] playerAnimations;
+	
+	public static BitmapFont ragnarFont;
 	
 	
 	public static void loadAnimations () {
@@ -86,7 +91,12 @@ public class Assets {
 		playerAnimations = animations;
 	}
 	
-	
+	public static void loadFont () {
+		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/VIKING-N.TTF"));
+		FreeTypeFontParameter params = new FreeTypeFontParameter();
+		params.size = 36;
+		ragnarFont = gen.generateFont(params);
+	}
 	
 
 }
