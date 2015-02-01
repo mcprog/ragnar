@@ -1,6 +1,7 @@
 package com.mcprog.ragnar.lib;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,6 +15,7 @@ public class Assets {
 	public static Animation[] playerAnimations;
 	
 	public static BitmapFont ragnarFont;
+	public static BitmapFont scoreFont;
 	
 	
 	public static void loadAnimations () {
@@ -91,11 +93,21 @@ public class Assets {
 		playerAnimations = animations;
 	}
 	
-	public static void loadFont () {
-		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/VIKING-N.TTF"));
-		FreeTypeFontParameter params = new FreeTypeFontParameter();
-		params.size = 36;
-		ragnarFont = gen.generateFont(params);
+	public static void loadFonts () {
+		if (Gdx.app.getType() != ApplicationType.WebGL) {
+			
+			FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/VIKING-N.TTF"));
+			FreeTypeFontParameter params = new FreeTypeFontParameter();
+			params.size = 36;
+			ragnarFont = gen.generateFont(params);
+			params.size = 16;
+			scoreFont = gen.generateFont(params);
+			gen.dispose();
+		} else {
+			ragnarFont = new BitmapFont();
+			ragnarFont.scale(2);
+			scoreFont = new BitmapFont();
+		}
 	}
 	
 

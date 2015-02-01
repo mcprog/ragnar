@@ -3,6 +3,8 @@ package com.mcprog.ragnar.world;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mcprog.ragnar.lib.Assets;
+import com.mcprog.ragnar.screens.GameScreen;
 
 public class Player {
 
@@ -21,10 +24,11 @@ public class Player {
 	private int direction;
 	private Vector2 touch;
 	private float stamina;
-	private float invincibleTimer = 10;
 	public boolean invincible;
+	private float invincibleTimer;
 	private ShapeRenderer shapeRenderer;
 	private int accelerometerLimit = 15;
+	private Sprite glow;
 	
 	public static final int LEFT = 			0;
 	public static final int RIGHT = 		1;
@@ -48,6 +52,8 @@ public class Player {
 		
 		touch = position;
 		
+		glow = new Sprite(new Texture(Gdx.files.internal("glow.png")));
+		
 		bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(position);
@@ -62,11 +68,20 @@ public class Player {
 		shape.dispose();
 	}
 	
-	public void update (float delta) {
-		handleInput();
+	public void update (float delta, GameScreen screen) {
+		checkInvincibility(delta);
+		handleInput(screen);
 	}
 	
-	public void handleInput () {
+	private void checkInvincibility(float delta) {
+		if (invincibleTimer <= 0) {
+			invincible = false;
+		}
+		invincibleTimer -= delta;
+		
+	}
+
+	public void handleInput (GameScreen screen) {
 		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
 			if (Gdx.input.getPitch() > accelerometerLimit) {
 				body.setLinearVelocity(-8, 0);
@@ -88,23 +103,27 @@ public class Player {
 				body.setLinearVelocity(Vector2.Zero);
 			}
 		} else {
-				if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
-					body.setLinearVelocity(-8, 0);
-					direction = Player.LEFT;
-				}
-				if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
-					body.setLinearVelocity(8, 0);
-					direction = Player.RIGHT;
-				}
-				if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
-					body.setLinearVelocity(0, 8);
-					direction = Player.UP;
-				}
-				if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
-					body.setLinearVelocity(0, -8);
-					direction = Player.DOWN;
-				}
-//			}
+			if (Gdx.input.isKeyJustPressed(Keys.SPACE) && screen.timeInGame > 10) {
+				invincible = true;
+				invincibleTimer = 2;
+				screen.timeInGame -= 10;
+			}
+			if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
+				body.setLinearVelocity(-8, 0);
+				direction = Player.LEFT;
+			}
+			if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
+				body.setLinearVelocity(8, 0);
+				direction = Player.RIGHT;
+			}
+			if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
+				body.setLinearVelocity(0, 8);
+				direction = Player.UP;
+			}
+			if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
+				body.setLinearVelocity(0, -8);
+				direction = Player.DOWN;
+			}
 			if (!Gdx.input.isKeyPressed(Keys.W) && !Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.S) && !Gdx.input.isKeyPressed(Keys.DOWN) && !Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.RIGHT)) {
 				body.setLinearVelocity(Vector2.Zero);
 				if (direction != Player.LEFT_IDLE && direction != Player.RIGHT_IDLE && direction != Player.UP_IDLE && direction != Player.DOWN_IDLE && !Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
@@ -156,6 +175,11 @@ public class Player {
 	
 	public Body getBody () {
 		return body;
+	}
+	
+	public Sprite getGlow (float width) {
+		glow.setBounds(getPosition().x - width, getPosition().y - width, width * 2, width * 2);
+		return glow;
 	}
 
 }

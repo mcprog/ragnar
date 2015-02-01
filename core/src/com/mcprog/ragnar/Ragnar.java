@@ -16,7 +16,7 @@ public class Ragnar extends Game {
 		gameScreen = new GameScreen(this);
 		killScreen = new KillScreen(this);
 		setScreen(gameScreen);
-		Assets.loadFont();
+		Assets.loadFonts();
 	}
 	
 	public void setToKillScreen (String deathMsg) {

@@ -3,6 +3,7 @@ package com.mcprog.ragnar.screens;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -23,11 +24,12 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mcprog.ragnar.Ragnar;
+import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.world.ArrowSpawner;
 import com.mcprog.ragnar.world.Bounds;
 import com.mcprog.ragnar.world.Player;
 
-public class GameScreen implements Screen, ContactListener {
+public class GameScreen extends ScreenAdapter implements ContactListener {
 
 	private World world;
 	private Ragnar game;
@@ -41,10 +43,9 @@ public class GameScreen implements Screen, ContactListener {
 	private Sprite frameSprite;
 	private Player player;
 	private ArrowSpawner spawner;
-	private float stateTime;
+	public float stateTime;
 	private float spawnTimer;
 	private Array<Body> bodiesToDelete;
-	private BitmapFont font;
 	public float timeBetweenArrows = 1;
 	private Bounds bounds;
 	
@@ -74,7 +75,7 @@ public class GameScreen implements Screen, ContactListener {
 		
 //		renderer.render(world, camera.combined);
 		stateTime += delta;
-		player.update(delta);
+		player.update(delta, this);
 		
 		spawnTimer += delta;
 		if (spawnTimer > timeBetweenArrows) {
@@ -94,7 +95,7 @@ public class GameScreen implements Screen, ContactListener {
 		
 		batch.setProjectionMatrix(fontCamera.combined);
 		batch.begin();
-		font.draw(batch, "Score: " + (int)this.timeInGame, -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
+		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
 //		font.draw(batch, "Pitch: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getPitch() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .9f);
 //		font.draw(batch, "Roll: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getRoll() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .85f);
 //		font.draw(batch, "Azimuth: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getAzimuth() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
@@ -122,7 +123,11 @@ public class GameScreen implements Screen, ContactListener {
 					frameSprite = new Sprite(frame);
 					frameSprite.setCenter(b.getPosition().x, b.getPosition().y);
 					frameSprite.setScale(.125f);
+					if (player.invincible) {
+						player.getGlow(frameSprite.getWidth() * frameSprite.getScaleX()).draw(batch);;
+					}
 					frameSprite.draw(batch);
+					
 				}
 			}
 			
@@ -160,36 +165,10 @@ public class GameScreen implements Screen, ContactListener {
 		bodies = new Array<Body>();
 		player = new Player(world, Vector2.Zero);
 		spawner = new ArrowSpawner(world, player);
-		font = new BitmapFont();
-		font.setColor(Color.WHITE);
 		bounds = new Bounds(world);
 		
 		bodiesToDelete = new Array<Body>();
 		world.setContactListener(this);
-		
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
 		
 	}
 
