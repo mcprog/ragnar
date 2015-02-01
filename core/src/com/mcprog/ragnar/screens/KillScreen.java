@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
 
-public class KillScreen implements Screen {
+public class KillScreen extends ScreenDrawable {
 
 	private Ragnar game;
 	private SpriteBatch batch;
@@ -18,6 +18,7 @@ public class KillScreen implements Screen {
 	private OrthographicCamera camera;
 	
 	public KillScreen(Ragnar gameInstance) {
+		super(gameInstance);
 		game = gameInstance;
 		camera = new OrthographicCamera();
 	}
@@ -39,11 +40,13 @@ public class KillScreen implements Screen {
 		
 		if (Gdx.input.isKeyJustPressed(Keys.R)) {
 			game.gameScreen.timeInGame = 0;
+			game.gameScreen.resetScreen();
 			game.setScreen(game.gameScreen);
 		}
 		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.Android)) {
 			if (Gdx.input.justTouched()) {
 				game.gameScreen.timeInGame = 0;
+				game.gameScreen.resetScreen();
 				game.setScreen(game.gameScreen);
 			}
 		}

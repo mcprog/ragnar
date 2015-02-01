@@ -29,7 +29,7 @@ import com.mcprog.ragnar.world.ArrowSpawner;
 import com.mcprog.ragnar.world.Bounds;
 import com.mcprog.ragnar.world.Player;
 
-public class GameScreen extends ScreenAdapter implements ContactListener {
+public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	private World world;
 	private Ragnar game;
@@ -48,11 +48,33 @@ public class GameScreen extends ScreenAdapter implements ContactListener {
 	private Array<Body> bodiesToDelete;
 	public float timeBetweenArrows = 1;
 	private Bounds bounds;
+	private int arrowsLeft = 300;
 	
 	public float timeInGame;
 	
 	public GameScreen(Ragnar gameInstance) {
+		super(gameInstance);
 		game = gameInstance;
+		batch = new SpriteBatch();
+		fontBatch = new SpriteBatch();
+		
+		camera = new OrthographicCamera();
+		fontCamera = new OrthographicCamera();
+		renderer = new Box2DDebugRenderer();
+		bodies = new Array<Body>();
+		
+		
+		bodiesToDelete = new Array<Body>();
+		resetScreen();
+		
+	}
+	
+	public void resetScreen() {
+		world = new World(Vector2.Zero, true);
+		player = new Player(world, Vector2.Zero);
+		spawner = new ArrowSpawner(world, player);
+		bounds = new Bounds(world);
+		world.setContactListener(this);
 	}
 	
 	@Override
@@ -79,7 +101,7 @@ public class GameScreen extends ScreenAdapter implements ContactListener {
 		
 		spawnTimer += delta;
 		if (spawnTimer > timeBetweenArrows) {
-			spawner.spawn();
+			spawner.spawn(arrowsLeft);
 			spawnTimer = 0;
 			if (timeBetweenArrows > .5) {
 				timeBetweenArrows -= .001;
@@ -156,19 +178,7 @@ public class GameScreen extends ScreenAdapter implements ContactListener {
 
 	@Override
 	public void show() {
-		batch = new SpriteBatch();
-		fontBatch = new SpriteBatch();
-		world = new World(Vector2.Zero, true);
-		camera = new OrthographicCamera();
-		fontCamera = new OrthographicCamera();
-		renderer = new Box2DDebugRenderer();
-		bodies = new Array<Body>();
-		player = new Player(world, Vector2.Zero);
-		spawner = new ArrowSpawner(world, player);
-		bounds = new Bounds(world);
 		
-		bodiesToDelete = new Array<Body>();
-		world.setContactListener(this);
 		
 	}
 

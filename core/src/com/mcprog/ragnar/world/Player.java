@@ -3,6 +3,7 @@ package com.mcprog.ragnar.world;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,19 +15,16 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.screens.GameScreen;
+import com.mcprog.ragnar.screens.WinScreen;
 
 public class Player {
 
-	private Body body;
+	protected Body body;
 	private BodyDef bodyDef;
-	private Vector2 position;
 	private World world;
-	private int direction;
-	private Vector2 touch;
-	private float stamina;
+	protected int direction;
 	public boolean invincible;
-	private float invincibleTimer;
-	private ShapeRenderer shapeRenderer;
+	protected float invincibleTimer;
 	private int accelerometerLimit = 15;
 	private Sprite glow;
 	
@@ -45,12 +43,8 @@ public class Player {
 	
 	public Player(World world, Vector2 position) {
 		this.world = world;
-		this.position = position;
 		
-		shapeRenderer = new ShapeRenderer();
-		shapeRenderer.setAutoShapeType(true);
 		
-		touch = position;
 		
 		glow = new Sprite(new Texture(Gdx.files.internal("glow.png")));
 		
@@ -68,9 +62,13 @@ public class Player {
 		shape.dispose();
 	}
 	
-	public void update (float delta, GameScreen screen) {
+	public void update (float delta, ScreenAdapter screen) {
 		checkInvincibility(delta);
-		handleInput(screen);
+		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
+			handleInputMobile();
+		} else {
+			handleInput((GameScreen) screen);
+		}
 	}
 	
 	private void checkInvincibility(float delta) {
@@ -80,29 +78,51 @@ public class Player {
 		invincibleTimer -= delta;
 		
 	}
+	
+	public void handleInputMobile () {
+		if (Gdx.input.getPitch() > accelerometerLimit) {
+			body.setLinearVelocity(-8, 0);
+			direction = Player.LEFT;
+		}
+		if (Gdx.input.getPitch() < -accelerometerLimit) {
+			body.setLinearVelocity(8, 0);
+			direction = Player.RIGHT;
+		}
+		if (Gdx.input.getRoll() > accelerometerLimit) {
+			body.setLinearVelocity(0, 8);
+			direction = Player.UP;
+		}
+		if (Gdx.input.getRoll() < -accelerometerLimit) {
+			body.setLinearVelocity(0, -8);
+			direction = Player.DOWN;
+		}
+		if (Math.abs(Gdx.input.getPitch()) <= accelerometerLimit && Math.abs(Gdx.input.getRoll()) <= accelerometerLimit) {
+			body.setLinearVelocity(Vector2.Zero);
+			if (direction != Player.LEFT_IDLE && direction != Player.RIGHT_IDLE && direction != Player.UP_IDLE && direction != Player.DOWN_IDLE) {
+					
+				switch (direction) {
+				case Player.LEFT | Player.LEFT_BLOCK:
+					direction = Player.LEFT_IDLE;
+					break;
+				case Player.RIGHT | RIGHT_BLOCK:
+					direction = Player.RIGHT_IDLE;
+					break;
+				case Player.UP | Player.UP_BLOCK:
+					direction = Player.UP_IDLE;
+					break;
+				case Player.DOWN | Player.DOWN_BLOCK:
+					direction = Player.DOWN_IDLE;
+					break;
+				default:
+					break;
+				}
+				
+			}
+		}
+	}
 
 	public void handleInput (GameScreen screen) {
-		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
-			if (Gdx.input.getPitch() > accelerometerLimit) {
-				body.setLinearVelocity(-8, 0);
-				direction = Player.LEFT;
-			}
-			if (Gdx.input.getPitch() < -accelerometerLimit) {
-				body.setLinearVelocity(8, 0);
-				direction = Player.RIGHT;
-			}
-			if (Gdx.input.getRoll() > accelerometerLimit) {
-				body.setLinearVelocity(0, 8);
-				direction = Player.UP;
-			}
-			if (Gdx.input.getRoll() < -accelerometerLimit) {
-				body.setLinearVelocity(0, -8);
-				direction = Player.DOWN;
-			}
-			if (Math.abs(Gdx.input.getPitch()) <= accelerometerLimit && Math.abs(Gdx.input.getRoll()) <= accelerometerLimit) {
-				body.setLinearVelocity(Vector2.Zero);
-			}
-		} else {
+		
 			if (Gdx.input.isKeyJustPressed(Keys.SPACE) && screen.timeInGame > 10) {
 				invincible = true;
 				invincibleTimer = 2;
@@ -128,28 +148,16 @@ public class Player {
 				body.setLinearVelocity(Vector2.Zero);
 				if (direction != Player.LEFT_IDLE && direction != Player.RIGHT_IDLE && direction != Player.UP_IDLE && direction != Player.DOWN_IDLE && !Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
 					switch (direction) {
-					case Player.LEFT:
+					case Player.LEFT | Player.LEFT_BLOCK:
 						direction = Player.LEFT_IDLE;
 						break;
-					case Player.LEFT_BLOCK:
-						direction = Player.LEFT_IDLE;
-						break;
-					case Player.RIGHT:
+					case Player.RIGHT | RIGHT_BLOCK:
 						direction = Player.RIGHT_IDLE;
 						break;
-					case Player.RIGHT_BLOCK:
-						direction = Player.RIGHT_IDLE;
-						break;
-					case Player.UP:
+					case Player.UP | Player.UP_BLOCK:
 						direction = Player.UP_IDLE;
 						break;
-					case Player.UP_BLOCK:
-						direction = Player.UP_IDLE;
-						break;
-					case Player.DOWN:
-						direction = Player.DOWN_IDLE;
-						break;
-					case Player.DOWN_BLOCK:
+					case Player.DOWN | Player.DOWN_BLOCK:
 						direction = Player.DOWN_IDLE;
 						break;
 					default:
@@ -157,7 +165,7 @@ public class Player {
 					}
 				}
 			}
-		}
+		
 	}
 	
 	
@@ -171,6 +179,10 @@ public class Player {
 	
 	public int getDirection () {
 		return direction;
+	}
+	
+	public void setDirection (int dir) {
+		direction = dir;
 	}
 	
 	public Body getBody () {
