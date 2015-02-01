@@ -104,8 +104,8 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			spawner.spawn(arrowsLeft);
 			spawnTimer = 0;
 			if (timeBetweenArrows > .5) {
-				timeBetweenArrows -= .001;
-//				System.out.println("Decreasing" + timeBetweenArrows);
+				timeBetweenArrows -= .025;
+				System.out.println("Decreasing" + timeBetweenArrows);
 			} else {
 				System.out.println("Done");
 			}
@@ -118,6 +118,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		batch.setProjectionMatrix(fontCamera.combined);
 		batch.begin();
 		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
+		Assets.scoreFont.draw(batch, "Score: " + (int)(arrowsLeft), fontCamera.viewportWidth / 2 * .65f, fontCamera.viewportHeight / 2 * .96f);
 //		font.draw(batch, "Pitch: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getPitch() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .9f);
 //		font.draw(batch, "Roll: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getRoll() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .85f);
 //		font.draw(batch, "Azimuth: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getAzimuth() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
@@ -160,8 +161,8 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	@Override
 	public void resize(int width, int height) {
 		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
-			camera.viewportWidth = width / 32;
-			camera.viewportHeight = height / 32;
+			camera.viewportWidth = width / 48;
+			camera.viewportHeight = height / 48;
 			camera.update();
 			fontCamera.viewportWidth = width / 2;
 			fontCamera.viewportHeight = height / 2;
@@ -193,10 +194,20 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		if (a.getBody() != null && b.getBody() != null && b.getBody().getUserData() instanceof Sprite) {
 			bodiesToDelete.add(b.getBody());
 		}
+		if (a.getBody().getUserData() != null) {
+			if (a.getBody().getUserData().equals("bounds")) {
+				--arrowsLeft;
+			}
+		}
+		if (b.getBody().getUserData() != null) {
+			if (b.getBody().getUserData().equals("bounds")) {
+				--arrowsLeft;
+			}
+		}
 		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
 			if (!player.invincible) {
 				
-				game.setToKillScreen("You got shot by the bowmen");
+//				game.setToKillScreen("You got shot by the bowmen");
 			}
 		}
 		
