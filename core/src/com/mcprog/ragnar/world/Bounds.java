@@ -13,13 +13,12 @@ public class Bounds {
 	private Body body;
 	private BodyDef bodyDef;
 	
-	public Bounds(World world) {
+	public Bounds(World world, float halfSide) {
 		bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
 		
 		body = world.createBody(bodyDef);
 		ChainShape shape = new ChainShape();
-		float halfSide = Gdx.graphics.getWidth() / 8f;
 		Vector2[] vertices = {new Vector2(-halfSide, -halfSide), new Vector2(-halfSide, halfSide), new Vector2(halfSide, halfSide), new Vector2(halfSide, -halfSide)};
 		shape.createLoop(vertices);
 		body.createFixture(shape, 0);

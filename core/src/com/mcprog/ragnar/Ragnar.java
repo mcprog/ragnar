@@ -5,12 +5,14 @@ import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.screens.GameScreen;
 import com.mcprog.ragnar.screens.KillScreen;
 import com.mcprog.ragnar.screens.PauseScreen;
+import com.mcprog.ragnar.screens.WinScreen;
 
 public class Ragnar extends Game {
 	
 	public GameScreen gameScreen;
 	public KillScreen killScreen;
 	public PauseScreen pauseScreen;
+	public WinScreen winScreen;
 	
 	@Override
 	public void create () {
@@ -18,6 +20,7 @@ public class Ragnar extends Game {
 		gameScreen = new GameScreen(this);
 		killScreen = new KillScreen(this);
 		pauseScreen = new PauseScreen(this);
+		winScreen = new WinScreen(this);
 		setScreen(gameScreen);
 		Assets.loadFonts();
 	}

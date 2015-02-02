@@ -2,6 +2,7 @@ package com.mcprog.ragnar.screens;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -73,7 +74,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		world = new World(Vector2.Zero, true);
 		player = new Player(world, Vector2.Zero);
 		spawner = new ArrowSpawner(world, player);
-		bounds = new Bounds(world);
+		bounds = new Bounds(world, Gdx.graphics.getWidth() / 8);
 		world.setContactListener(this);
 	}
 	
@@ -81,6 +82,11 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);//Black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		
+		if (Gdx.input.isKeyJustPressed(Keys.H)) {
+			game.setScreen(game.winScreen);
+		}
 		
 		timeInGame += delta;
 		
@@ -95,7 +101,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			}
 		}
 		
-//		renderer.render(world, camera.combined);
+		renderer.render(world, camera.combined);
 		stateTime += delta;
 		player.update(delta, this);
 		
@@ -118,7 +124,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		batch.setProjectionMatrix(fontCamera.combined);
 		batch.begin();
 		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
-		Assets.scoreFont.draw(batch, "Score: " + (int)(arrowsLeft), fontCamera.viewportWidth / 2 * .65f, fontCamera.viewportHeight / 2 * .96f);
+		Assets.scoreFont.draw(batch, "Arrows Left: " + (int)(arrowsLeft), fontCamera.viewportWidth / 2 * .6f, fontCamera.viewportHeight / 2 * .96f);
 //		font.draw(batch, "Pitch: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getPitch() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .9f);
 //		font.draw(batch, "Roll: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getRoll() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .85f);
 //		font.draw(batch, "Azimuth: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getAzimuth() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
