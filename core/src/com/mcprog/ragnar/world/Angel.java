@@ -19,7 +19,7 @@ public class Angel extends Player {
 	public Angel(World world, Vector2 position) {
 		super(world, position);
 		body.getFixtureList().first().setRestitution(.5f);
-		gust = new Sprite(new Texture(Gdx.files.internal("glow.png")));
+		gust = new Sprite(new Texture(Gdx.files.internal("gust.png")));
 	}
 	
 	public Sprite getDraw (float stateTime) {
@@ -69,7 +69,8 @@ public class Angel extends Player {
 	}
 	
 	public Sprite getGust () {
-		gust.setBounds(getPosition().x - frameSprite.getWidth() / 2 * .125f, getPosition().y - frameSprite.getHeight() / 2 * .125f - 2, 2, 2);
+		gust.setBounds(getPosition().x - frameSprite.getWidth() / 2 * .125f + .5f, getPosition().y - frameSprite.getHeight() * .125f - 2f, 1, 4);
+		gust.setAlpha(.3f);
 		return gust;
 	}
 
