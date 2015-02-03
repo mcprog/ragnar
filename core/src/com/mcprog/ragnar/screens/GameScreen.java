@@ -40,8 +40,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private OrthographicCamera fontCamera;
 	private Box2DDebugRenderer renderer;
 	private Array<Body> bodies;
-	private TextureRegion frame;
-	private Sprite frameSprite;
 	private Player player;
 	private ArrowSpawner spawner;
 	public float stateTime;
@@ -132,6 +130,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		if (player.invincible) {
+			player.getGlow().draw(batch);
+		}
+		player.getDraw(stateTime).draw(batch);
 		for (Body b : bodies) {
 			if (b.getUserData() instanceof Sprite) {
 				
@@ -145,20 +147,20 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 					spr.draw(batch);
 				}
 			}
-			else if (b.getUserData() instanceof Animation[]) {
-				Animation[] animations = (Animation[]) b.getUserData();
-				if (animations != null) {
-					frame = animations[player.getDirection()].getKeyFrame(stateTime, true);
-					frameSprite = new Sprite(frame);
-					frameSprite.setCenter(b.getPosition().x, b.getPosition().y);
-					frameSprite.setScale(.125f);
-					if (player.invincible) {
-						player.getGlow(frameSprite.getWidth() * frameSprite.getScaleX()).draw(batch);;
-					}
-					frameSprite.draw(batch);
-					
-				}
-			}
+//			else if (b.getUserData() instanceof Animation[]) {
+//				Animation[] animations = (Animation[]) b.getUserData();
+//				if (animations != null) {
+//					frame = animations[player.getDirection()].getKeyFrame(stateTime, true);
+//					frameSprite = new Sprite(frame);
+//					frameSprite.setCenter(b.getPosition().x, b.getPosition().y);
+//					frameSprite.setScale(.125f);
+//					if (player.invincible) {
+//						player.getGlow(frameSprite.getWidth() * frameSprite.getScaleX()).draw(batch);;
+//					}
+//					frameSprite.draw(batch);
+//					
+//				}
+//			}
 			
 		}
 		batch.end();

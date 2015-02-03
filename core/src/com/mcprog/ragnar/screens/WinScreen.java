@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -27,6 +28,7 @@ public class WinScreen extends ScreenDrawable {
 	private Sprite leftSidebar;
 	private Sprite rightSidebar;
 	private SpriteBatch fontBatch;
+	private ShapeRenderer shapeRenderer;
 	
 	public WinScreen(Ragnar game) {
 		super(game);
@@ -48,7 +50,7 @@ public class WinScreen extends ScreenDrawable {
 		batch.setProjectionMatrix(camera.combined);
 		angel.update(delta, null);
 		fontBatch.begin();
-		Assets.scoreFont.draw(fontBatch, "You Win Entrance to Vahalla", Gdx.graphics.getWidth() * .3f, Gdx.graphics.getHeight() * .9f);
+		Assets.scoreFont.draw(fontBatch, "You Win Entrance to Valhalla", Gdx.graphics.getWidth() * .3f, Gdx.graphics.getHeight() * .9f);
 		fontBatch.end();
 		batch.begin();
 		if (Gdx.input.isKeyPressed(Keys.W)) {
