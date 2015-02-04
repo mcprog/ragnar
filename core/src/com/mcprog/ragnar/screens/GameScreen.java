@@ -1,5 +1,7 @@
 package com.mcprog.ragnar.screens;
 
+import java.util.Iterator;
+
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -48,6 +50,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	public float timeBetweenArrows = 1;
 	private Bounds bounds;
 	private int arrowsLeft = 300;
+	private Sprite currentPlayerSprite;
 	
 	public float timeInGame;
 	
@@ -89,26 +92,37 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		timeInGame += delta;
 		
 		world.step(1/60f, 8, 3);
-		world.getBodies(bodies);
 		if (!world.isLocked()) {
 			for (int i = 0; i < bodiesToDelete.size; ++i) {
-				if (bodiesToDelete.get(i) != null) {
+				try {
 					world.destroyBody(bodiesToDelete.get(i));
+					
+				} catch (Exception e) {
+					System.out.println("oh nooo!");
 				}
-				bodiesToDelete.removeIndex(i);
 			}
+			bodiesToDelete.clear();
 		}
+		world.getBodies(bodies);
 		
 		renderer.render(world, camera.combined);
 		stateTime += delta;
 		player.update(delta, this);
 		
 		spawnTimer += delta;
+			
 		if (spawnTimer > timeBetweenArrows) {
 			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
 			spawnTimer = 0;
-			if (timeBetweenArrows > .5) {
-				timeBetweenArrows -= .025;
+			if (timeBetweenArrows > .5f) {
+				timeBetweenArrows -= .0025f;
 				System.out.println("Decreasing" + timeBetweenArrows);
 			} else {
 				System.out.println("Done");
@@ -122,7 +136,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		batch.setProjectionMatrix(fontCamera.combined);
 		batch.begin();
 		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
-		Assets.scoreFont.draw(batch, "Arrows Left: " + (int)(arrowsLeft), fontCamera.viewportWidth / 2 * .6f, fontCamera.viewportHeight / 2 * .96f);
+		Assets.scoreFont.draw(batch, "Arrows Left: " + (int)(arrowsLeft), fontCamera.viewportWidth / 2 * .5f, fontCamera.viewportHeight / 2 * .96f);
 //		font.draw(batch, "Pitch: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getPitch() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .9f);
 //		font.draw(batch, "Roll: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getRoll() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .85f);
 //		font.draw(batch, "Azimuth: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getAzimuth() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
@@ -137,30 +151,16 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		for (Body b : bodies) {
 			if (b.getUserData() instanceof Sprite) {
 				
-				Sprite spr = (Sprite) b.getUserData();
-				if (spr != null) {
-					spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
-					spr.setBounds(b.getPosition().x - spr.getWidth() / 2, b.getPosition().y - spr.getHeight() / 2, 3, .5f);
+				currentPlayerSprite = (Sprite) b.getUserData();
+				if (currentPlayerSprite != null) {
+					currentPlayerSprite.setOrigin(currentPlayerSprite.getWidth() / 2, currentPlayerSprite.getHeight() / 2);
+					currentPlayerSprite.setBounds(b.getPosition().x - currentPlayerSprite.getWidth() / 2, b.getPosition().y - currentPlayerSprite.getHeight() / 2, 3, .5f);
 //					spr.setPosition(b.getPosition().x - spr.getWidth() / 2, b.getPosition().y - spr.getHeight() / 2);
-					spr.setRotation(b.getAngle() * MathUtils.radiansToDegrees);
+					currentPlayerSprite.setRotation(b.getAngle() * MathUtils.radiansToDegrees);
 //					spr.setSize(3, .5f);
-					spr.draw(batch);
+					currentPlayerSprite.draw(batch);
 				}
 			}
-//			else if (b.getUserData() instanceof Animation[]) {
-//				Animation[] animations = (Animation[]) b.getUserData();
-//				if (animations != null) {
-//					frame = animations[player.getDirection()].getKeyFrame(stateTime, true);
-//					frameSprite = new Sprite(frame);
-//					frameSprite.setCenter(b.getPosition().x, b.getPosition().y);
-//					frameSprite.setScale(.125f);
-//					if (player.invincible) {
-//						player.getGlow(frameSprite.getWidth() * frameSprite.getScaleX()).draw(batch);;
-//					}
-//					frameSprite.draw(batch);
-//					
-//				}
-//			}
 			
 		}
 		batch.end();
@@ -196,12 +196,40 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		Fixture a = contact.getFixtureA();
 		Fixture b = contact.getFixtureB();
 		
-		if (a.getBody() != null && b.getBody() != null && a.getBody().getUserData() instanceof Sprite) {
+		if (a == null || b == null) {
+			return;
+		}
+		if (a.getBody() != null && a.getBody().getUserData() != null && a.getBody().getUserData() instanceof Sprite) {
 			bodiesToDelete.add(a.getBody());
 		}
-		if (a.getBody() != null && b.getBody() != null && b.getBody().getUserData() instanceof Sprite) {
+		if (b.getBody() != null && b.getBody().getUserData() != null && b.getBody().getUserData() instanceof Sprite) {
 			bodiesToDelete.add(b.getBody());
 		}
+//		if (a.getBody().getUserData() != null) {
+//			if (a.getBody().getUserData().equals("bounds")) {
+//				--arrowsLeft;
+//			}
+//		}
+//		if (b.getBody().getUserData() != null) {
+//			if (b.getBody().getUserData().equals("bounds")) {
+//				--arrowsLeft;
+//			}
+//		}
+//		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
+//			if (!player.invincible) {
+//				
+////				game.setToKillScreen("You got shot by the bowmen");
+//			}
+//		}
+		
+		
+	}
+
+	@Override
+	public void endContact(Contact contact) {
+		Fixture a = contact.getFixtureA();
+		Fixture b = contact.getFixtureB();
+		
 		if (a.getBody().getUserData() != null) {
 			if (a.getBody().getUserData().equals("bounds")) {
 				--arrowsLeft;
@@ -218,13 +246,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 //				game.setToKillScreen("You got shot by the bowmen");
 			}
 		}
-		
-		
-	}
-
-	@Override
-	public void endContact(Contact contact) {
-		
 	}
 
 	@Override
@@ -235,7 +256,23 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-		// TODO Auto-generated method stub
+//		Fixture a = contact.getFixtureA();
+//		Fixture b = contact.getFixtureB();
+//		
+//		Body delete = null;
+//		
+//		if (a.getBody() != null && a.getBody().getUserData() != null && a.getBody().getUserData() instanceof Sprite) {
+////			bodiesToDelete.add(a.getBody());
+//			delete = a.getBody();
+//		}
+//		if (b.getBody() != null && b.getBody().getUserData() != null && b.getBody().getUserData() instanceof Sprite) {
+////			bodiesToDelete.add(b.getBody());
+//			delete = b.getBody();
+//		}
+//		if (delete != null) {
+//			delete.setActive(false);
+//			world.destroyBody(delete);
+//		}
 		
 	}
 
