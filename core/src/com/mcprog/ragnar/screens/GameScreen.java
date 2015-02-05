@@ -92,16 +92,17 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		timeInGame += delta;
 		
 		world.step(1/60f, 8, 3);
+		world.getBodies(bodies);
 		if (!world.isLocked()) {
-			for (int i = 0; i < bodiesToDelete.size; ++i) {
-				try {
-					world.destroyBody(bodiesToDelete.get(i));
-					
-				} catch (Exception e) {
-					System.out.println("oh nooo!");
-				}
+			for (Body b : bodiesToDelete) {
+				b.setActive(false);
 			}
 			bodiesToDelete.clear();
+			for (Body i : bodies) {
+				if (!i.isActive()) {
+					world.destroyBody(i);
+				}
+			}
 		}
 		world.getBodies(bodies);
 		
@@ -112,6 +113,46 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		spawnTimer += delta;
 			
 		if (spawnTimer > timeBetweenArrows) {
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
+			spawner.spawn(arrowsLeft);
 			spawner.spawn(arrowsLeft);
 			spawner.spawn(arrowsLeft);
 			spawner.spawn(arrowsLeft);
@@ -196,9 +237,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		Fixture a = contact.getFixtureA();
 		Fixture b = contact.getFixtureB();
 		
-		if (a == null || b == null) {
-			return;
-		}
 		if (a.getBody() != null && a.getBody().getUserData() != null && a.getBody().getUserData() instanceof Sprite) {
 			bodiesToDelete.add(a.getBody());
 		}
@@ -227,25 +265,25 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	@Override
 	public void endContact(Contact contact) {
-		Fixture a = contact.getFixtureA();
-		Fixture b = contact.getFixtureB();
-		
-		if (a.getBody().getUserData() != null) {
-			if (a.getBody().getUserData().equals("bounds")) {
-				--arrowsLeft;
-			}
-		}
-		if (b.getBody().getUserData() != null) {
-			if (b.getBody().getUserData().equals("bounds")) {
-				--arrowsLeft;
-			}
-		}
-		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
-			if (!player.invincible) {
-				
-//				game.setToKillScreen("You got shot by the bowmen");
-			}
-		}
+//		Fixture a = contact.getFixtureA();
+//		Fixture b = contact.getFixtureB();
+//		
+//		if (a.getBody().getUserData() != null) {
+//			if (a.getBody().getUserData().equals("bounds")) {
+//				--arrowsLeft;
+//			}
+//		}
+//		if (b.getBody().getUserData() != null) {
+//			if (b.getBody().getUserData().equals("bounds")) {
+//				--arrowsLeft;
+//			}
+//		}
+//		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
+//			if (!player.invincible) {
+//				
+////				game.setToKillScreen("You got shot by the bowmen");
+//			}
+//		}
 	}
 
 	@Override

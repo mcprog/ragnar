@@ -26,22 +26,22 @@ public class Arrow {
 		this.position = position;
 		bodyDef.position.set(position);
 		
-		body = world.createBody(bodyDef);
 		
 		sprite = new Sprite(new Texture(Gdx.files.internal("arrow.png")));
-		body.setUserData(sprite);
-		
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(1.5f, .15f);
-		body.setFixedRotation(true);// TODO maybe change.
-		body.setTransform(position, rotation);
-		body.createFixture(shape, 1);
-		
-		shape.dispose();
 		
 		movementRaw = new Vector2((float)(-Math.cos(rotation)), (float)(-Math.sin(rotation)));
 		movementRaw.scl((float) (Math.random() * 5) + 15);
+		body = world.createBody(bodyDef);
+		body.createFixture(shape, 1);
+		shape.dispose();
+		body.setTransform(position, rotation);
+		body.setFixedRotation(true);// TODO maybe change.
 		body.setLinearVelocity(movementRaw);
+		body.setUserData(sprite);
+		
+		
 		
 	}
 	
