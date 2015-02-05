@@ -28,6 +28,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
+import com.mcprog.ragnar.lib.Constants;
 import com.mcprog.ragnar.world.ArrowSpawner;
 import com.mcprog.ragnar.world.Bounds;
 import com.mcprog.ragnar.world.Player;
@@ -117,9 +118,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			spawnTimer = 0;
 			if (timeBetweenArrows > .5f) {
 				timeBetweenArrows -= .0025f;
-				System.out.println("Decreasing" + timeBetweenArrows);
+//				System.out.println("Decreasing" + timeBetweenArrows);
 			} else {
-				System.out.println("Done");
+//				System.out.println("Done");
 			}
 		}
 		
@@ -157,9 +158,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	@Override
 	public void resize(int width, int height) {
-			camera.viewportWidth = width / 16;
-			camera.viewportHeight = height / 16;
-			camera.update();
 			fontCamera.viewportWidth = width;
 			fontCamera.viewportHeight = height;
 			fontCamera.update();
@@ -167,6 +165,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	@Override
 	public void show() {
+		camera.viewportWidth = Constants.SCALED_WIDTH;
+		camera.viewportHeight = Constants.SCALED_HEIGHT;
+		camera.update();
 		
 		
 	}
