@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mcprog.ragnar.lib.Assets;
@@ -21,13 +22,15 @@ public class Angel extends Player {
 	}
 
 	@Override
-	public Sprite getDraw (float stateTime) {
+	public void draw (float stateTime, SpriteBatch batch) {
 		frame = Assets.playerAnimations[getDirection()].getKeyFrame(stateTime, true);
 		frameSprite = new Sprite(frame);
 		frameSprite.setCenter(getPosition().x, getPosition().y);
 		frameSprite.setScale(.125f);
 
-		return frameSprite;
+		batch.begin();
+		frameSprite.draw(batch);
+		batch.end();
 	}
 
 	@Override

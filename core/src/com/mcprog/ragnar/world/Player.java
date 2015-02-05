@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -68,13 +69,18 @@ public class Player {
 		shape.dispose();
 	}
 	
-	public Sprite getDraw (float stateTime) {
+	public void draw (float stateTime, SpriteBatch batch) {
 		frame = Assets.playerAnimations[getDirection()].getKeyFrame(stateTime, true);
 		frameSprite = new Sprite(frame);
 		frameSprite.setCenter(getPosition().x, getPosition().y);
 		frameSprite.setScale(.125f);
 		
-		return frameSprite;
+		batch.begin();
+		frameSprite.draw(batch);
+		if (invincible) {
+			getGlow().draw(batch);
+		}
+		batch.end();
 	}
 	
 	public void update (float delta, ScreenAdapter screen) {

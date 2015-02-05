@@ -114,53 +114,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			
 		if (spawnTimer > timeBetweenArrows) {
 			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
-			spawner.spawn(arrowsLeft);
 			spawnTimer = 0;
 			if (timeBetweenArrows > .5f) {
 				timeBetweenArrows -= .0025f;
@@ -184,11 +137,8 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		batch.end();
 		
 		batch.setProjectionMatrix(camera.combined);
+		player.draw(stateTime, batch);
 		batch.begin();
-		if (player.invincible) {
-			player.getGlow().draw(batch);
-		}
-		player.getDraw(stateTime).draw(batch);
 		for (Body b : bodies) {
 			if (b.getUserData() instanceof Sprite) {
 				
@@ -196,9 +146,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 				if (currentPlayerSprite != null) {
 					currentPlayerSprite.setOrigin(currentPlayerSprite.getWidth() / 2, currentPlayerSprite.getHeight() / 2);
 					currentPlayerSprite.setBounds(b.getPosition().x - currentPlayerSprite.getWidth() / 2, b.getPosition().y - currentPlayerSprite.getHeight() / 2, 3, .5f);
-//					spr.setPosition(b.getPosition().x - spr.getWidth() / 2, b.getPosition().y - spr.getHeight() / 2);
 					currentPlayerSprite.setRotation(b.getAngle() * MathUtils.radiansToDegrees);
-//					spr.setSize(3, .5f);
 					currentPlayerSprite.draw(batch);
 				}
 			}
@@ -209,21 +157,12 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	@Override
 	public void resize(int width, int height) {
-		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
-			camera.viewportWidth = width / 48;
-			camera.viewportHeight = height / 48;
-			camera.update();
-			fontCamera.viewportWidth = width / 2;
-			fontCamera.viewportHeight = height / 2;
-			fontCamera.update();
-		} else {
 			camera.viewportWidth = width / 16;
 			camera.viewportHeight = height / 16;
 			camera.update();
 			fontCamera.viewportWidth = width;
 			fontCamera.viewportHeight = height;
 			fontCamera.update();
-		}
 	}
 
 	@Override
@@ -243,47 +182,29 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		if (b.getBody() != null && b.getBody().getUserData() != null && b.getBody().getUserData() instanceof Sprite) {
 			bodiesToDelete.add(b.getBody());
 		}
-//		if (a.getBody().getUserData() != null) {
-//			if (a.getBody().getUserData().equals("bounds")) {
-//				--arrowsLeft;
-//			}
-//		}
-//		if (b.getBody().getUserData() != null) {
-//			if (b.getBody().getUserData().equals("bounds")) {
-//				--arrowsLeft;
-//			}
-//		}
-//		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
-//			if (!player.invincible) {
-//				
-////				game.setToKillScreen("You got shot by the bowmen");
-//			}
-//		}
+		if (a.getBody().getUserData() != null) {
+			if (a.getBody().getUserData().equals("bounds")) {
+				--arrowsLeft;
+			}
+		}
+		if (b.getBody().getUserData() != null) {
+			if (b.getBody().getUserData().equals("bounds")) {
+				--arrowsLeft;
+			}
+		}
+		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
+			if (!player.invincible) {
+				
+//				game.setToKillScreen("You got shot by the bowmen");
+			}
+		}
 		
 		
 	}
 
 	@Override
 	public void endContact(Contact contact) {
-//		Fixture a = contact.getFixtureA();
-//		Fixture b = contact.getFixtureB();
-//		
-//		if (a.getBody().getUserData() != null) {
-//			if (a.getBody().getUserData().equals("bounds")) {
-//				--arrowsLeft;
-//			}
-//		}
-//		if (b.getBody().getUserData() != null) {
-//			if (b.getBody().getUserData().equals("bounds")) {
-//				--arrowsLeft;
-//			}
-//		}
-//		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
-//			if (!player.invincible) {
-//				
-////				game.setToKillScreen("You got shot by the bowmen");
-//			}
-//		}
+
 	}
 
 	@Override
@@ -294,23 +215,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-//		Fixture a = contact.getFixtureA();
-//		Fixture b = contact.getFixtureB();
-//		
-//		Body delete = null;
-//		
-//		if (a.getBody() != null && a.getBody().getUserData() != null && a.getBody().getUserData() instanceof Sprite) {
-////			bodiesToDelete.add(a.getBody());
-//			delete = a.getBody();
-//		}
-//		if (b.getBody() != null && b.getBody().getUserData() != null && b.getBody().getUserData() instanceof Sprite) {
-////			bodiesToDelete.add(b.getBody());
-//			delete = b.getBody();
-//		}
-//		if (delete != null) {
-//			delete.setActive(false);
-//			world.destroyBody(delete);
-//		}
 		
 	}
 

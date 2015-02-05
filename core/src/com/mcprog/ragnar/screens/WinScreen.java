@@ -52,12 +52,12 @@ public class WinScreen extends ScreenDrawable {
 		fontBatch.begin();
 		Assets.scoreFont.draw(fontBatch, "You Win Entrance to Valhalla", Gdx.graphics.getWidth() * .3f, Gdx.graphics.getHeight() * .9f);
 		fontBatch.end();
+		angel.draw(stateTime, batch);
 		batch.begin();
 		if (Gdx.input.isKeyPressed(Keys.W)) {
 			
 			angel.getGust().draw(batch);
 		}
-		angel.getDraw(stateTime).draw(batch);
 		leftSidebar.draw(batch);
 		rightSidebar.draw(batch);
 		batch.end();
