@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -52,12 +53,14 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private Bounds bounds;
 	private int arrowsLeft = 300;
 	private Sprite currentPlayerSprite;
+	private FPSLogger fpsLogger;
 	
 	public float timeInGame;
 	
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);
 		game = gameInstance;
+		fpsLogger = new FPSLogger();
 		batch = new SpriteBatch();
 		fontBatch = new SpriteBatch();
 		
@@ -107,7 +110,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		}
 		world.getBodies(bodies);
 		
-		renderer.render(world, camera.combined);
+//		renderer.render(world, camera.combined);
 		stateTime += delta;
 		player.update(delta, this);
 		
@@ -124,14 +127,20 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			}
 		}
 		
+		
 		if (player.getBody().getWorldCenter().x < -camera.viewportWidth / 2 || player.getBody().getWorldCenter().x > camera.viewportWidth / 2 || player.getBody().getWorldCenter().y > camera.viewportHeight / 2 || player.getBody().getWorldCenter().y < -camera.viewportHeight / 2) {
 			game.setToKillScreen("You got too close to the english and they speared you");
+		}
+		
+		if (spawner.getWin()) {
+			game.setScreen(game.winScreen);
 		}
 		
 		batch.setProjectionMatrix(fontCamera.combined);
 		batch.begin();
 		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
-		Assets.scoreFont.draw(batch, "Arrows Left: " + (int)(arrowsLeft), fontCamera.viewportWidth / 2 * .5f, fontCamera.viewportHeight / 2 * .96f);
+		Assets.scoreFont.draw(batch, "Arrows Left: " + spawner.getArrowsLeft(), fontCamera.viewportWidth / 2 * .5f, fontCamera.viewportHeight / 2 * .96f);
+		Assets.scoreFont.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
 //		font.draw(batch, "Pitch: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getPitch() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .9f);
 //		font.draw(batch, "Roll: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getRoll() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .85f);
 //		font.draw(batch, "Azimuth: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getAzimuth() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
@@ -154,6 +163,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			
 		}
 		batch.end();
+		fpsLogger.log();
 	}
 
 	@Override
