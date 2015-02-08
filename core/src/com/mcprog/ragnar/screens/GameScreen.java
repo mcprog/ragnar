@@ -57,7 +57,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private Bounds bounds;
 	private int arrowsLeft = 300;
 	private Sprite currentPlayerSprite;
-	private DebugUtility debugger;
+	public static DebugUtility debugger;
 	
 	private static ShapeRenderer controlRenderer = new ShapeRenderer();
 	private static Vector3 controlTouch = new Vector3();
@@ -100,18 +100,8 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			}
 		}
 		
-		spawnTimer += delta;
 			
-		if (spawnTimer > timeBetweenArrows) {
-			spawner.spawn(arrowsLeft);
-			spawnTimer = 0;
-			if (timeBetweenArrows > .5f) {
-				timeBetweenArrows -= .0025f;
-//				System.out.println("Decreasing" + timeBetweenArrows);
-			} else {
-//				System.out.println("Done");
-			}
-		}
+		spawner.spawn(delta);
 		
 		
 		if (player.getBody().getWorldCenter().x < -camera.viewportWidth / 2 || player.getBody().getWorldCenter().x > camera.viewportWidth / 2 || player.getBody().getWorldCenter().y > camera.viewportHeight / 2 || player.getBody().getWorldCenter().y < -camera.viewportHeight / 2) {
