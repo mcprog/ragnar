@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+//import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+//import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class Assets {
 	
@@ -94,20 +94,19 @@ public class Assets {
 	}
 	
 	public static void loadFonts () {
-		if (Gdx.app.getType() != ApplicationType.WebGL) {
-			
-			FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/VIKING-N.TTF"));
-			FreeTypeFontParameter params = new FreeTypeFontParameter();
-			params.size = 36;
-			ragnarFont = gen.generateFont(params);
-			params.size = 16;
-			scoreFont = gen.generateFont(params);
-			gen.dispose();
-		} else {
+//		if (Gdx.app.getType() != ApplicationType.WebGL) {
+//			
+//			FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/VIKING-N.TTF"));
+//			FreeTypeFontParameter params = new FreeTypeFontParameter();
+//			params.size = 36;
+//			ragnarFont = gen.generateFont(params);
+//			params.size = 16;
+//			scoreFont = gen.generateFont(params);
+//			gen.dispose();
+//		} else {
 			ragnarFont = new BitmapFont();
-			ragnarFont.scale(2);
 			scoreFont = new BitmapFont();
-		}
+//		}
 	}
 	
 

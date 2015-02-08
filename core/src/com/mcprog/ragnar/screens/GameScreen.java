@@ -16,8 +16,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -30,6 +33,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
+import com.mcprog.ragnar.world.Arrow;
 import com.mcprog.ragnar.world.ArrowSpawner;
 import com.mcprog.ragnar.world.Bounds;
 import com.mcprog.ragnar.world.Player;
@@ -55,6 +59,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private Sprite currentPlayerSprite;
 	private FPSLogger fpsLogger;
 	
+	private static ShapeRenderer controlRenderer = new ShapeRenderer();
+	private static Vector3 controlTouch = new Vector3();
+	
 	public float timeInGame;
 	
 	public GameScreen(Ragnar gameInstance) {
@@ -76,11 +83,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	}
 	
 	public void resetScreen() {
-		world = new World(Vector2.Zero, true);
-		player = new Player(world, Vector2.Zero);
-		spawner = new ArrowSpawner(world, player);
-		bounds = new Bounds(world, Gdx.graphics.getWidth() / 8);
-		world.setContactListener(this);
+		
 	}
 	
 	@Override
@@ -112,7 +115,12 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		
 //		renderer.render(world, camera.combined);
 		stateTime += delta;
-		player.update(delta, this);
+		player.update(delta);
+		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
+			if (Gdx.input.isTouched()) {
+				drawMobileControls();
+			}
+		}
 		
 		spawnTimer += delta;
 			
@@ -133,53 +141,52 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		}
 		
 		if (spawner.getWin()) {
-			game.setScreen(game.winScreen);
+//			game.setScreen(game.winScreen);
 		}
 		
-		batch.setProjectionMatrix(fontCamera.combined);
-		batch.begin();
-		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
-		Assets.scoreFont.draw(batch, "Arrows Left: " + spawner.getArrowsLeft(), fontCamera.viewportWidth / 2 * .5f, fontCamera.viewportHeight / 2 * .96f);
-		Assets.scoreFont.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
-//		font.draw(batch, "Pitch: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getPitch() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .9f);
-//		font.draw(batch, "Roll: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getRoll() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .85f);
-//		font.draw(batch, "Azimuth: " + (int)(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer) ? Gdx.input.getAzimuth() : 7), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
-		batch.end();
+		drawText(fontBatch);
+		
 		
 		batch.setProjectionMatrix(camera.combined);
 		player.draw(stateTime, batch);
-		batch.begin();
-		for (Body b : bodies) {
-			if (b.getUserData() instanceof Sprite) {
-				
-				currentPlayerSprite = (Sprite) b.getUserData();
-				if (currentPlayerSprite != null) {
-					currentPlayerSprite.setOrigin(currentPlayerSprite.getWidth() / 2, currentPlayerSprite.getHeight() / 2);
-					currentPlayerSprite.setBounds(b.getPosition().x - currentPlayerSprite.getWidth() / 2, b.getPosition().y - currentPlayerSprite.getHeight() / 2, 3, .5f);
-					currentPlayerSprite.setRotation(b.getAngle() * MathUtils.radiansToDegrees);
-					currentPlayerSprite.draw(batch);
-				}
-			}
-			
-		}
-		batch.end();
+		Arrow.drawArrows(batch, bodies, currentPlayerSprite);
 		fpsLogger.log();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-			fontCamera.viewportWidth = width;
-			fontCamera.viewportHeight = height;
-			fontCamera.update();
+		fontCamera.viewportWidth = Constants.IDEAL_WIDTH;
+		fontCamera.viewportHeight = Constants.IDEAL_HEIGHT;
+		fontCamera.update();
+		camera.viewportWidth = Constants.SCALED_WIDTH;
+		camera.viewportHeight = Constants.SCALED_HEIGHT;
+		camera.update();
 	}
 
 	@Override
 	public void show() {
-		camera.viewportWidth = Constants.SCALED_WIDTH;
-		camera.viewportHeight = Constants.SCALED_HEIGHT;
-		camera.update();
+		world = new World(Vector2.Zero, true);
+		player = new Player(world, Vector2.Zero, camera);
+		spawner = new ArrowSpawner(world, player);
+		bounds = new Bounds(world, Gdx.graphics.getWidth() / 8);
+		world.setContactListener(this);
 		
-		
+		Gdx.input.setInputProcessor(player);
+	}
+	
+	public void drawMobileControls () {
+//		if (Gdx.input.justTouched()) {
+//			
+//			controlTouch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+//			controlTouch.set(camera.unproject(controlTouch));
+//		}
+		Vector3 fixedTouchCoords = Player.touchCoords;
+//		camera.update();
+//		controlRenderer.setProjectionMatrix(camera.combined);
+		controlRenderer.begin(ShapeType.Filled);
+		controlRenderer.setColor(1, 1, 1, .25f);
+		controlRenderer.circle(fixedTouchCoords.x + 50, (Gdx.graphics.getHeight() - fixedTouchCoords.y) + 50, 100, 36);
+		controlRenderer.end();
 	}
 
 	@Override
@@ -211,6 +218,16 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		}
 		
 		
+	}
+	
+	private void drawText (SpriteBatch batch) {
+		batch.setProjectionMatrix(fontCamera.combined);
+		batch.begin();
+		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
+		Assets.scoreFont.draw(batch, "Arrows Left: " + spawner.getArrowsLeft(), fontCamera.viewportWidth / 2 * .5f, fontCamera.viewportHeight / 2 * .96f);
+		Assets.scoreFont.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
+		Assets.scoreFont.draw(batch, "Angle (Debug): " + MathUtils.radiansToDegrees * player.dragAngle, -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .87f);
+		batch.end();
 	}
 
 	@Override

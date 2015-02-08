@@ -2,6 +2,7 @@ package com.mcprog.ragnar.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,8 +16,8 @@ public class Angel extends Player {
 	private Sprite gust;
 	private final float angelSpeed = 2;
 
-	public Angel(World world, Vector2 position) {
-		super(world, position);
+	public Angel(World world, Vector2 position, OrthographicCamera camera) {
+		super(world, position, camera);
 		body.getFixtureList().first().setRestitution(.5f);
 		gust = new Sprite(new Texture(Gdx.files.internal("gust.png")));
 	}
@@ -34,7 +35,7 @@ public class Angel extends Player {
 	}
 
 	@Override
-	public void handleInput(GameScreen screen) {
+	public void handleInput() {
 		if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
 			setLinearImpulseWithDirection(UP);
 		}
@@ -46,7 +47,7 @@ public class Angel extends Player {
 		}
 		if (!Gdx.input.isKeyPressed(Keys.W) && !Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.S) && !Gdx.input.isKeyPressed(Keys.DOWN) && !Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			if (direction != Player.LEFT_IDLE && direction != Player.RIGHT_IDLE && direction != Player.UP_IDLE && direction != Player.DOWN_IDLE && !Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-				setToIdle(direction);
+				setToIdle();
 			}
 		}
 	}

@@ -33,7 +33,7 @@ public class WinScreen extends ScreenDrawable {
 	public WinScreen(Ragnar game) {
 		super(game);
 		world = new World(new Vector2(0, -9.81f), true);
-		angel = new Angel(world, Vector2.Zero);
+		angel = new Angel(world, Vector2.Zero, camera);
 		bounds = new Bounds(world, Gdx.graphics.getHeight() / 32);
 		leftSidebar = new Sprite(new Texture(Gdx.files.internal("heaven_sidebar.png")));
 		rightSidebar = new Sprite(new Texture(Gdx.files.internal("heaven_sidebar.png")));
@@ -48,7 +48,7 @@ public class WinScreen extends ScreenDrawable {
 		stateTime += delta;
 		world.step(1/60f, 8, 3);
 		batch.setProjectionMatrix(camera.combined);
-		angel.update(delta, null);
+		angel.update(delta);
 		fontBatch.begin();
 		Assets.scoreFont.draw(fontBatch, "You Win Entrance to Valhalla", Gdx.graphics.getWidth() * .3f, Gdx.graphics.getHeight() * .9f);
 		fontBatch.end();
