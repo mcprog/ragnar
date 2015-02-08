@@ -40,13 +40,11 @@ public class KillScreen extends ScreenDrawable {
 		
 		if (Gdx.input.isKeyJustPressed(Keys.R)) {
 			game.gameScreen.timeInGame = 0;
-			game.gameScreen.resetScreen();
 			game.setScreen(game.gameScreen);
 		}
 		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.Android)) {
 			if (Gdx.input.justTouched()) {
 				game.gameScreen.timeInGame = 0;
-				game.gameScreen.resetScreen();
 				game.setScreen(game.gameScreen);
 			}
 		}

@@ -33,6 +33,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
+import com.mcprog.ragnar.utility.DebugUtility;
 import com.mcprog.ragnar.world.Arrow;
 import com.mcprog.ragnar.world.ArrowSpawner;
 import com.mcprog.ragnar.world.Bounds;
@@ -46,7 +47,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private SpriteBatch fontBatch;
 	private OrthographicCamera camera;
 	private OrthographicCamera fontCamera;
-	private Box2DDebugRenderer renderer;
 	private Array<Body> bodies;
 	private Player player;
 	private ArrowSpawner spawner;
@@ -57,7 +57,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private Bounds bounds;
 	private int arrowsLeft = 300;
 	private Sprite currentPlayerSprite;
-	private FPSLogger fpsLogger;
+	private DebugUtility debugger;
 	
 	private static ShapeRenderer controlRenderer = new ShapeRenderer();
 	private static Vector3 controlTouch = new Vector3();
@@ -67,23 +67,17 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);
 		game = gameInstance;
-		fpsLogger = new FPSLogger();
 		batch = new SpriteBatch();
 		fontBatch = new SpriteBatch();
 		
 		camera = new OrthographicCamera();
 		fontCamera = new OrthographicCamera();
-		renderer = new Box2DDebugRenderer();
 		bodies = new Array<Body>();
 		
 		
 		bodiesToDelete = new Array<Body>();
-		resetScreen();
-		
-	}
-	
-	public void resetScreen() {
-		
+		debugger = new DebugUtility();
+		debugger.on();
 	}
 	
 	@Override
@@ -91,26 +85,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		Gdx.gl.glClearColor(0, 0, 0, 1);//Black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		
-		if (Gdx.input.isKeyJustPressed(Keys.H)) {
-			game.setScreen(game.winScreen);
-		}
-		
 		timeInGame += delta;
 		
 		world.step(1/60f, 8, 3);
-		world.getBodies(bodies);
-		if (!world.isLocked()) {
-			for (Body b : bodiesToDelete) {
-				b.setActive(false);
-			}
-			bodiesToDelete.clear();
-			for (Body i : bodies) {
-				if (!i.isActive()) {
-					world.destroyBody(i);
-				}
-			}
-		}
+		safelyDestroyBodies();
 		world.getBodies(bodies);
 		
 //		renderer.render(world, camera.combined);
@@ -147,10 +125,14 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		drawText(fontBatch);
 		
 		
+		
 		batch.setProjectionMatrix(camera.combined);
 		player.draw(stateTime, batch);
 		Arrow.drawArrows(batch, bodies, currentPlayerSprite);
-		fpsLogger.log();
+		debugger.addDebug("FPS", Gdx.graphics.getFramesPerSecond());
+		debugger.addDebug("Control Angle", (int) (MathUtils.radiansToDegrees * player.dragAngle));
+		debugger.renderDebug(world, camera.combined);
+		debugger.handleInput(game);
 	}
 
 	@Override
@@ -165,6 +147,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	@Override
 	public void show() {
+		timeInGame = 0;
 		world = new World(Vector2.Zero, true);
 		player = new Player(world, Vector2.Zero, camera);
 		spawner = new ArrowSpawner(world, player);
@@ -174,15 +157,23 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		Gdx.input.setInputProcessor(player);
 	}
 	
+	private void safelyDestroyBodies () {
+		world.getBodies(bodies);
+		if (!world.isLocked()) {
+			for (Body b : bodiesToDelete) {
+				b.setActive(false);
+			}
+			bodiesToDelete.clear();
+			for (Body i : bodies) {
+				if (!i.isActive()) {
+					world.destroyBody(i);
+				}
+			}
+		}
+	}
+	
 	public void drawMobileControls () {
-//		if (Gdx.input.justTouched()) {
-//			
-//			controlTouch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-//			controlTouch.set(camera.unproject(controlTouch));
-//		}
 		Vector3 fixedTouchCoords = Player.touchCoords;
-//		camera.update();
-//		controlRenderer.setProjectionMatrix(camera.combined);
 		controlRenderer.begin(ShapeType.Filled);
 		controlRenderer.setColor(1, 1, 1, .25f);
 		controlRenderer.circle(fixedTouchCoords.x + 50, (Gdx.graphics.getHeight() - fixedTouchCoords.y) + 50, 100, 36);
@@ -225,9 +216,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		batch.begin();
 		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
 		Assets.scoreFont.draw(batch, "Arrows Left: " + spawner.getArrowsLeft(), fontCamera.viewportWidth / 2 * .5f, fontCamera.viewportHeight / 2 * .96f);
-		Assets.scoreFont.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
-		Assets.scoreFont.draw(batch, "Angle (Debug): " + MathUtils.radiansToDegrees * player.dragAngle, -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .87f);
+//		Assets.scoreFont.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
+//		Assets.scoreFont.draw(batch, "Angle (Debug): " + MathUtils.radiansToDegrees * player.dragAngle, -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .87f);
 		batch.end();
+		debugger.textDebug(fontBatch, fontCamera);
 	}
 
 	@Override
