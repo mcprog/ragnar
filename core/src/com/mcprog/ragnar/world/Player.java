@@ -219,10 +219,6 @@ public class Player implements InputProcessor {
 		glow.setBounds(getPosition().x - width, getPosition().y - width, width * 2, width * 2);
 		return glow;
 	}
-	
-	public void renderMobileControl (OrthographicCamera cam) {
-		
-	}
 
 	@Override
 	public boolean keyDown(int keycode) {

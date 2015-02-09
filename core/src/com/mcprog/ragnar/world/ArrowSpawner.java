@@ -20,7 +20,7 @@ public class ArrowSpawner {
 	public ArrowSpawner(World world, Player player) {
 		this.world = world;
 		this.player = player;
-		arrowsLeft = 7;
+		arrowsLeft = 400;
 		spawnInterval = 1;
 		Ragnar.debugger.setTimer(getClass().getSimpleName(), 0);
 	}

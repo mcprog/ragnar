@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
@@ -12,14 +13,11 @@ import com.mcprog.ragnar.lib.Assets;
 public class KillScreen extends ScreenDrawable {
 
 	private Ragnar game;
-	private SpriteBatch batch;
 	public String deathMsg;
-	private OrthographicCamera camera;
 	
 	public KillScreen(Ragnar gameInstance) {
 		super(gameInstance);
 		game = gameInstance;
-		camera = new OrthographicCamera();
 	}
 	
 	@Override
@@ -31,9 +29,11 @@ public class KillScreen extends ScreenDrawable {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
-			Assets.ragnarFont.drawMultiLine(batch, deathMsg + "\nTap screen to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .375f, camera.viewportHeight * .25f);
+//			Assets.ragnarFont.drawMultiLine(batch, deathMsg + "\nTap screen to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .375f, camera.viewportHeight * .25f);
+			Assets.ragnarFont.drawWrapped(batch, deathMsg + "\nTap screen to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .4f, camera.viewportHeight * .25f, Gdx.graphics.getWidth()  * .8f, HAlignment.CENTER);
 		} else {
-			Assets.ragnarFont.drawMultiLine(batch, deathMsg + "\nHit \"R\" to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .375f, camera.viewportHeight * .25f);
+//			Assets.ragnarFont.drawMultiLine(batch, deathMsg + "\nHit \"R\" to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .375f, camera.viewportHeight * .25f);
+			Assets.ragnarFont.drawWrapped(batch, deathMsg + "\nHit \"R\" to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .4f, camera.viewportHeight * .25f, Gdx.graphics.getWidth()  * .8f, HAlignment.CENTER);
 		}
 		
 		batch.end();

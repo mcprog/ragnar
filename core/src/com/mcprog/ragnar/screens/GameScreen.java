@@ -50,7 +50,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		Gdx.gl.glClearColor(0, 0, 0, 1);//Black
+		Gdx.gl.glClearColor(.15f, .4f, .15f, 1);//Black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		timeInGame += delta;
 		world.step(1/60f, 8, 3);
@@ -124,7 +124,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
 			if (!player.invincible) {
 				
-//				game.setToKillScreen("You got shot by the bowmen");
+				game.setToKillScreen("You got shot by the bowmen");
 			}
 		}
 		

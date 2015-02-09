@@ -25,8 +25,8 @@ public class ScreenDrawable extends ScreenAdapter {
 	
 	@Override
 	public void resize(int width, int height) {
-		fontCamera.viewportWidth = Constants.IDEAL_WIDTH;
-		fontCamera.viewportHeight = Constants.IDEAL_HEIGHT;
+		fontCamera.viewportWidth = width;
+		fontCamera.viewportHeight = height;
 		fontCamera.update();
 		camera.viewportWidth = Constants.SCALED_WIDTH;
 		camera.viewportHeight = Constants.SCALED_HEIGHT;
