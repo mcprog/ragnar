@@ -34,8 +34,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private float stateTime;
 	private Bounds bounds;
 	private MobileControls mobileControls;
-	public static DebugUtility debugger;
-	
 	public float timeInGame;
 	
 	public GameScreen(Ragnar gameInstance) {
@@ -45,14 +43,13 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		
 		
 		bodiesToDelete = new Array<Body>();
-		debugger = new DebugUtility();
-		debugger.on();
 		
 		mobileControls = new MobileControls();
 	}
 	
 	@Override
 	public void render(float delta) {
+		super.render(delta);
 		Gdx.gl.glClearColor(0, 0, 0, 1);//Black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		timeInGame += delta;
@@ -70,10 +67,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		batch.setProjectionMatrix(camera.combined);
 		player.draw(stateTime, batch);
 		Arrow.drawArrows(batch, bodies);
-		debugger.addDebug("FPS", Gdx.graphics.getFramesPerSecond());
-		debugger.addDebug("Control Angle", (int) (MathUtils.radiansToDegrees * player.dragAngle));
-		debugger.renderDebug(world, camera.combined);
-		debugger.handleInput(game);
+		Ragnar.debugger.addDebug("FPS", Gdx.graphics.getFramesPerSecond());
+		Ragnar.debugger.addDebug("Control Angle", (int) (MathUtils.radiansToDegrees * player.dragAngle));
+		Ragnar.debugger.renderDebug(world, camera.combined);
 		mobileControls.update(delta);
 	}
 
@@ -143,7 +139,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 //		Assets.scoreFont.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
 //		Assets.scoreFont.draw(batch, "Angle (Debug): " + MathUtils.radiansToDegrees * player.dragAngle, -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .87f);
 		batch.end();
-		debugger.textDebug(fontBatch, fontCamera);
+		Ragnar.debugger.textDebug(fontBatch, fontCamera);
 	}
 
 	@Override

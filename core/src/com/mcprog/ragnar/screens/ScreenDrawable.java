@@ -32,5 +32,10 @@ public class ScreenDrawable extends ScreenAdapter {
 		camera.viewportHeight = Constants.SCALED_HEIGHT;
 		camera.update();
 	}
+	
+	@Override
+	public void render(float delta) {
+		Ragnar.debugger.handleInput(game);
+	}
 
 }

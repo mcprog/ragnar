@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mcprog.ragnar.Ragnar;
-import com.mcprog.ragnar.screens.GameScreen;
 
 public class ArrowSpawner {
 	
@@ -23,13 +22,13 @@ public class ArrowSpawner {
 		this.player = player;
 		arrowsLeft = 7;
 		spawnInterval = 1;
-		GameScreen.debugger.setTimer(getClass().getSimpleName(), 0);
+		Ragnar.debugger.setTimer(getClass().getSimpleName(), 0);
 	}
 	
 	public void spawn (float delta) {
 		if (arrowsLeft > 0) {
 			spawnTimer += delta;
-			GameScreen.debugger.addTimeToTimer(getClass().getSimpleName(), delta);
+			Ragnar.debugger.addTimeToTimer(getClass().getSimpleName(), delta);
 			if (spawnTimer > spawnInterval) {
 				angle = Math.random() * MathUtils.PI2;
 				radius = Math.sqrt(Math.pow(Gdx.graphics.getHeight() / 16, 2) + Math.pow(Gdx.graphics.getWidth() / 16, 2));
@@ -38,9 +37,9 @@ public class ArrowSpawner {
 				spawnTimer = 0;
 				if (spawnInterval > .5f) {
 					spawnInterval -= .0025f;
-					GameScreen.debugger.logDebug("Spawn Interval Decreasing: " + spawnInterval);
+					Ragnar.debugger.logDebug("Spawn Interval Decreasing: " + spawnInterval);
 				} else {
-					GameScreen.debugger.logTimer("Spawn Interval Decreased for", getClass().getSimpleName(), "seconds");
+					Ragnar.debugger.logTimer("Spawn Interval Decreased for", getClass().getSimpleName(), "seconds");
 				}
 				
 			}
@@ -50,7 +49,7 @@ public class ArrowSpawner {
 	}
 	
 	public void checkWin (Ragnar game) {
-		if (!GameScreen.debugger.on && getWin()) {
+		if (!Ragnar.debugger.on && getWin()) {
 			game.setScreen(game.winScreen);
 		}
 	}
