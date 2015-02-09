@@ -13,7 +13,12 @@ import com.mcprog.ragnar.lib.Assets;
 public class KillScreen extends ScreenDrawable {
 
 	private Ragnar game;
-	public String deathMsg;
+	public static final int SHOT = 0;
+	public static final int STABBED = 1;
+	public static final String SHOT_MSG = "You got shot by the bowmen";
+	public static final String STABBED_MSG = "You got too close to the english and they speared you";
+	
+	public int deathType = -1;
 	
 	public KillScreen(Ragnar gameInstance) {
 		super(gameInstance);
@@ -23,18 +28,18 @@ public class KillScreen extends ScreenDrawable {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		Gdx.gl.glClearColor(1, 0, 0, 1);//Red
+		Gdx.gl.glClearColor(.2f, .2f, .2f, 1);//Red
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
-//			Assets.ragnarFont.drawMultiLine(batch, deathMsg + "\nTap screen to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .375f, camera.viewportHeight * .25f);
-			Assets.ragnarFont.drawWrapped(batch, deathMsg + "\nTap screen to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .4f, camera.viewportHeight * .25f, Gdx.graphics.getWidth()  * .8f, HAlignment.CENTER);
+			Assets.ragnarFont.drawWrapped(batch, assembleMessage() + "\nTap screen to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .4f, camera.viewportHeight * .25f, Gdx.graphics.getWidth()  * .8f, HAlignment.CENTER);
 		} else {
-//			Assets.ragnarFont.drawMultiLine(batch, deathMsg + "\nHit \"R\" to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .375f, camera.viewportHeight * .25f);
-			Assets.ragnarFont.drawWrapped(batch, deathMsg + "\nHit \"R\" to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .4f, camera.viewportHeight * .25f, Gdx.graphics.getWidth()  * .8f, HAlignment.CENTER);
+			Assets.ragnarFont.drawWrapped(batch, assembleMessage() + "\nHit \"R\" to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .4f, camera.viewportHeight * .25f, Gdx.graphics.getWidth()  * .8f, HAlignment.CENTER);
 		}
+		Assets.deadPlayerSprite.setScale(3);
+		Assets.deadPlayerSprite.draw(batch);
 		
 		batch.end();
 		
@@ -51,6 +56,10 @@ public class KillScreen extends ScreenDrawable {
 		
 		
 		
+	}
+	
+	public String assembleMessage () {
+		return deathType == SHOT ? SHOT_MSG : STABBED_MSG;
 	}
 
 	@Override

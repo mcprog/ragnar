@@ -83,6 +83,10 @@ public class Player implements InputProcessor {
 		shape.dispose();
 	}
 	
+	public void init () {
+		direction = 7;
+	}
+	
 	public void draw (float stateTime, SpriteBatch batch) {
 		frame = Assets.playerAnimations[getDirection()].getKeyFrame(stateTime, true);
 		frameSprite = new Sprite(frame);
@@ -162,12 +166,12 @@ public class Player implements InputProcessor {
 			direction = DOWN;
 		}
 		setLinearVelocityAndDirection(vX, vY);
-		if (!Gdx.input.isKeyPressed(Keys.W) && !Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.S) && !Gdx.input.isKeyPressed(Keys.DOWN) && !Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			if (direction != Player.LEFT_IDLE && direction != Player.RIGHT_IDLE && direction != Player.UP_IDLE && direction != Player.DOWN_IDLE && !Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-				setToIdle();
-				isIdle = true;
-			}
-		}
+//		if (!Gdx.input.isKeyPressed(Keys.W) && !Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.S) && !Gdx.input.isKeyPressed(Keys.DOWN) && !Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.RIGHT)) {
+//			if (direction != Player.LEFT_IDLE && direction != Player.RIGHT_IDLE && direction != Player.UP_IDLE && direction != Player.DOWN_IDLE && !Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
+//				setToIdle();
+//				isIdle = true;
+//			}
+//		}
 	}
 	
 	protected void setLinearVelocityAndDirection (int vX, int vY) {
@@ -239,6 +243,7 @@ public class Player implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
+		setToIdle();
 		if (keycode == Keys.A) {
 			left = false;
 		}

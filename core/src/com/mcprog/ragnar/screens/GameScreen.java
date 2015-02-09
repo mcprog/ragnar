@@ -59,7 +59,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		stateTime += delta;
 		player.update(delta);
 		if (player.getBody().getWorldCenter().x < -camera.viewportWidth / 2 || player.getBody().getWorldCenter().x > camera.viewportWidth / 2 || player.getBody().getWorldCenter().y > camera.viewportHeight / 2 || player.getBody().getWorldCenter().y < -camera.viewportHeight / 2) {
-			game.setToKillScreen("You got too close to the english and they speared you");
+			game.setToKillScreen(KillScreen.STABBED);
 		}
 		spawner.spawn(delta);
 		spawner.checkWin(game);
@@ -111,20 +111,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		if (b.getBody() != null && b.getBody().getUserData() != null && b.getBody().getUserData().equals("arrow")) {
 			bodiesToDelete.add(b.getBody());
 		}
-//		if (a.getBody().getUserData() != null) {
-//			if (a.getBody().getUserData().equals("bounds")) {
-//				--arrowsLeft;
-//			}
-//		}
-//		if (b.getBody().getUserData() != null) {
-//			if (b.getBody().getUserData().equals("bounds")) {
-//				--arrowsLeft;
-//			}
-//		}
 		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
 			if (!player.invincible) {
 				
-				game.setToKillScreen("You got shot by the bowmen");
+				game.setToKillScreen(KillScreen.SHOT);
 			}
 		}
 		

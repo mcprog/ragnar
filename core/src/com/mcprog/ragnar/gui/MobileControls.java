@@ -37,8 +37,8 @@ public class MobileControls {
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Vector3 fixedTouchCoords = Player.touchCoords;
 		controlRenderer.begin(ShapeType.Filled);
-		controlRenderer.setColor(1, 1, 1, .1f);
-		controlRenderer.circle(fixedTouchCoords.x + 50, (Gdx.graphics.getHeight() - fixedTouchCoords.y) + 50, 100, 36);
+		controlRenderer.setColor(1, 1, 1, .2f);
+		controlRenderer.circle(fixedTouchCoords.x, (Gdx.graphics.getHeight() - fixedTouchCoords.y), 100, 36);
 		controlRenderer.end();
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}

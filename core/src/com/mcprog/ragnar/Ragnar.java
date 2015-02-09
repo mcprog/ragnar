@@ -21,15 +21,15 @@ public class Ragnar extends Game {
 	@Override
 	public void create () {
 		debugger = new DebugUtility();
-		debugger.off();
+		debugger.on();
 		Assets.queueFonts();
 		Assets.queueTextures();
 		loadingScreen = new LoadingScreen(this);
 		setScreen(loadingScreen);
 	}
 	
-	public void setToKillScreen (String deathMsg) {
-		killScreen.deathMsg = deathMsg;
+	public void setToKillScreen (int deathType) {
+		killScreen.deathType = deathType;
 		setScreen(killScreen);
 	}
 }
