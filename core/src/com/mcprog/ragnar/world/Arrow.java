@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
+import com.mcprog.ragnar.lib.Assets;
 
 public class Arrow {
 	
@@ -29,8 +30,6 @@ public class Arrow {
 		this.position = position;
 		bodyDef.position.set(position);
 		
-		
-		sprite = new Sprite(new Texture(Gdx.files.internal("arrow.png")));
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(1.5f, .1f);
 		
@@ -42,23 +41,23 @@ public class Arrow {
 		body.setTransform(position, rotation);
 		body.setFixedRotation(true);// TODO maybe change.
 		body.setLinearVelocity(movementRaw);
-		body.setUserData(sprite);
+		body.setUserData("arrow");
 		
 		
 		
 	}
 	
-	public static void drawArrows (SpriteBatch batch, Array<Body> bodies, Sprite currentPlayerSprite) {
+	public static void drawArrows (SpriteBatch batch, Array<Body> bodies) {
 		batch.begin();
 		for (Body b : bodies) {
-			if (b.getUserData() instanceof Sprite) {
+			if (b.getUserData() instanceof String && b.getUserData().equals("arrow")) {
 				
-				currentPlayerSprite = (Sprite) b.getUserData();
-				if (currentPlayerSprite != null) {
-					currentPlayerSprite.setOrigin(currentPlayerSprite.getWidth() / 2, currentPlayerSprite.getHeight() / 2);
-					currentPlayerSprite.setBounds(b.getPosition().x - currentPlayerSprite.getWidth() / 2, b.getPosition().y - currentPlayerSprite.getHeight() / 2, 3, .5f);
-					currentPlayerSprite.setRotation(b.getAngle() * MathUtils.radiansToDegrees);
-					currentPlayerSprite.draw(batch);
+				Sprite sprite = Assets.arrowSprite;
+				if (sprite != null) {
+					sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+					sprite.setBounds(b.getPosition().x - sprite.getWidth() / 2, b.getPosition().y - sprite.getHeight() / 2, 3, .5f);
+					sprite.setRotation(b.getAngle() * MathUtils.radiansToDegrees);
+					sprite.draw(batch);
 				}
 			}
 			

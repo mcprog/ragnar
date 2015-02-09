@@ -17,6 +17,7 @@ public class Ragnar extends Game {
 	@Override
 	public void create () {
 		Assets.loadAnimations();
+		Assets.loadSprites();
 		gameScreen = new GameScreen(this);
 		killScreen = new KillScreen(this);
 		pauseScreen = new PauseScreen(this);

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 //import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 //import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
@@ -16,6 +17,8 @@ public class Assets {
 	
 	public static BitmapFont ragnarFont;
 	public static BitmapFont scoreFont;
+	
+	public static Sprite arrowSprite;
 	
 	
 	public static void loadAnimations () {
@@ -107,6 +110,10 @@ public class Assets {
 			ragnarFont = new BitmapFont();
 			scoreFont = new BitmapFont();
 //		}
+	}
+	
+	public static void loadSprites () {
+		arrowSprite = new Sprite(new Texture(Gdx.files.internal("arrow.png")));
 	}
 	
 

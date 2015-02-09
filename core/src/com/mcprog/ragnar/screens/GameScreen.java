@@ -31,6 +31,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mcprog.ragnar.Ragnar;
+import com.mcprog.ragnar.gui.MobileControls;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
 import com.mcprog.ragnar.utility.DebugUtility;
@@ -42,97 +43,61 @@ import com.mcprog.ragnar.world.Player;
 public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	private World world;
-	private Ragnar game;
-	private SpriteBatch batch;
-	private SpriteBatch fontBatch;
-	private OrthographicCamera camera;
-	private OrthographicCamera fontCamera;
-	private Array<Body> bodies;
 	private Player player;
 	private ArrowSpawner spawner;
-	public float stateTime;
-	private float spawnTimer;
+	private Array<Body> bodies;
 	private Array<Body> bodiesToDelete;
-	public float timeBetweenArrows = 1;
+	
+	private float stateTime;
+	private float spawnTimer;
 	private Bounds bounds;
-	private int arrowsLeft = 300;
-	private Sprite currentPlayerSprite;
+//	private int arrowsLeft = 300;
+	private MobileControls mobileControls;
+//	private Sprite currentPlayerSprite;
 	public static DebugUtility debugger;
 	
-	private static ShapeRenderer controlRenderer = new ShapeRenderer();
+//	private static ShapeRenderer controlRenderer = new ShapeRenderer();
 	private static Vector3 controlTouch = new Vector3();
 	
 	public float timeInGame;
 	
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);
-		game = gameInstance;
-		batch = new SpriteBatch();
-		fontBatch = new SpriteBatch();
 		
-		camera = new OrthographicCamera();
-		fontCamera = new OrthographicCamera();
 		bodies = new Array<Body>();
 		
 		
 		bodiesToDelete = new Array<Body>();
 		debugger = new DebugUtility();
 		debugger.on();
+		
+		mobileControls = new MobileControls();
 	}
 	
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);//Black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
 		timeInGame += delta;
-		
 		world.step(1/60f, 8, 3);
 		safelyDestroyBodies();
 		world.getBodies(bodies);
-		
-//		renderer.render(world, camera.combined);
 		stateTime += delta;
 		player.update(delta);
-		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
-			if (Gdx.input.isTouched()) {
-				drawMobileControls();
-			}
-		}
-		
-			
-		spawner.spawn(delta);
-		
-		
 		if (player.getBody().getWorldCenter().x < -camera.viewportWidth / 2 || player.getBody().getWorldCenter().x > camera.viewportWidth / 2 || player.getBody().getWorldCenter().y > camera.viewportHeight / 2 || player.getBody().getWorldCenter().y < -camera.viewportHeight / 2) {
 			game.setToKillScreen("You got too close to the english and they speared you");
 		}
-		
-		if (spawner.getWin()) {
-//			game.setScreen(game.winScreen);
-		}
-		
+		spawner.spawn(delta);
+		spawner.checkWin(game);
 		drawText(fontBatch);
-		
-		
-		
 		batch.setProjectionMatrix(camera.combined);
 		player.draw(stateTime, batch);
-		Arrow.drawArrows(batch, bodies, currentPlayerSprite);
+		Arrow.drawArrows(batch, bodies);
 		debugger.addDebug("FPS", Gdx.graphics.getFramesPerSecond());
 		debugger.addDebug("Control Angle", (int) (MathUtils.radiansToDegrees * player.dragAngle));
 		debugger.renderDebug(world, camera.combined);
 		debugger.handleInput(game);
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		fontCamera.viewportWidth = Constants.IDEAL_WIDTH;
-		fontCamera.viewportHeight = Constants.IDEAL_HEIGHT;
-		fontCamera.update();
-		camera.viewportWidth = Constants.SCALED_WIDTH;
-		camera.viewportHeight = Constants.SCALED_HEIGHT;
-		camera.update();
+		mobileControls.update(delta);
 	}
 
 	@Override
@@ -161,36 +126,28 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			}
 		}
 	}
-	
-	public void drawMobileControls () {
-		Vector3 fixedTouchCoords = Player.touchCoords;
-		controlRenderer.begin(ShapeType.Filled);
-		controlRenderer.setColor(1, 1, 1, .25f);
-		controlRenderer.circle(fixedTouchCoords.x + 50, (Gdx.graphics.getHeight() - fixedTouchCoords.y) + 50, 100, 36);
-		controlRenderer.end();
-	}
 
 	@Override
 	public void beginContact(Contact contact) {
 		Fixture a = contact.getFixtureA();
 		Fixture b = contact.getFixtureB();
 		
-		if (a.getBody() != null && a.getBody().getUserData() != null && a.getBody().getUserData() instanceof Sprite) {
+		if (a.getBody() != null && a.getBody().getUserData() != null && a.getBody().getUserData().equals("arrow")) {
 			bodiesToDelete.add(a.getBody());
 		}
-		if (b.getBody() != null && b.getBody().getUserData() != null && b.getBody().getUserData() instanceof Sprite) {
+		if (b.getBody() != null && b.getBody().getUserData() != null && b.getBody().getUserData().equals("arrow")) {
 			bodiesToDelete.add(b.getBody());
 		}
-		if (a.getBody().getUserData() != null) {
-			if (a.getBody().getUserData().equals("bounds")) {
-				--arrowsLeft;
-			}
-		}
-		if (b.getBody().getUserData() != null) {
-			if (b.getBody().getUserData().equals("bounds")) {
-				--arrowsLeft;
-			}
-		}
+//		if (a.getBody().getUserData() != null) {
+//			if (a.getBody().getUserData().equals("bounds")) {
+//				--arrowsLeft;
+//			}
+//		}
+//		if (b.getBody().getUserData() != null) {
+//			if (b.getBody().getUserData().equals("bounds")) {
+//				--arrowsLeft;
+//			}
+//		}
 		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
 			if (!player.invincible) {
 				

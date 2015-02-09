@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.screens.GameScreen;
 
 public class ArrowSpawner {
@@ -20,7 +21,7 @@ public class ArrowSpawner {
 	public ArrowSpawner(World world, Player player) {
 		this.world = world;
 		this.player = player;
-		arrowsLeft = 400;
+		arrowsLeft = 7;
 		spawnInterval = 1;
 		GameScreen.debugger.setTimer(getClass().getSimpleName(), 0);
 	}
@@ -45,6 +46,12 @@ public class ArrowSpawner {
 			}
 		} else {
 			System.err.println("You won!");
+		}
+	}
+	
+	public void checkWin (Ragnar game) {
+		if (!GameScreen.debugger.on && getWin()) {
+			game.setScreen(game.winScreen);
 		}
 	}
 	
