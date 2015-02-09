@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mcprog.ragnar.lib.Assets;
-import com.mcprog.ragnar.screens.GameScreen;
 
 public class Angel extends Player {
 

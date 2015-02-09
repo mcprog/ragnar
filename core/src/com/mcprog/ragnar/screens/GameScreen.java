@@ -1,28 +1,12 @@
 package com.mcprog.ragnar.screens;
 
-import java.util.Iterator;
-
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -33,7 +17,6 @@ import com.badlogic.gdx.utils.Array;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.MobileControls;
 import com.mcprog.ragnar.lib.Assets;
-import com.mcprog.ragnar.lib.Constants;
 import com.mcprog.ragnar.utility.DebugUtility;
 import com.mcprog.ragnar.world.Arrow;
 import com.mcprog.ragnar.world.ArrowSpawner;
@@ -49,15 +32,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private Array<Body> bodiesToDelete;
 	
 	private float stateTime;
-	private float spawnTimer;
 	private Bounds bounds;
-//	private int arrowsLeft = 300;
 	private MobileControls mobileControls;
-//	private Sprite currentPlayerSprite;
 	public static DebugUtility debugger;
-	
-//	private static ShapeRenderer controlRenderer = new ShapeRenderer();
-	private static Vector3 controlTouch = new Vector3();
 	
 	public float timeInGame;
 	

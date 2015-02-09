@@ -1,12 +1,8 @@
 package com.mcprog.ragnar.utility;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -23,17 +19,14 @@ public class DebugUtility {
 	
 	private Box2DDebugRenderer box2DRenderer;
 	private FPSLogger fpsLogger;
-	private ArrayList<String> output;
 	private Map<String, Integer> debugFields;
 	private HashMap<String, Float> timers;
-	private float timer;
 	
 	public boolean on;
 	
 	public DebugUtility() {
 		box2DRenderer = new Box2DDebugRenderer();
 		fpsLogger = new FPSLogger();
-		output = new ArrayList<String>();
 		debugFields = new HashMap<String, Integer>();
 		timers = new HashMap<String, Float>();
 	}
