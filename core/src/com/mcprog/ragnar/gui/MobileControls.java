@@ -1,6 +1,7 @@
 package com.mcprog.ragnar.gui;
 
 import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
@@ -32,12 +33,14 @@ public class MobileControls {
 	}
 
 	private void drawMobileControls() {
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Vector3 fixedTouchCoords = Player.touchCoords;
 		controlRenderer.begin(ShapeType.Filled);
-		controlRenderer.setColor(1, 1, 1, .25f);
+		controlRenderer.setColor(1, 1, 1, .1f);
 		controlRenderer.circle(fixedTouchCoords.x + 50, (Gdx.graphics.getHeight() - fixedTouchCoords.y) + 50, 100, 36);
 		controlRenderer.end();
-		
+		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}
 
 }
