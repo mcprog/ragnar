@@ -51,7 +51,6 @@ public class WinScreen extends ScreenDrawable {
 		angel.draw(stateTime, batch);
 		batch.begin();
 		if (Gdx.input.isKeyPressed(Keys.W)) {
-			
 			angel.getGust().draw(batch);
 		}
 		leftSidebar.draw(batch);

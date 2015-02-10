@@ -9,14 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
 
-public class LoadingScreen extends ScreenAdapter {
+public class LoadingScreen extends ScreenDrawable {
 	
-	private Ragnar game;
-	private SpriteBatch batch;
 	
 	public LoadingScreen(Ragnar game) {
-		this.game = game;
-		batch = new SpriteBatch();
+		super(game);
 	}
 	
 	@Override
@@ -27,9 +24,10 @@ public class LoadingScreen extends ScreenAdapter {
 			/*
 			 * Indicated Loading is done
 			 */
-			batch.begin();
-			Assets.ragnarFont.draw(batch, "Assets loaded", 10, 30);
-			batch.end();
+			fontBatch.setProjectionMatrix(fontCamera.combined);
+			fontBatch.begin();
+			Assets.ragnarFont.draw(fontBatch, "Assets loaded", -fontCamera.viewportWidth / 4,  Assets.ragnarFont.getCapHeight() / 2);
+			fontBatch.end();
 			/*
 			 * Load mutations and assign vars
 			 */
@@ -48,9 +46,10 @@ public class LoadingScreen extends ScreenAdapter {
 		} 
 		else if (Assets.assetManager.isLoaded(Assets.VIKING_FONT_PATH)) {
 			Assets.ragnarFont = Assets.getLoadedFont(Assets.VIKING_FONT_PATH);
-			batch.begin();
-			Assets.ragnarFont.draw(batch, "Assets loadeding ..." + (int)Assets.getLoadingProgress() + "%", 10, 30);
-			batch.end();
+			fontBatch.setProjectionMatrix(fontCamera.combined);
+			fontBatch.begin();
+			Assets.ragnarFont.draw(fontBatch, "Assets loadeding ..." + (int)Assets.getLoadingProgress() + "%", -fontCamera.viewportWidth / 4, Assets.ragnarFont.getCapHeight() / 2);
+			fontBatch.end();
 		}
 	}
 

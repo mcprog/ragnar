@@ -1,10 +1,8 @@
 package com.mcprog.ragnar.screens;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mcprog.ragnar.Ragnar;
@@ -17,86 +15,57 @@ public class KillScreen extends ScreenDrawable {
 	public static final int STABBED = 1;
 	public static final String SHOT_MSG = "You got shot by the bowmen";
 	public static final String STABBED_MSG = "You got too close to the english and they speared you";
+	private String deathMsgSuffix;
 	
 	public int deathType = -1;
 	
 	public KillScreen(Ragnar gameInstance) {
 		super(gameInstance);
 		game = gameInstance;
+		if (Ragnar.isMobile) {
+			deathMsgSuffix = "\nTap screen to retry\n";
+		} else {
+			deathMsgSuffix = "\nHit \"R\" to retry\n";
+		}
 	}
 	
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		Gdx.gl.glClearColor(.2f, .2f, .2f, 1);//Red
+		Gdx.gl.glClearColor(.2f, .2f, .2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
-			Assets.ragnarFont.drawWrapped(batch, assembleMessage() + "\nTap screen to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .4f, camera.viewportHeight * .25f, Gdx.graphics.getWidth()  * .8f, HAlignment.CENTER);
-		} else {
-			Assets.ragnarFont.drawWrapped(batch, assembleMessage() + "\nHit \"R\" to retry\nYou lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -camera.viewportWidth * .4f, camera.viewportHeight * .25f, Gdx.graphics.getWidth()  * .8f, HAlignment.CENTER);
-		}
-		Assets.deadPlayerSprite.setScale(3);
-		Assets.deadPlayerSprite.draw(batch);
-		
-		batch.end();
+		fontBatch.setProjectionMatrix(fontCamera.combined);
+		fontBatch.begin();
+		Assets.ragnarFont.drawWrapped(fontBatch, assembleMessage() + deathMsgSuffix + "You lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -fontCamera.viewportWidth * .375f, fontCamera.viewportHeight * .375f, fontCamera.viewportWidth * .75f, HAlignment.CENTER);
+		drawDeath(fontBatch);
+		fontBatch.end();
 		
 		if (Gdx.input.isKeyJustPressed(Keys.R)) {
-			game.gameScreen.timeInGame = 0;
 			game.setScreen(game.gameScreen);
 		}
-		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.Android)) {
+		if (Ragnar.isMobile) {
 			if (Gdx.input.justTouched()) {
-				game.gameScreen.timeInGame = 0;
 				game.setScreen(game.gameScreen);
 			}
 		}
-		
-		
-		
 	}
 	
 	public String assembleMessage () {
 		return deathType == SHOT ? SHOT_MSG : STABBED_MSG;
 	}
-
-	@Override
-	public void resize(int width, int height) {
-		camera.viewportWidth = width;
-		camera.viewportHeight = height;
-		camera.update();
-	}
-
-	@Override
-	public void show() {
-		batch = new SpriteBatch();
-		
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
+	
+	private void drawDeath (SpriteBatch batch) {
+		Assets.deadPlayerSprite.setSize(24 * fontCamera.viewportHeight / 96, 16 * fontCamera.viewportHeight / 96);
+		Assets.deadPlayerSprite.setCenter(0, -fontCamera.viewportHeight / 4);
+		Assets.deadPlayerStabbedSprite.setSize(21 * fontCamera.viewportHeight / 84, 28 * fontCamera.viewportHeight / 84);
+		Assets.deadPlayerStabbedSprite.setCenter(0, -fontCamera.viewportHeight / 4);
+		if (deathType == SHOT) {
+			Assets.deadPlayerSprite.draw(batch);
+		}
+		else if (deathType == STABBED) {
+			Assets.deadPlayerStabbedSprite.draw(batch);
+		}
 	}
 
 }

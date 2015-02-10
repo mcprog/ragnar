@@ -28,8 +28,8 @@ public class Assets {
 	public static final String DEAD_PLAYER_STABBED_PATH = "dead-player-stabbed.png";
 	
 	public static final String FONT_DIR = "font/";
-	public static final String VIKING_FONT_PATH = FONT_DIR + "viking32.fnt";
-	public static final String SCORE_FONT_PATH = FONT_DIR + "viking16.fnt";
+	public static final String VIKING_FONT_PATH = FONT_DIR + "viking128.fnt";
+	public static final String SCORE_FONT_PATH = FONT_DIR + "viking64.fnt";
 	
 	public static void queueTextures () {
 		assetManager.load(PLAYER_PATH, Texture.class);
