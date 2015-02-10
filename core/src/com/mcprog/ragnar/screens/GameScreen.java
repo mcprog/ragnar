@@ -62,7 +62,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			game.setToKillScreen(KillScreen.STABBED);
 		}
 		spawner.spawn(delta);
-		spawner.checkWin(game);
+//		spawner.checkWin(game);
 		drawText(fontBatch);
 		batch.setProjectionMatrix(camera.combined);
 		player.draw(stateTime, batch);
@@ -113,8 +113,12 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		}
 		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
 			if (!player.invincible) {
-				
-				game.setToKillScreen(KillScreen.SHOT);
+				if (spawner.getWin()) {
+					game.setScreen(game.winScreen);
+				} else {
+					
+					game.setToKillScreen(KillScreen.SHOT);
+				}
 			}
 		}
 		

@@ -20,7 +20,7 @@ public class ArrowSpawner {
 	public ArrowSpawner(World world, Player player) {
 		this.world = world;
 		this.player = player;
-		arrowsLeft = 400;
+		arrowsLeft = 300;
 		spawnInterval = 1;
 		Ragnar.debugger.setTimer(getClass().getSimpleName(), 0);
 	}
@@ -48,6 +48,7 @@ public class ArrowSpawner {
 		}
 	}
 	
+	@Deprecated
 	public void checkWin (Ragnar game) {
 		if (!Ragnar.debugger.on && getWin()) {
 			game.setScreen(game.winScreen);
