@@ -103,50 +103,11 @@ public class Player implements InputProcessor {
 	
 	public void update (float delta) {
 		checkInvincibility(delta);
-		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
-			handleInputMobile();
-		} else {
-			handleInput();
-		}
-	}
-	
-	private void checkInvincibility(float delta) {
-		if (invincibleTimer <= 0) {
-			invincible = false;
-		}
-		invincibleTimer -= delta;
-		
-	}
-	
-	public void handleInputMobile () {
-		int vX = 0;
-		int vY = 0;
-		if (left) {
-			vX = -1;
-//			direction = LEFT;
-		}
-		if (right) {
-			vX = 1;
-//			direction = RIGHT;
-		}
-		if (up) {
-			vY = 1;
-//			direction = UP;
-		}
-		if (down) {
-			vY = -1;
-//			direction = DOWN;
-		}
-		setLinearVelocityAndDirection(vX, vY);
-//		if (isIdle) {
-//			if (direction != Player.LEFT_IDLE && direction != Player.RIGHT_IDLE && direction != Player.UP_IDLE && direction != Player.DOWN_IDLE) {
-//				setToIdle();
-//				System.err.println("dguh)))000");
-//			}
+//		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
+//			handleInputMobile();
+//		} else {
+//			handleInput();
 //		}
-	}
-
-	public void handleInput () {
 		int vX = 0;
 		int vY = 0;
 		if (left) {
@@ -166,12 +127,14 @@ public class Player implements InputProcessor {
 			direction = DOWN;
 		}
 		setLinearVelocityAndDirection(vX, vY);
-//		if (!Gdx.input.isKeyPressed(Keys.W) && !Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.S) && !Gdx.input.isKeyPressed(Keys.DOWN) && !Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.RIGHT)) {
-//			if (direction != Player.LEFT_IDLE && direction != Player.RIGHT_IDLE && direction != Player.UP_IDLE && direction != Player.DOWN_IDLE && !Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-//				setToIdle();
-//				isIdle = true;
-//			}
-//		}
+	}
+	
+	private void checkInvincibility(float delta) {
+		if (invincibleTimer <= 0) {
+			invincible = false;
+		}
+		invincibleTimer -= delta;
+		
 	}
 	
 	protected void setLinearVelocityAndDirection (int vX, int vY) {
@@ -228,15 +191,19 @@ public class Player implements InputProcessor {
 	public boolean keyDown(int keycode) {
 		if (keycode == Keys.A) {
 			left = true;
+			isIdle = false;
 		}
 		else if (keycode == Keys.D) {
 			right = true;
+			isIdle = false;
 		}
 		else if (keycode == Keys.W) {
 			up = true;
+			isIdle = false;
 		}
 		else if (keycode == Keys.S) {
 			down = true;
+			isIdle = false;
 		}
 		return true;
 	}

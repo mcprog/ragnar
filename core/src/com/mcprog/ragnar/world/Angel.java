@@ -34,7 +34,7 @@ public class Angel extends Player {
 	}
 
 	@Override
-	public void handleInput() {
+	public void update (float delta) {
 		if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
 			setLinearImpulseWithDirection(UP);
 		}

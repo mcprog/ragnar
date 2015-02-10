@@ -12,7 +12,7 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		config.useImmersiveMode = true;
+//		config.useImmersiveMode = true;
 		config.useWakelock = true;
 		initialize(new Ragnar(), config);
 	}
