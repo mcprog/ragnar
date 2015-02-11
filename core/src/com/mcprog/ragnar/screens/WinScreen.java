@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
+import com.mcprog.ragnar.lib.Constants;
 import com.mcprog.ragnar.world.Angel;
 import com.mcprog.ragnar.world.Bounds;
 
@@ -29,7 +31,7 @@ public class WinScreen extends ScreenDrawable {
 		super(game);
 		world = new World(new Vector2(0, -9.81f), true);
 		angel = new Angel(world, Vector2.Zero, camera);
-		bounds = new Bounds(world, Gdx.graphics.getHeight() / 32);
+		bounds = new Bounds(world, Gdx.graphics.getWidth() / 32f, Gdx.graphics.getHeight() / 32f);
 		leftSidebar = new Sprite(new Texture(Gdx.files.internal("heaven_sidebar.png")));
 		rightSidebar = new Sprite(new Texture(Gdx.files.internal("heaven_sidebar.png")));
 		fontBatch = new SpriteBatch();
@@ -43,12 +45,17 @@ public class WinScreen extends ScreenDrawable {
 		
 		stateTime += delta;
 		world.step(1/60f, 8, 3);
-		batch.setProjectionMatrix(camera.combined);
 		angel.update(delta);
+		
+		fontBatch.setProjectionMatrix(fontCamera.combined);
 		fontBatch.begin();
-		Assets.scoreFont.draw(fontBatch, "You Win Entrance to Valhalla", Gdx.graphics.getWidth() * .3f, Gdx.graphics.getHeight() * .9f);
+//		Assets.ragnarFont.draw(fontBatch, "You Win Entrance to Valhalla", -fontCamera.viewportWidth / 4, fontCamera.viewportHeight / 4);
+		Assets.ragnarFont.drawWrapped(fontBatch, "You Win Entrance to Valhalla", -fontCamera.viewportWidth * .375f, fontCamera.viewportHeight * .375f, fontCamera.viewportWidth * .75f, HAlignment.CENTER);
+		Assets.scoreFont.drawWrapped(fontBatch, "Score " + (int)(game.gameScreen.timeInGame) + " seconds", -fontCamera.viewportWidth * .375f, -fontCamera.viewportHeight * .375f, fontCamera.viewportWidth * .75f, HAlignment.CENTER);
 		fontBatch.end();
+		
 		angel.draw(stateTime, batch);
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		if (Gdx.input.isKeyPressed(Keys.W)) {
 			angel.getGust().draw(batch);
@@ -60,6 +67,7 @@ public class WinScreen extends ScreenDrawable {
 	
 	@Override
 	public void resize(int width, int height) {
+		super.resize(width, height);
 		camera.viewportWidth = width / 16;
 		camera.viewportHeight = height / 16;
 		camera.update();

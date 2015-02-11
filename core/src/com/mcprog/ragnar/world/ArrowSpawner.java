@@ -26,25 +26,24 @@ public class ArrowSpawner {
 	}
 	
 	public void spawn (float delta) {
-		if (arrowsLeft > 0) {
-			spawnTimer += delta;
-			Ragnar.debugger.addTimeToTimer(getClass().getSimpleName(), delta);
-			if (spawnTimer > spawnInterval) {
-				angle = Math.random() * MathUtils.PI2;
-				radius = Math.sqrt(Math.pow(Gdx.graphics.getHeight() / 16, 2) + Math.pow(Gdx.graphics.getWidth() / 16, 2));
-				arrow = new Arrow(world, new Vector2((float)(radius * Math.cos(angle) + player.getBody().getPosition().x), (float)(radius * Math.sin(angle)) + player.getBody().getPosition().y), (float) angle);
+		spawnTimer += delta;
+		Ragnar.debugger.addTimeToTimer(getClass().getSimpleName(), delta);
+		if (spawnTimer > spawnInterval) {
+			angle = Math.random() * MathUtils.PI2;
+			radius = Math.sqrt(Math.pow(Gdx.graphics.getHeight() / 16, 2) + Math.pow(Gdx.graphics.getWidth() / 16, 2));
+			arrow = new Arrow(world, new Vector2((float)(radius * Math.cos(angle) + player.getBody().getPosition().x), (float)(radius * Math.sin(angle)) + player.getBody().getPosition().y), (float) angle);
+			
+			if (arrowsLeft > 0) {
 				--arrowsLeft;
-				spawnTimer = 0;
-				if (spawnInterval > .5f) {
-					spawnInterval -= .0025f;
-					Ragnar.debugger.logDebug("Spawn Interval Decreasing: " + spawnInterval);
-				} else {
-					Ragnar.debugger.logTimer("Spawn Interval Decreased for", getClass().getSimpleName(), "seconds");
-				}
-				
 			}
-		} else {
-			System.err.println("You won!");
+			spawnTimer = 0;
+			if (spawnInterval > .5f) {
+				spawnInterval -= .0025f;
+				Ragnar.debugger.logDebug("Spawn Interval Decreasing: " + spawnInterval);
+			} else {
+				Ragnar.debugger.logTimer("Spawn Interval Decreased for", getClass().getSimpleName(), "seconds");
+			}
+			
 		}
 	}
 	

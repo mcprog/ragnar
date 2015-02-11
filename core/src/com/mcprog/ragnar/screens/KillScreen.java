@@ -32,7 +32,7 @@ public class KillScreen extends ScreenDrawable {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		Gdx.gl.glClearColor(.2f, .2f, .2f, 1);
+		Gdx.gl.glClearColor(.1f, .1f, .2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		fontBatch.setProjectionMatrix(fontCamera.combined);

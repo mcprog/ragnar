@@ -59,7 +59,11 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		stateTime += delta;
 		player.update(delta);
 		if (player.getBody().getWorldCenter().x < -camera.viewportWidth / 2 || player.getBody().getWorldCenter().x > camera.viewportWidth / 2 || player.getBody().getWorldCenter().y > camera.viewportHeight / 2 || player.getBody().getWorldCenter().y < -camera.viewportHeight / 2) {
-			game.setToKillScreen(KillScreen.STABBED);
+			if (spawner.getWin()) {
+				game.setScreen(game.winScreen);
+			} else {
+				game.setToKillScreen(KillScreen.STABBED);
+			}
 		}
 		spawner.spawn(delta);
 //		spawner.checkWin(game);
@@ -129,9 +133,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		batch.setProjectionMatrix(fontCamera.combined);
 		batch.begin();
 		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
-		Assets.scoreFont.draw(batch, "Arrows Left: " + spawner.getArrowsLeft(), fontCamera.viewportWidth / 2 * .5f, fontCamera.viewportHeight / 2 * .96f);
-//		Assets.scoreFont.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .8f);
-//		Assets.scoreFont.draw(batch, "Angle (Debug): " + MathUtils.radiansToDegrees * player.dragAngle, -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .87f);
+		Assets.scoreFont.draw(batch, "Dishonor: " + spawner.getArrowsLeft(), fontCamera.viewportWidth / 2 * .5f, fontCamera.viewportHeight / 2 * .96f);
 		batch.end();
 		Ragnar.debugger.textDebug(fontBatch, fontCamera);
 	}
