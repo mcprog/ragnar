@@ -2,13 +2,14 @@ package com.mcprog.ragnar.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
 
-public class KillScreen extends ScreenDrawable {
+public class KillScreen extends ScreenDrawable implements InputProcessor {
 
 	private Ragnar game;
 	public static final int SHOT = 0;
@@ -16,6 +17,7 @@ public class KillScreen extends ScreenDrawable {
 	public static final String SHOT_MSG = "You got shot by the bowmen";
 	public static final String STABBED_MSG = "You got too close to the english and they speared you";
 	private String deathMsgSuffix;
+	private boolean newTouchUp;
 	
 	public int deathType = -1;
 	
@@ -27,6 +29,13 @@ public class KillScreen extends ScreenDrawable {
 		} else {
 			deathMsgSuffix = "\nHit \"R\" to retry\n";
 		}
+	}
+	
+	@Override
+	public void show() {
+		newTouchUp = false;
+		Gdx.input.setInputProcessor(this);
+		Gdx.input.setCatchBackKey(true);
 	}
 	
 	@Override
@@ -43,11 +52,6 @@ public class KillScreen extends ScreenDrawable {
 		
 		if (Gdx.input.isKeyJustPressed(Keys.R)) {
 			game.setScreen(game.gameScreen);
-		}
-		if (Ragnar.isMobile) {
-			if (Gdx.input.justTouched()) {
-				game.setScreen(game.gameScreen);
-			}
 		}
 	}
 	
@@ -66,6 +70,57 @@ public class KillScreen extends ScreenDrawable {
 		else if (deathType == STABBED) {
 			Assets.deadPlayerStabbedSprite.draw(batch);
 		}
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		if (keycode == Keys.BACK) {
+			game.setScreen(game.gameScreen);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		newTouchUp = true;
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		if (newTouchUp) {
+			
+			game.setScreen(game.gameScreen);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

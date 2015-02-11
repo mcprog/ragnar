@@ -33,24 +33,6 @@ public class Angel extends Player {
 		batch.end();
 	}
 
-	@Override
-	public void update (float delta) {
-		if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
-			setLinearImpulseWithDirection(UP);
-		}
-		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
-			setLinearImpulseWithDirection(LEFT);
-		}
-		if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			setLinearImpulseWithDirection(RIGHT);
-		}
-		if (!Gdx.input.isKeyPressed(Keys.W) && !Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.S) && !Gdx.input.isKeyPressed(Keys.DOWN) && !Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			if (direction != Player.LEFT_IDLE && direction != Player.RIGHT_IDLE && direction != Player.UP_IDLE && direction != Player.DOWN_IDLE && !Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-				setToIdle();
-			}
-		}
-	}
-
 	public Sprite getGust() {
 		gust.setBounds(getPosition().x - frameSprite.getWidth() / 2 * .125f + .5f, getPosition().y - frameSprite.getHeight() * .125f - 2f, 1, 4);
 		gust.setAlpha(.3f);

@@ -35,6 +35,8 @@ public class WinScreen extends ScreenDrawable {
 		leftSidebar = new Sprite(new Texture(Gdx.files.internal("heaven_sidebar.png")));
 		rightSidebar = new Sprite(new Texture(Gdx.files.internal("heaven_sidebar.png")));
 		fontBatch = new SpriteBatch();
+		Gdx.input.setInputProcessor(angel);
+		Gdx.input.setCatchBackKey(true);
 	}
 	
 	@Override
@@ -42,6 +44,10 @@ public class WinScreen extends ScreenDrawable {
 		super.render(delta);
 		Gdx.gl.glClearColor(0, .69f, 1, 1);//Color of Valhalla
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		if (Gdx.input.isKeyJustPressed(Keys.BACK)) {
+			game.setScreen(game.gameScreen);
+		}
 		
 		stateTime += delta;
 		world.step(1/60f, 8, 3);
@@ -65,15 +71,15 @@ public class WinScreen extends ScreenDrawable {
 		batch.end();
 	}
 	
-	@Override
-	public void resize(int width, int height) {
-		super.resize(width, height);
-		camera.viewportWidth = width / 16;
-		camera.viewportHeight = height / 16;
-		camera.update();
-		leftSidebar.setBounds(-camera.viewportWidth / 2, -camera.viewportHeight / 2, (camera.viewportWidth - camera.viewportHeight) / 2, camera.viewportHeight);
-		rightSidebar.setBounds(camera.viewportWidth / 2 - (camera.viewportWidth - camera.viewportHeight) / 2, -camera.viewportHeight / 2, (camera.viewportWidth - camera.viewportHeight) / 2, camera.viewportHeight);
-	}
+//	@Override
+//	public void resize(int width, int height) {
+//		super.resize(width, height);
+//		camera.viewportWidth = width / 16;
+//		camera.viewportHeight = height / 16;
+//		camera.update();
+//		leftSidebar.setBounds(-camera.viewportWidth / 2, -camera.viewportHeight / 2, (camera.viewportWidth - camera.viewportHeight) / 2, camera.viewportHeight);
+//		rightSidebar.setBounds(camera.viewportWidth / 2 - (camera.viewportWidth - camera.viewportHeight) / 2, -camera.viewportHeight / 2, (camera.viewportWidth - camera.viewportHeight) / 2, camera.viewportHeight);
+//	}
 	
 	
 
