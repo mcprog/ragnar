@@ -31,7 +31,8 @@ public class LoadingScreen extends ScreenDrawable {
 			/*
 			 * Load mutations and assign vars
 			 */
-			Assets.loadAnimations();
+			Assets.playerAnimations = Assets.loadAnimation(Assets.PLAYER_PATH);
+			Assets.playerGirlAnimations = Assets.loadAnimation(Assets.PLAYER_GIRL_PATH);
 			Assets.assignLoadedAssets();
 			/*
 			 * instantiate screens
@@ -39,6 +40,7 @@ public class LoadingScreen extends ScreenDrawable {
 			game.gameScreen = new GameScreen(game);
 			game.killScreen = new KillScreen(game);
 			game.winScreen = new WinScreen(game);
+			game.settingsScreen = new SettingsScreen(game);
 			if (Gdx.input.justTouched()) {
 				
 				game.setScreen(game.gameScreen);

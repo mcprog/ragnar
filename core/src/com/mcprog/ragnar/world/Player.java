@@ -88,7 +88,7 @@ public class Player implements InputProcessor {
 	}
 	
 	public void draw (float stateTime, SpriteBatch batch) {
-		frame = Assets.playerAnimations[getDirection()].getKeyFrame(stateTime, true);
+		frame = Assets.playerGirlAnimations[getDirection()].getKeyFrame(stateTime, true);
 		frameSprite = new Sprite(frame);
 		frameSprite.setCenter(getPosition().x, getPosition().y);
 		frameSprite.setScale(.125f);

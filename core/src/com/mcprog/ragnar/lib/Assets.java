@@ -14,6 +14,7 @@ public class Assets {
 	
 	private static TextureRegion[][] map;
 	public static Animation[] playerAnimations;
+	public static Animation[] playerGirlAnimations;
 	
 	public static BitmapFont ragnarFont;
 	public static BitmapFont scoreFont;
@@ -23,6 +24,7 @@ public class Assets {
 	public static Sprite deadPlayerStabbedSprite;
 	
 	public static final String PLAYER_PATH = "player.png";
+	public static final String PLAYER_GIRL_PATH = "player-girl.png";
 	public static final String ARROW_PATH = "arrow.png";
 	public static final String DEAD_PLAYER_PATH = "dead-player.png";
 	public static final String DEAD_PLAYER_STABBED_PATH = "dead-player-stabbed.png";
@@ -33,6 +35,7 @@ public class Assets {
 	
 	public static void queueTextures () {
 		assetManager.load(PLAYER_PATH, Texture.class);
+		assetManager.load(PLAYER_GIRL_PATH, Texture.class);
 		assetManager.load(ARROW_PATH, Texture.class);
 		assetManager.load(DEAD_PLAYER_PATH, Texture.class);
 		assetManager.load(DEAD_PLAYER_STABBED_PATH, Texture.class);
@@ -51,8 +54,8 @@ public class Assets {
 		return assetManager.get(path);
 	}
 	
-	public static void loadAnimations () {
-		map = TextureRegion.split(getLoadedTexture(PLAYER_PATH), 16, 24);
+	public static Animation[] loadAnimation (String path) {
+		map = TextureRegion.split(getLoadedTexture(path), 16, 24);
 		
 		/*
 		 * Pseudo animations (TextureRegions that fit in array)
@@ -123,7 +126,7 @@ public class Assets {
 				blockingUp, 
 				blockingDown 
 				};
-		playerAnimations = animations;
+		return animations;
 	}
 	
 	public static void assignLoadedAssets () {
