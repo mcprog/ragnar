@@ -37,7 +37,10 @@ public class KillScreen extends ScreenDrawable implements InputProcessor {
 		newTouchUp = false;
 		Gdx.input.setInputProcessor(this);
 		Gdx.input.setCatchBackKey(true);
-		RagnarConfig.highScore = (int) (game.gameScreen.timeInGame);
+		if (RagnarConfig.highScore < (int) (game.gameScreen.timeInGame)) {
+			
+			RagnarConfig.highScore = (int) (game.gameScreen.timeInGame);
+		}
 		RagnarConfig.updateFile();
 	}
 	
@@ -49,7 +52,7 @@ public class KillScreen extends ScreenDrawable implements InputProcessor {
 		
 		fontBatch.setProjectionMatrix(fontCamera.combined);
 		fontBatch.begin();
-		Assets.ragnarFont.drawWrapped(fontBatch, assembleMessage() + deathMsgSuffix + "You lasted " + (int)(game.gameScreen.timeInGame) + " seconds", -fontCamera.viewportWidth * .375f, fontCamera.viewportHeight * .375f, fontCamera.viewportWidth * .75f, HAlignment.CENTER);
+		Assets.ragnarFont.drawWrapped(fontBatch, assembleMessage() + deathMsgSuffix + "You lasted " + (int)(game.gameScreen.timeInGame) + " seconds\nHighscore: " + RagnarConfig.highScore, -fontCamera.viewportWidth * .375f, fontCamera.viewportHeight * .375f, fontCamera.viewportWidth * .75f, HAlignment.CENTER);
 		drawDeath(fontBatch);
 		fontBatch.end();
 		
