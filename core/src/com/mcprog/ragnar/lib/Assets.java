@@ -2,6 +2,7 @@ package com.mcprog.ragnar.lib;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -32,6 +33,12 @@ public class Assets {
 	public static final String FONT_DIR = "font/";
 	public static final String VIKING_FONT_PATH = FONT_DIR + "viking128.fnt";
 	public static final String SCORE_FONT_PATH = FONT_DIR + "viking64.fnt";
+	
+	
+	public static void queueAll () {
+		queueFonts();
+		queueTextures();
+	}
 	
 	public static void queueTextures () {
 		assetManager.load(PLAYER_PATH, Texture.class);

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
+import com.mcprog.ragnar.lib.RagnarConfig;
 
 public class LoadingScreen extends ScreenDrawable {
 	
@@ -37,13 +38,13 @@ public class LoadingScreen extends ScreenDrawable {
 			/*
 			 * instantiate screens
 			 */
+			RagnarConfig.init();
 			game.gameScreen = new GameScreen(game);
 			game.killScreen = new KillScreen(game);
 			game.winScreen = new WinScreen(game);
 			game.settingsScreen = new SettingsScreen(game);
 			if (Gdx.input.justTouched()) {
-				
-				game.setScreen(game.gameScreen);
+				game.setScreen(game.settingsScreen);
 			}
 		} 
 		else if (Assets.assetManager.isLoaded(Assets.VIKING_FONT_PATH)) {

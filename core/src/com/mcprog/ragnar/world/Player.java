@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mcprog.ragnar.lib.Assets;
+import com.mcprog.ragnar.lib.RagnarConfig;
 
 public class Player implements InputProcessor {
 
@@ -88,7 +89,16 @@ public class Player implements InputProcessor {
 	}
 	
 	public void draw (float stateTime, SpriteBatch batch) {
-		frame = Assets.playerGirlAnimations[getDirection()].getKeyFrame(stateTime, true);
+		switch (RagnarConfig.playerType) {
+		case 1:
+			
+			frame = Assets.playerGirlAnimations[getDirection()].getKeyFrame(stateTime, true);
+			break;
+
+		default:
+			frame = Assets.playerAnimations[getDirection()].getKeyFrame(stateTime, true);
+			break;
+		}
 		frameSprite = new Sprite(frame);
 		frameSprite.setCenter(getPosition().x, getPosition().y);
 		frameSprite.setScale(.125f);
