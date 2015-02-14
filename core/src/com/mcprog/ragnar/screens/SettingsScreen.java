@@ -17,6 +17,10 @@ public class SettingsScreen extends ScreenDrawable implements InputProcessor {
 	
 	public SettingsScreen(Ragnar game) {
 		super(game);
+	}
+	
+	@Override
+	public void show() {
 		Gdx.input.setInputProcessor(this);
 	}
 	
@@ -28,6 +32,7 @@ public class SettingsScreen extends ScreenDrawable implements InputProcessor {
 		fontBatch.begin();
 		Assets.ragnarFont.draw(fontBatch, "Settings", 0, fontCamera.viewportWidth / 4);
 		Assets.ragnarFont.draw(fontBatch, "Player type: " + RagnarConfig.playerType, -fontCamera.viewportWidth / 4, 0);
+		Assets.ragnarFont.draw(fontBatch, "Highscore: " + RagnarConfig.highScore, -fontCamera.viewportWidth / 4, -fontCamera.viewportHeight / 4);
 		fontBatch.end();
 
 		
@@ -54,6 +59,9 @@ public class SettingsScreen extends ScreenDrawable implements InputProcessor {
 				RagnarConfig.updateFile();
 			}
 		}
+		else if (keycode == Keys.G) {
+			game.setScreen(game.gameScreen);
+		}
 		return true;
 	}
 
@@ -71,7 +79,7 @@ public class SettingsScreen extends ScreenDrawable implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
+import com.mcprog.ragnar.lib.RagnarConfig;
 
 public class KillScreen extends ScreenDrawable implements InputProcessor {
 
@@ -36,6 +37,8 @@ public class KillScreen extends ScreenDrawable implements InputProcessor {
 		newTouchUp = false;
 		Gdx.input.setInputProcessor(this);
 		Gdx.input.setCatchBackKey(true);
+		RagnarConfig.highScore = (int) (game.gameScreen.timeInGame);
+		RagnarConfig.updateFile();
 	}
 	
 	@Override

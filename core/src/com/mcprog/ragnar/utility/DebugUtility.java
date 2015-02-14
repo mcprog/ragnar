@@ -52,6 +52,9 @@ public class DebugUtility {
 		if (Gdx.input.isKeyJustPressed(Keys.G)) {
 			game.setScreen(game.gameScreen);
 		}
+		if (Gdx.input.isKeyJustPressed(Keys.BACKSLASH)) {
+			game.setScreen(game.settingsScreen);
+		}
 	}
 	
 	public void textDebug (SpriteBatch batch, OrthographicCamera camera) {
