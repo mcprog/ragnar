@@ -2,7 +2,6 @@ package com.mcprog.ragnar.lib;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.files.FileHandle;
 
 public class RagnarConfig {
 
@@ -15,6 +14,8 @@ public class RagnarConfig {
 		preferences = Gdx.app.getPreferences("ragnar-preferences");
 		playerType = preferences.getInteger("player-type", 0);
 		highScore = preferences.getInteger("highscore", 0);
+//		preferences.putInteger("highscore", 0);
+//		preferences.flush();
 	}
 	
 	public static void updateFile () {

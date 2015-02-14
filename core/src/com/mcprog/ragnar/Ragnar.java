@@ -23,11 +23,14 @@ public class Ragnar extends Game {
 	public static DebugUtility debugger;
 	public static boolean isMobile;
 	
+	public static Ragnar gameInstance;
+	
 	@Override
 	public void create () {
+		gameInstance = (Ragnar) (Gdx.app.getApplicationListener());
 		isMobile = Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS);
 		debugger = new DebugUtility();
-		debugger.off();
+		debugger.on();
 		Assets.queueAll();
 		loadingScreen = new LoadingScreen(this);
 		setScreen(loadingScreen);

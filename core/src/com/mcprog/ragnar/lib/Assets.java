@@ -19,6 +19,7 @@ public class Assets {
 	
 	public static BitmapFont ragnarFont;
 	public static BitmapFont scoreFont;
+	public static BitmapFont smallFont;
 	
 	public static Sprite arrowSprite;
 	public static Sprite deadPlayerSprite;
@@ -33,6 +34,7 @@ public class Assets {
 	public static final String FONT_DIR = "font/";
 	public static final String VIKING_FONT_PATH = FONT_DIR + "viking128.fnt";
 	public static final String SCORE_FONT_PATH = FONT_DIR + "viking64.fnt";
+	public static final String SMALL_FONT_PATH = FONT_DIR + "viking32.fnt";
 	
 	
 	public static void queueAll () {
@@ -51,6 +53,7 @@ public class Assets {
 	public static void queueFonts () {
 		assetManager.load(VIKING_FONT_PATH, BitmapFont.class);
 		assetManager.load(SCORE_FONT_PATH, BitmapFont.class);
+		assetManager.load(SMALL_FONT_PATH, BitmapFont.class);
 	}
 	
 	public static Texture getLoadedTexture (String path) {
@@ -138,6 +141,7 @@ public class Assets {
 	
 	public static void assignLoadedAssets () {
 		scoreFont = getLoadedFont(SCORE_FONT_PATH);
+		smallFont = getLoadedFont(SMALL_FONT_PATH);
 		arrowSprite = new Sprite(getLoadedTexture(ARROW_PATH));
 		deadPlayerSprite = new Sprite(getLoadedTexture(DEAD_PLAYER_PATH));
 		deadPlayerStabbedSprite = new Sprite(getLoadedTexture(DEAD_PLAYER_STABBED_PATH));
