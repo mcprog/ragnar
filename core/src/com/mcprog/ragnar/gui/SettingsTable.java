@@ -14,7 +14,7 @@ public class SettingsTable extends Table {
 	private Label playerKey;
 	private Label highscoreKey;
 	private Label highscoreVal;
-	private TextButton buttonBack;
+	private TextButton buttonPlay;
 	private TextButton buttonPlayerType;
 	
 	public SettingsTable() {
@@ -25,7 +25,7 @@ public class SettingsTable extends Table {
 		highscoreKey = new Label("Highscore:", GuiStyles.normalLabelStyle);
 		highscoreVal = new Label(Integer.toString(RagnarConfig.highScore), GuiStyles.normalLabelStyle);
 		
-		buttonBack = new TextButton("Back", GuiStyles.largeButtonStyle);
+		buttonPlay = new TextButton("Play", GuiStyles.largeButtonStyle);
 		buttonPlayerType = new TextButton(getPlayerType(), GuiStyles.smallButtonStyle);
 		
 		addFunctionality();
@@ -38,7 +38,7 @@ public class SettingsTable extends Table {
 		add(highscoreKey).left();
 		add(highscoreVal).right().padRight(20);
 		row();
-		add(buttonBack).colspan(2).pad(20);
+		add(buttonPlay).colspan(2).pad(20);
 	}
 	
 	public void show () {
@@ -60,7 +60,7 @@ public class SettingsTable extends Table {
 			}
 		});
 		
-		buttonBack.addListener(new ClickListener() {
+		buttonPlay.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.gameScreen);
