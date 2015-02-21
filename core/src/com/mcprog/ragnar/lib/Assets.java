@@ -1,5 +1,7 @@
 package com.mcprog.ragnar.lib;
 
+import java.util.Locale;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.I18NBundle;
 
 public class Assets {
 	
@@ -36,6 +39,20 @@ public class Assets {
 	public static final String SCORE_FONT_PATH = FONT_DIR + "viking64.fnt";
 	public static final String SMALL_FONT_PATH = FONT_DIR + "viking32.fnt";
 	
+	
+	public static I18NBundle mainBundle;
+	
+	public static void testLoadI18N () {
+		
+		switch (Locale.getDefault().toString()) {
+		case "es":
+			mainBundle = I18NBundle.createBundle(Gdx.files.internal("i18n/MainBundle_es"), new Locale("es"));
+			break;
+		default:
+			mainBundle = I18NBundle.createBundle(Gdx.files.internal("i18n/MainBundle"), new Locale("en"));
+			break;
+		}
+	}
 	
 	public static void queueAll () {
 		queueFonts();

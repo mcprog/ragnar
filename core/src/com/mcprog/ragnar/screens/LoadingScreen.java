@@ -39,6 +39,7 @@ public class LoadingScreen extends ScreenDrawable {
 			 * instantiate screens
 			 */
 			RagnarConfig.init();
+			Assets.testLoadI18N();
 			game.gameScreen = new GameScreen(game);
 			game.killScreen = new KillScreen(game);
 			game.winScreen = new WinScreen(game);

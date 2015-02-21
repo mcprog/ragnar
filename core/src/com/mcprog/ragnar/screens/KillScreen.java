@@ -1,18 +1,12 @@
 package com.mcprog.ragnar.screens;
 
-import sun.net.www.http.Hurryable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
 import com.mcprog.ragnar.gui.KillTable;
@@ -59,13 +53,13 @@ public class KillScreen extends ScreenDrawable {
 			RagnarConfig.highScore = (int) (game.gameScreen.timeInGame);
 		}
 		RagnarConfig.updateFile();
-		killTable.show(assembleMessage(), "You lasted " + (int)(game.gameScreen.timeInGame) + " seconds", "Highscore: " + RagnarConfig.highScore);
+		killTable.show(assembleMessage(), "You lasted " + (int)(game.gameScreen.timeInGame) + " seconds", "Highscore: " + RagnarConfig.highScore, deathType);
 	}
 	
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		Gdx.gl.glClearColor(.5f, .5f, .5f, 1);
+		Gdx.gl.glClearColor(.1f, .1f, .2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		if (Gdx.input.isKeyJustPressed(Keys.R)) {
