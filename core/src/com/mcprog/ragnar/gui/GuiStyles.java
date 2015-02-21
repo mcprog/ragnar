@@ -1,6 +1,7 @@
 package com.mcprog.ragnar.gui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.mcprog.ragnar.lib.Assets;
@@ -21,23 +22,18 @@ public class GuiStyles {
 		headerLabelStyleWhite = new LabelStyle(Assets.ragnarFont, Color.WHITE);
 		normalLabelStyleWhite = new LabelStyle(Assets.smallFont, Color.WHITE);
 		
-		largeButtonStyle = new TextButtonStyle();
-		largeButtonStyle.fontColor = Color.DARK_GRAY;
-		largeButtonStyle.downFontColor = Color.LIGHT_GRAY;
-		largeButtonStyle.overFontColor = Color.LIGHT_GRAY;
-		largeButtonStyle.font = Assets.scoreFont;
-		
-		largeButtonStyleLight = new TextButtonStyle();
-		largeButtonStyleLight.fontColor = Color.LIGHT_GRAY;
-		largeButtonStyleLight.downFontColor = Color.WHITE;
-		largeButtonStyleLight.overFontColor = Color.WHITE;
-		largeButtonStyleLight.font = Assets.scoreFont;
-		
-		smallButtonStyle = new TextButtonStyle();
-		smallButtonStyle.fontColor = Color.DARK_GRAY;
-		smallButtonStyle.downFontColor = Color.LIGHT_GRAY;
-		smallButtonStyle.overFontColor = Color.LIGHT_GRAY;
-		smallButtonStyle.font = Assets.smallFont;
+		largeButtonStyle = makeTextButtonStyle(Assets.scoreFont, Color.DARK_GRAY, Color.LIGHT_GRAY);
+		largeButtonStyleLight = makeTextButtonStyle(Assets.scoreFont, Color.LIGHT_GRAY, Color.WHITE);
+		smallButtonStyle = makeTextButtonStyle(Assets.smallFont, Color.DARK_GRAY, Color.LIGHT_GRAY);
+	}
+	
+	private static TextButtonStyle makeTextButtonStyle (BitmapFont font, Color color, Color active) {
+		TextButtonStyle tbs = new TextButtonStyle();
+		tbs.font = font;
+		tbs.fontColor = color;
+		tbs.downFontColor = active;
+		tbs.overFontColor = active;
+		return tbs;
 	}
 
 }
