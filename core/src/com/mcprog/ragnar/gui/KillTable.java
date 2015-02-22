@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
+import com.mcprog.ragnar.lib.Constants;
+import com.mcprog.ragnar.lib.RagnarConfig;
 import com.mcprog.ragnar.screens.KillScreen;
 
 
@@ -57,12 +59,19 @@ public class KillTable extends Table {
 		this.highscore.setText(highscore);
 		System.out.println(deathType);
 		if (deathType == KillScreen.STABBED) {
-			deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(Assets.DEAD_PLAYER_STABBED_PATH))));
-			getCell(deathImg).size(21 * 8, 28 * 8);
+			if (RagnarConfig.playerType == 0) {
+				deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(Assets.DEAD_PLAYER_STABBED_PATH))));
+			} else {
+				deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(Assets.DEAD_PLAYER_STABBED_GIRL_PATH))));
+			}
 		} else {
-			deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(Assets.DEAD_PLAYER_PATH))));
-			getCell(deathImg).size(24 * 8, 16 * 8);
+			if (RagnarConfig.playerType == 0) {
+				deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(Assets.DEAD_PLAYER_PATH))));
+			} else {
+				deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(Assets.DEAD_PLAYER_GIRL_PATH))));
+			}
 		}
+		sizeImage(deathImg, deathType);
 	}
 	
 	private void addFunctionality () {
@@ -80,5 +89,23 @@ public class KillTable extends Table {
 			}
 		});
 	}
+	
+	private void sizeImage (Image img, int deathType) {
+		if (deathType == KillScreen.SHOT) {
+			getCell(img).size(Constants.DEATH_IMAGE_SHOT_WIDTH * 8, Constants.DEATH_IMAGE_SHOT_HEIGHT * 8);
+		}
+		else if (deathType == KillScreen.STABBED) {
+			getCell(img).size(Constants.DEATH_IMAGE_STABBED_WIDTH * 8, Constants.DEATH_IMAGE_STABBED_HEIGHT * 8);
+		}
+	}
+	
+//	private void determineDeathImagePlayerType (String ragnarPath) {
+//		if (RagnarConfig.playerType == 0) {
+//			deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(ragnarPath))));
+//		} 
+//		else if (RagnarConfig.playerType == 1) {
+//			deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(ragnarPath + "-girl"))));
+//		}
+//	}
 	
 }
