@@ -24,7 +24,9 @@ public class SettingsScreen extends ScreenDrawable {
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
 		
 		stage.addActor(settingsTable);
-//		stage.setDebugAll(true);
+		if (Ragnar.debugger.on) {
+			stage.setDebugAll(true);
+		}
 	}
 	
 	@Override

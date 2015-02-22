@@ -1,6 +1,7 @@
 package com.mcprog.ragnar.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,8 +16,11 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mcprog.ragnar.Ragnar;
+import com.mcprog.ragnar.gui.GameTable;
 import com.mcprog.ragnar.gui.MobileControls;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
@@ -33,14 +37,18 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private ArrowSpawner spawner;
 	private Array<Body> bodies;
 	private Array<Body> bodiesToDelete;
+	private Stage stage;
+	private GameTable table;
 	
 	private float stateTime;
 	private Bounds bounds;
 	private MobileControls mobileControls;
 	public float timeInGame;
 	private Texture treeTop;
+	private Texture treeLeft;
 	private SpriteBatch treeBatch;
 	private OrthographicCamera treeCamera;
+	private Sound arrowHit;
 	
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);
@@ -53,8 +61,16 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		mobileControls = new MobileControls();
 		
 		treeTop = new Texture(Gdx.files.internal("tree-top.png"));
+		treeLeft = new Texture(Gdx.files.internal("tree-left.png"));
 		treeBatch = new SpriteBatch();
 		treeCamera = new OrthographicCamera();
+		
+		arrowHit = Gdx.audio.newSound(Gdx.files.internal("sounds/arrow-hit.mp3"));
+		stage = new Stage();
+		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
+		table = new GameTable();
+		table.setFillParent(true);
+		stage.addActor(table);
 	}
 	
 	@Override
@@ -75,17 +91,21 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			if (spawner.getWin()) {
 				game.setScreen(game.winScreen);
 			} else {
+				arrowHit.play();
 				game.setToKillScreen(KillScreen.STABBED);
 			}
 		}
 		spawner.spawn(delta);
-//		spawner.checkWin(game);
 		batch.setProjectionMatrix(camera.combined);
+		table.update(timeInGame, spawner.getArrowsLeft());
+		stage.act(delta);
+		stage.draw();
 		player.draw(stateTime, batch);
 		Arrow.drawArrows(batch, bodies);
 		batch.setProjectionMatrix(treeCamera.combined);
 		batch.begin();
 		batch.draw(treeTop, -treeCamera.viewportWidth / 2, treeCamera.viewportHeight / 2 - 16);
+		batch.draw(treeLeft, -treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
 		batch.end();
 		drawText(fontBatch);
 		Ragnar.debugger.addDebug("FPS", Gdx.graphics.getFramesPerSecond());
@@ -102,7 +122,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		spawner = new ArrowSpawner(world, player);
 		bounds = new Bounds(world, Gdx.graphics.getWidth() / 8);
 		world.setContactListener(this);
-		
+		if (Ragnar.debugger.on) {
+			stage.setDebugAll(true);
+		}
 		Gdx.input.setInputProcessor(player);
 	}
 	
@@ -113,6 +135,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		treeCamera.update();
 		System.out.println("GameScreen resized");
 		super.resize(width, height);
+		stage.getViewport().update(width, height, true);
 	}
 	
 	private void safelyDestroyBodies () {
@@ -146,7 +169,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 				if (spawner.getWin()) {
 					game.setScreen(game.winScreen);
 				} else {
-					
+					arrowHit.play();
 					game.setToKillScreen(KillScreen.SHOT);
 				}
 			}
@@ -156,11 +179,11 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	}
 	
 	private void drawText (SpriteBatch batch) {
-		batch.setProjectionMatrix(fontCamera.combined);
-		batch.begin();
-		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .97f, fontCamera.viewportHeight / 2 * .96f);
-		Assets.scoreFont.draw(batch, "Dishonor: " + spawner.getArrowsLeft(), fontCamera.viewportWidth / 2 * .5f, fontCamera.viewportHeight / 2 * .96f);
-		batch.end();
+//		batch.setProjectionMatrix(fontCamera.combined);
+//		batch.begin();
+//		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .9f, fontCamera.viewportHeight / 2 * .8f);
+//		Assets.scoreFont.draw(batch, "Dishonor: " + spawner.getArrowsLeft(), fontCamera.viewportWidth / 2 * .65f, fontCamera.viewportHeight / 2 * .8f);
+//		batch.end();
 		Ragnar.debugger.textDebug(fontBatch, fontCamera);
 	}
 
