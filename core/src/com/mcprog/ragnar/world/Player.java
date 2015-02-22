@@ -44,6 +44,7 @@ public class Player implements InputProcessor {
 	protected float playerSpeed = 8;
 	private boolean isIdle;
 	private OrthographicCamera camera;
+	protected float hWidth;
 	
 	public float dragAngle;
 	public boolean invincible;

@@ -8,8 +8,8 @@ public class Constants {
 	public static final float SCALED_HEIGHT = IDEAL_HEIGHT / 16f;
 	public static final float FONT_WIDTH = IDEAL_WIDTH * 4f;
 	public static final float FONT_HEIGHT = IDEAL_HEIGHT * 4f;
-	public static final float TEST_WIDTH = IDEAL_WIDTH / 1.5f;
-	public static final float TEST_HEIGHT = IDEAL_HEIGHT / 1.5f;
+	public static final float TEST_WIDTH = IDEAL_WIDTH / 3f;
+	public static final float TEST_HEIGHT = IDEAL_HEIGHT / 3f;
 	
 	public static final int DEATH_IMAGE_SHOT_WIDTH = 24;
 	public static final int DEATH_IMAGE_SHOT_HEIGHT = 16;

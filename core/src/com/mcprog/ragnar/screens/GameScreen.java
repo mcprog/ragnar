@@ -2,6 +2,8 @@ package com.mcprog.ragnar.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.MobileControls;
 import com.mcprog.ragnar.lib.Assets;
+import com.mcprog.ragnar.lib.Constants;
 import com.mcprog.ragnar.utility.DebugUtility;
 import com.mcprog.ragnar.world.Arrow;
 import com.mcprog.ragnar.world.ArrowSpawner;
@@ -35,6 +38,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private Bounds bounds;
 	private MobileControls mobileControls;
 	public float timeInGame;
+	private Texture treeTop;
+	private SpriteBatch treeBatch;
+	private OrthographicCamera treeCamera;
 	
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);
@@ -45,6 +51,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		bodiesToDelete = new Array<Body>();
 		
 		mobileControls = new MobileControls();
+		
+		treeTop = new Texture(Gdx.files.internal("tree-top.png"));
+		treeBatch = new SpriteBatch();
+		treeCamera = new OrthographicCamera();
 	}
 	
 	@Override
@@ -58,7 +68,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		world.getBodies(bodies);
 		stateTime += delta;
 		player.update(delta);
-		if (player.getBody().getWorldCenter().x < -camera.viewportWidth / 2 || player.getBody().getWorldCenter().x > camera.viewportWidth / 2 || player.getBody().getWorldCenter().y > camera.viewportHeight / 2 || player.getBody().getWorldCenter().y < -camera.viewportHeight / 2) {
+		if (player.getBody().getWorldCenter().x + player. < -camera.viewportWidth / 2 || player.getBody().getWorldCenter().x > camera.viewportWidth / 2 || player.getBody().getWorldCenter().y > camera.viewportHeight / 2 || player.getBody().getWorldCenter().y < -camera.viewportHeight / 2) {
 			if (spawner.getWin()) {
 				game.setScreen(game.winScreen);
 			} else {
@@ -67,10 +77,14 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		}
 		spawner.spawn(delta);
 //		spawner.checkWin(game);
-		drawText(fontBatch);
 		batch.setProjectionMatrix(camera.combined);
 		player.draw(stateTime, batch);
 		Arrow.drawArrows(batch, bodies);
+		batch.setProjectionMatrix(treeCamera.combined);
+		batch.begin();
+		batch.draw(treeTop, -treeCamera.viewportWidth / 2, treeCamera.viewportHeight / 2 - 16);
+		batch.end();
+		drawText(fontBatch);
 		Ragnar.debugger.addDebug("FPS", Gdx.graphics.getFramesPerSecond());
 		Ragnar.debugger.addDebug("Control Angle", (int) (MathUtils.radiansToDegrees * player.dragAngle));
 		Ragnar.debugger.renderDebug(world, camera.combined);
@@ -87,6 +101,15 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		world.setContactListener(this);
 		
 		Gdx.input.setInputProcessor(player);
+	}
+	
+	@Override
+	public void resize(int width, int height) {
+		treeCamera.viewportWidth = Constants.TEST_WIDTH;
+		treeCamera.viewportHeight = Constants.TEST_HEIGHT;
+		treeCamera.update();
+		System.out.println("GameScreen resized");
+		super.resize(width, height);
 	}
 	
 	private void safelyDestroyBodies () {
