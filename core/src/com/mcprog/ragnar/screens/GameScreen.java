@@ -68,7 +68,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		world.getBodies(bodies);
 		stateTime += delta;
 		player.update(delta);
-		if (player.getBody().getWorldCenter().x + player. < -camera.viewportWidth / 2 || player.getBody().getWorldCenter().x > camera.viewportWidth / 2 || player.getBody().getWorldCenter().y > camera.viewportHeight / 2 || player.getBody().getWorldCenter().y < -camera.viewportHeight / 2) {
+		if (player.getBody().getWorldCenter().x - player.getHalfWidth() < -camera.viewportWidth / 2 
+				|| player.getBody().getWorldCenter().x + player.getHalfWidth() > camera.viewportWidth / 2 
+				|| player.getBody().getWorldCenter().y + player.getHalfHeight() > camera.viewportHeight / 2 
+				|| player.getBody().getWorldCenter().y - player.getHalfHeight() < -camera.viewportHeight / 2) {
 			if (spawner.getWin()) {
 				game.setScreen(game.winScreen);
 			} else {

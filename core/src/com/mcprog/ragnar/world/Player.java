@@ -45,6 +45,7 @@ public class Player implements InputProcessor {
 	private boolean isIdle;
 	private OrthographicCamera camera;
 	protected float hWidth;
+	protected float hHeight;
 	
 	public float dragAngle;
 	public boolean invincible;
@@ -68,6 +69,9 @@ public class Player implements InputProcessor {
 		this.world = world;
 		this.camera = camera;
 		
+		hWidth = .6f;
+		hHeight = 1;
+		
 		
 		glow = new Sprite(new Texture(Gdx.files.internal("glow.png")));
 		
@@ -78,7 +82,7 @@ public class Player implements InputProcessor {
 		body = world.createBody(bodyDef);
 		body.setUserData(Assets.playerAnimations);
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(.6f, 1f);
+		shape.setAsBox(hWidth, hHeight);
 		body.setFixedRotation(true);
 		body.createFixture(shape, 1);
 		
@@ -171,6 +175,13 @@ public class Player implements InputProcessor {
 		isIdle = true;
 	}
 	
+	public float getHalfWidth () {
+		return hWidth;
+	}
+	
+	public float getHalfHeight () {
+		return hHeight;
+	}
 	
 	public Vector2 getVelocity () {
 		return body.getLinearVelocity();
