@@ -52,7 +52,7 @@ public class LoadingScreen extends ScreenDrawable {
 			Assets.ragnarFont = Assets.getLoadedFont(Assets.VIKING_FONT_PATH);
 			fontBatch.setProjectionMatrix(fontCamera.combined);
 			fontBatch.begin();
-			Assets.ragnarFont.draw(fontBatch, "Assets loadeding ..." + (int)Assets.getLoadingProgress() + "%", -fontCamera.viewportWidth / 4, Assets.ragnarFont.getCapHeight() / 2);
+			Assets.ragnarFont.draw(fontBatch, "Assets loading ... " + (int)Assets.getLoadingProgress() + "%", -fontCamera.viewportWidth / 4, Assets.ragnarFont.getCapHeight() / 2);
 			fontBatch.end();
 		}
 	}

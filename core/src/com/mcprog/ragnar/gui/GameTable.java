@@ -18,7 +18,6 @@ public class GameTable extends Table {
 		add(dishonor).right().expandX();
 		
 		pad(60);
-//		padTop(60);
 		top();
 	}
 	

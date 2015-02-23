@@ -31,6 +31,9 @@ public class Assets {
 	public static Sprite deadPlayerGirlSprite;
 	public static Sprite deadPlayerStabbedGirlSprite;
 	
+	public static Texture treeTop;
+	public static Texture treeLeft;
+	
 	public static final String PLAYER_PATH = "player.png";
 	public static final String PLAYER_GIRL_PATH = "player-girl.png";
 	public static final String ARROW_PATH = "arrow.png";
@@ -38,6 +41,9 @@ public class Assets {
 	public static final String DEAD_PLAYER_STABBED_PATH = "dead-player-stabbed.png";
 	public static final String DEAD_PLAYER_GIRL_PATH = "dead-player-girl.png";
 	public static final String DEAD_PLAYER_STABBED_GIRL_PATH = "dead-player-stabbed-girl.png";
+	
+	public static final String TREE_TOP_PATH = "tree-top.png";
+	public static final String TREE_LEFT_PATH = "tree-left.png";
 	
 	public static final String FONT_DIR = "font/";
 	public static final String VIKING_FONT_PATH = FONT_DIR + "viking128.fnt";
@@ -72,6 +78,8 @@ public class Assets {
 		assetManager.load(DEAD_PLAYER_STABBED_PATH, Texture.class);
 		assetManager.load(DEAD_PLAYER_GIRL_PATH, Texture.class);
 		assetManager.load(DEAD_PLAYER_STABBED_GIRL_PATH, Texture.class);
+		assetManager.load(TREE_TOP_PATH, Texture.class);
+		assetManager.load(TREE_LEFT_PATH, Texture.class);
 	}
 	
 	public static void queueFonts () {
@@ -173,6 +181,8 @@ public class Assets {
 		deadPlayerStabbedSprite = new Sprite(getLoadedTexture(DEAD_PLAYER_STABBED_PATH));
 		deadPlayerGirlSprite = new Sprite(getLoadedTexture(DEAD_PLAYER_GIRL_PATH));
 		deadPlayerStabbedGirlSprite = new Sprite(getLoadedTexture(DEAD_PLAYER_STABBED_GIRL_PATH));
+		treeTop = getLoadedTexture(TREE_TOP_PATH);
+		treeLeft = getLoadedTexture(TREE_LEFT_PATH);
 	}
 	
 	public static float getLoadingProgress () {

@@ -60,8 +60,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		
 		mobileControls = new MobileControls();
 		
-		treeTop = new Texture(Gdx.files.internal("tree-top.png"));
-		treeLeft = new Texture(Gdx.files.internal("tree-left.png"));
 		treeBatch = new SpriteBatch();
 		treeCamera = new OrthographicCamera();
 		
@@ -92,6 +90,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 				game.setScreen(game.winScreen);
 			} else {
 				arrowHit.play();
+				if (Ragnar.isMobile) {
+					Gdx.input.vibrate(300);
+				}
 				game.setToKillScreen(KillScreen.STABBED);
 			}
 		}
@@ -104,8 +105,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		Arrow.drawArrows(batch, bodies);
 		batch.setProjectionMatrix(treeCamera.combined);
 		batch.begin();
-		batch.draw(treeTop, -treeCamera.viewportWidth / 2, treeCamera.viewportHeight / 2 - 16);
-		batch.draw(treeLeft, -treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
+		batch.draw(Assets.treeLeft, -treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
+		batch.draw(Assets.treeLeft, treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
+		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, treeCamera.viewportHeight / 2 - 16);
+		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, -treeCamera.viewportHeight / 2 - 16);
 		batch.end();
 		drawText(fontBatch);
 		Ragnar.debugger.addDebug("FPS", Gdx.graphics.getFramesPerSecond());
@@ -170,6 +173,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 					game.setScreen(game.winScreen);
 				} else {
 					arrowHit.play();
+					if (Ragnar.isMobile) {
+						Gdx.input.vibrate(300);
+					}
 					game.setToKillScreen(KillScreen.SHOT);
 				}
 			}
