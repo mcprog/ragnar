@@ -16,7 +16,7 @@ import com.mcprog.ragnar.lib.RagnarConfig;
 
 public class KillScreen extends ScreenDrawable {
 
-	private Ragnar game;
+//	private Ragnar game;
 	public static final int SHOT = 0;
 	public static final int STABBED = 1;
 	public static final String SHOT_MSG = "You got shot by the bowmen";
@@ -30,7 +30,7 @@ public class KillScreen extends ScreenDrawable {
 	
 	public KillScreen(Ragnar gameInstance) {
 		super(gameInstance);
-		game = gameInstance;
+//		game = gameInstance;
 		GuiStyles.init();
 		stage = new Stage();
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));

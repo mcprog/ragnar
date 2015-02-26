@@ -23,7 +23,7 @@ public class KillTable extends Table {
 	private Label score;
 	private Label highscore;
 	private TextButton buttonPlay;
-	private TextButton buttonSettings;
+	private TextButton buttonMenu;
 	private Image deathImg;
 	
 	public KillTable () {
@@ -35,7 +35,7 @@ public class KillTable extends Table {
 		highscore = new Label("", GuiStyles.normalLabelStyleWhite);
 		
 		buttonPlay = new TextButton("Play", GuiStyles.largeButtonStyleLight);
-		buttonSettings = new TextButton("Settings", GuiStyles.largeButtonStyleLight);
+		buttonMenu = new TextButton("Menu", GuiStyles.largeButtonStyleLight);
 		
 		deathImg = new Image(Assets.getLoadedTexture(Assets.DEAD_PLAYER_PATH));
 		
@@ -50,7 +50,7 @@ public class KillTable extends Table {
 		add(deathImg).colspan(2).center().size(deathImg.getWidth() * 8, deathImg.getHeight() * 8);
 		row();
 		add(buttonPlay);
-		add(buttonSettings);
+		add(buttonMenu);
 	}
 	
 	public void show (String deathMsg, String score, String highscore, int deathType) {
@@ -82,10 +82,10 @@ public class KillTable extends Table {
 			}
 		});
 		
-		buttonSettings.addListener(new ClickListener() {
+		buttonMenu.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.settingsScreen);
+				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.menuScreen);
 			}
 		});
 	}

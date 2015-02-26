@@ -44,8 +44,10 @@ public class LoadingScreen extends ScreenDrawable {
 			game.killScreen = new KillScreen(game);
 			game.winScreen = new WinScreen(game);
 			game.settingsScreen = new SettingsScreen(game);
+			game.menuScreen = new MenuScreen(game);
+			game.highscoreScreen = new HighscoreScreen(game);
 			if (Gdx.input.justTouched()) {
-				game.setScreen(game.gameScreen);
+				game.setScreen(game.menuScreen);
 			}
 		} 
 		else if (Assets.assetManager.isLoaded(Assets.VIKING_FONT_PATH)) {

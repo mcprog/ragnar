@@ -8,50 +8,42 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.RagnarConfig;
 
-public class SettingsTable extends Table {
-	
+public class HighscoreTable extends Table {
+
 	private Label header;
-	private Label playerKey;
+	private Label highscoreKey;
+	private Label highscoreVal;
 	private TextButton buttonPlay;
 	private TextButton buttonMenu;
-	private TextButton buttonPlayerType;
 	
-	public SettingsTable() {
+	public HighscoreTable() {
 		GuiStyles.init();
 		
-		header = new Label("Settings", GuiStyles.headerLabelStyle);
-		playerKey = new Label("Player Type:", GuiStyles.normalLabelStyle);
+		header = new Label("Highscore", GuiStyles.headerLabelStyle);
 		
 		buttonPlay = new TextButton("Play", GuiStyles.largeButtonStyle);
 		buttonMenu = new TextButton("Menu", GuiStyles.largeButtonStyle);
-		buttonPlayerType = new TextButton(getPlayerType(), GuiStyles.smallButtonStyle);
 		
-		addFunctionality();
+		
+		highscoreKey = new Label("Highscore:", GuiStyles.normalLabelStyle);
+		highscoreVal = new Label(Integer.toString(RagnarConfig.highScore), GuiStyles.normalLabelStyle);
 		
 		add(header).colspan(2);
 		row();
-		add(playerKey).left();
-		add(buttonPlayerType).right().pad(20);
+		add(highscoreKey).left();
+		add(highscoreVal).right().pad(20);
 		row();
 		add(buttonPlay).pad(20);
 		add(buttonMenu).pad(20);
+		
+		addFunctionality();
 	}
 	
-	private void addFunctionality () {
-		buttonPlayerType.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				if (RagnarConfig.playerType == 0) {
-					RagnarConfig.playerType = 1;
-					RagnarConfig.updateFile();
-				} else {
-					RagnarConfig.playerType = 0;
-					RagnarConfig.updateFile();
-				}
-				buttonPlayerType.setText(getPlayerType());
-			}
-		});
-		
+	public void show () {
+		highscoreVal.setText(Integer.toString(RagnarConfig.highScore));
+	}
+
+	private void addFunctionality() {
 		buttonPlay.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -64,10 +56,6 @@ public class SettingsTable extends Table {
 				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.menuScreen);
 			}
 		});
+		
 	}
-	
-	private String getPlayerType () {
-		return RagnarConfig.playerType == 0 ? "Ragnar" : "Lagertha";
-	}
-
 }

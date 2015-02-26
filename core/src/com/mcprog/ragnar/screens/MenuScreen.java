@@ -2,26 +2,26 @@ package com.mcprog.ragnar.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mcprog.ragnar.Ragnar;
-import com.mcprog.ragnar.gui.SettingsTable;
+import com.mcprog.ragnar.gui.MenuTable;
 import com.mcprog.ragnar.lib.Constants;
 
-public class SettingsScreen extends ScreenDrawable {
+public class MenuScreen extends ScreenDrawable {
 
 	private Stage stage;
-	private SettingsTable settingsTable;
+	private MenuTable menuTable;
 	
-	public SettingsScreen(Ragnar game) {
+	public MenuScreen(Ragnar game) {
 		super(game);
-		settingsTable = new SettingsTable();
-		settingsTable.setFillParent(true);
+		menuTable = new MenuTable();
+		menuTable.setFillParent(true);
 		stage = new Stage();
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
 		
-		stage.addActor(settingsTable);
+		stage.addActor(menuTable);
+		
 		if (Ragnar.debugger.on) {
 			stage.setDebugAll(true);
 		}
@@ -50,7 +50,6 @@ public class SettingsScreen extends ScreenDrawable {
 	@Override
 	public void dispose() {
 		stage.dispose();
-		
 	}
 
 }

@@ -5,8 +5,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.screens.GameScreen;
+import com.mcprog.ragnar.screens.HighscoreScreen;
 import com.mcprog.ragnar.screens.KillScreen;
 import com.mcprog.ragnar.screens.LoadingScreen;
+import com.mcprog.ragnar.screens.MenuScreen;
 import com.mcprog.ragnar.screens.PauseScreen;
 import com.mcprog.ragnar.screens.SettingsScreen;
 import com.mcprog.ragnar.screens.WinScreen;
@@ -20,6 +22,8 @@ public class Ragnar extends Game {
 	public LoadingScreen loadingScreen;
 	public SettingsScreen settingsScreen;
 	public WinScreen winScreen;
+	public MenuScreen menuScreen;
+	public HighscoreScreen highscoreScreen;
 	public static DebugUtility debugger;
 	public static boolean isMobile;
 	
