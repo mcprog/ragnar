@@ -37,7 +37,7 @@ public class CreditsTable extends Table {
 		addCredits("Creator:", "mcprog", innerTable);
 		
 		addCreditsHeader("Resources", innerTable);
-		addCredits("Death Sound:", "brquoon", innerTable);
+		addCredits("Death Sound:", "braqoon", innerTable);
 		addCredits("Tree Textures:", "Reiner \"Tiles\" Prokein", innerTable);
 		addCredits("Font:", "DeNada Industries", innerTable);
 		

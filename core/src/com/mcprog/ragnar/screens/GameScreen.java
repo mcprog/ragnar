@@ -49,6 +49,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private SpriteBatch treeBatch;
 	private OrthographicCamera treeCamera;
 	private Sound arrowHit;
+	private boolean gamePaused;
 	
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);
@@ -73,6 +74,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	
 	@Override
 	public void render(float delta) {
+		if (gamePaused) {
+			return;
+		}
 		super.render(delta);
 		Gdx.gl.glClearColor(.15f, .4f, .15f, 1);//Black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -139,6 +143,16 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		System.out.println("GameScreen resized");
 		super.resize(width, height);
 		stage.getViewport().update(width, height, true);
+	}
+	
+	@Override
+	public void pause() {
+		gamePaused = true;
+	}
+	
+	@Override
+	public void resume() {
+		gamePaused  = false;
 	}
 	
 	private void safelyDestroyBodies () {
