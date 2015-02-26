@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.mcprog.ragnar.Ragnar;
+import com.mcprog.ragnar.gui.buttons.MenuButton;
+import com.mcprog.ragnar.gui.buttons.PlayButton;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
 import com.mcprog.ragnar.lib.RagnarConfig;
@@ -22,8 +24,8 @@ public class KillTable extends Table {
 	private Label deathMsg;
 	private Label score;
 	private Label highscore;
-	private TextButton buttonPlay;
-	private TextButton buttonMenu;
+	private PlayButton playButton;
+	private MenuButton menuButton;
 	private Image deathImg;
 	
 	public KillTable () {
@@ -34,12 +36,11 @@ public class KillTable extends Table {
 		score = new Label("", GuiStyles.normalLabelStyleWhite);
 		highscore = new Label("", GuiStyles.normalLabelStyleWhite);
 		
-		buttonPlay = new TextButton("Play", GuiStyles.largeButtonStyleLight);
-		buttonMenu = new TextButton("Menu", GuiStyles.largeButtonStyleLight);
+		playButton = new PlayButton(GuiStyles.largeButtonStyleLight);
+		menuButton = new MenuButton(GuiStyles.largeButtonStyleLight);
 		
 		deathImg = new Image(Assets.getLoadedTexture(Assets.DEAD_PLAYER_PATH));
 		
-		addFunctionality();
 		
 		add(deathMsg).center().width(800).colspan(2);
 		row();
@@ -49,8 +50,8 @@ public class KillTable extends Table {
 		row();
 		add(deathImg).colspan(2).center().size(deathImg.getWidth() * 8, deathImg.getHeight() * 8);
 		row();
-		add(buttonPlay);
-		add(buttonMenu);
+		add(playButton);
+		add(menuButton);
 	}
 	
 	public void show (String deathMsg, String score, String highscore, int deathType) {
@@ -74,21 +75,6 @@ public class KillTable extends Table {
 		sizeImage(deathImg, deathType);
 	}
 	
-	private void addFunctionality () {
-		buttonPlay.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.gameScreen);
-			}
-		});
-		
-		buttonMenu.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.menuScreen);
-			}
-		});
-	}
 	
 	private void sizeImage (Image img, int deathType) {
 		if (deathType == KillScreen.SHOT) {
@@ -99,13 +85,5 @@ public class KillTable extends Table {
 		}
 	}
 	
-//	private void determineDeathImagePlayerType (String ragnarPath) {
-//		if (RagnarConfig.playerType == 0) {
-//			deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(ragnarPath))));
-//		} 
-//		else if (RagnarConfig.playerType == 1) {
-//			deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(ragnarPath + "-girl"))));
-//		}
-//	}
 	
 }

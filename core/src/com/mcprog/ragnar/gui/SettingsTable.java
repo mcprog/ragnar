@@ -6,15 +6,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mcprog.ragnar.Ragnar;
+import com.mcprog.ragnar.gui.buttons.MenuButton;
+import com.mcprog.ragnar.gui.buttons.PlayButton;
 import com.mcprog.ragnar.lib.RagnarConfig;
 
 public class SettingsTable extends Table {
 	
 	private Label header;
 	private Label playerKey;
-	private TextButton buttonPlay;
-	private TextButton buttonMenu;
 	private TextButton buttonPlayerType;
+	private PlayButton playButton;
+	private MenuButton menuButton;
 	
 	public SettingsTable() {
 		GuiStyles.init();
@@ -22,8 +24,8 @@ public class SettingsTable extends Table {
 		header = new Label("Settings", GuiStyles.headerLabelStyle);
 		playerKey = new Label("Player Type:", GuiStyles.normalLabelStyle);
 		
-		buttonPlay = new TextButton("Play", GuiStyles.largeButtonStyle);
-		buttonMenu = new TextButton("Menu", GuiStyles.largeButtonStyle);
+		playButton = new PlayButton();
+		menuButton = new MenuButton();
 		buttonPlayerType = new TextButton(getPlayerType(), GuiStyles.smallButtonStyle);
 		
 		addFunctionality();
@@ -33,8 +35,8 @@ public class SettingsTable extends Table {
 		add(playerKey).left();
 		add(buttonPlayerType).right().pad(20);
 		row();
-		add(buttonPlay).pad(20);
-		add(buttonMenu).pad(20);
+		add(playButton).pad(20);
+		add(menuButton).pad(20);
 	}
 	
 	private void addFunctionality () {
@@ -49,19 +51,6 @@ public class SettingsTable extends Table {
 					RagnarConfig.updateFile();
 				}
 				buttonPlayerType.setText(getPlayerType());
-			}
-		});
-		
-		buttonPlay.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.gameScreen);
-			}
-		});
-		buttonMenu.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.menuScreen);
 			}
 		});
 	}

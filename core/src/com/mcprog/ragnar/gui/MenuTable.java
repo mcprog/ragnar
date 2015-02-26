@@ -5,10 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mcprog.ragnar.Ragnar;
+import com.mcprog.ragnar.gui.buttons.PlayButton;
 
 public class MenuTable extends Table {
 
-	private TextButton play;
+	private PlayButton playButton;
 	private TextButton settings;
 	private TextButton highscore;
 	private TextButton credits;
@@ -16,29 +17,23 @@ public class MenuTable extends Table {
 	public MenuTable () {
 		GuiStyles.init();
 		
-		play = new TextButton("Play", GuiStyles.largeButtonStyle);
+		playButton = new PlayButton();
 		settings = new TextButton("Settings", GuiStyles.largeButtonStyle);
 		highscore = new TextButton("Highscore", GuiStyles.largeButtonStyle);
 		credits = new TextButton("Credits", GuiStyles.largeButtonStyle);
 		
-		add(play);
+		add(playButton).pad(20);
 		row();
-		add(settings);
+		add(settings).pad(20);
 		row();
-		add(highscore);
+		add(highscore).pad(20);
 		row();
-		add(credits);
+		add(credits).pad(20);
 		
 		addFunctionality();
 	}
 	
 	private void addFunctionality () {
-		play.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.gameScreen);
-			}
-		});
 		settings.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

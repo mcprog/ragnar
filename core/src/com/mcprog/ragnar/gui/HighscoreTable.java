@@ -26,8 +26,6 @@ public class HighscoreTable extends Table {
 		
 		header = new Label("Highscore", GuiStyles.headerLabelStyle);
 		
-		
-		
 		highscoreKey = new Label("Highscore:", GuiStyles.normalLabelStyle);
 		highscoreVal = new Label(Integer.toString(RagnarConfig.highScore), GuiStyles.normalLabelStyle);
 		
