@@ -12,6 +12,7 @@ public class GuiStyles {
 	public static LabelStyle normalLabelStyle;
 	public static LabelStyle headerLabelStyleWhite;
 	public static LabelStyle normalLabelStyleWhite;
+	public static LabelStyle tinyLabelStyle;
 	public static LabelStyle tinyLabelStyleWhite;
 	public static TextButtonStyle largeButtonStyle;
 	public static TextButtonStyle largeButtonStyleLight;
@@ -22,6 +23,7 @@ public class GuiStyles {
 		normalLabelStyle = new LabelStyle(Assets.smallFont, Color.DARK_GRAY);
 		headerLabelStyleWhite = new LabelStyle(Assets.ragnarFont, Color.WHITE);
 		normalLabelStyleWhite = new LabelStyle(Assets.smallFont, Color.WHITE);
+		tinyLabelStyle = new LabelStyle(Assets.tinyFont, Color.DARK_GRAY);
 		tinyLabelStyleWhite = new LabelStyle(Assets.tinyFont, Color.WHITE);
 		
 		largeButtonStyle = makeTextButtonStyle(Assets.scoreFont, Color.DARK_GRAY, Color.LIGHT_GRAY);

@@ -1,10 +1,15 @@
 package com.mcprog.ragnar.gui;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mcprog.ragnar.gui.buttons.MenuButton;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
+import com.mcprog.ragnar.lib.Assets;
 
 public class CreditsTable extends Table {
 	
@@ -25,17 +30,27 @@ public class CreditsTable extends Table {
 		
 		innerTable = new Table();
 		scrollPane = new ScrollPane(innerTable);
+		ScrollPaneStyle scrollPaneStyle = new ScrollPaneStyle();
+		scrollPane.setStyle(scrollPaneStyle);
 		
-		addCredits("Creator", "mcprog", innerTable);
-		innerTable.add(resourcesHeader).colspan(2).pad(10).padTop(20);
-		innerTable.row();
-		addCredits("Death Sound", "brquoon", innerTable);
-		addCredits("Tree Textures", "Reiner \"Tiles\" Prokein", innerTable);
+		addCreditsHeader("Developers", innerTable);
+		addCredits("Creator:", "mcprog", innerTable);
+		
+		addCreditsHeader("Resources", innerTable);
+		addCredits("Death Sound:", "brquoon", innerTable);
+		addCredits("Tree Textures:", "Reiner \"Tiles\" Prokein", innerTable);
 		addCredits("Font:", "DeNada Industries", innerTable);
+		
+		addCreditsHeader("Shout Out", innerTable);
+		addShoutOut("CSWS", innerTable);
+		addShoutOut("History Channel's Vikings", innerTable);
+		addShoutOut("ime990", innerTable);
+		addShoutOut("Kai_Valhalla", innerTable);
+		addShoutOut("Scandinavia", innerTable);
 		
 		add(header).colspan(2);
 		row();
-		add(scrollPane).colspan(2).height(200);
+		add(scrollPane).colspan(2).height(300);
 		row();
 		add(playButton).pad(20);
 		add(menuButton).pad(20);
@@ -47,6 +62,20 @@ public class CreditsTable extends Table {
 		
 		toAddTo.add(labelKey).left();
 		toAddTo.add(labelVal).right().padLeft(20);
+		toAddTo.row();
+	}
+	
+	protected void addShoutOut (String name, Table toAddTo) {
+		Label labelShoutOut = new Label(name, GuiStyles.normalLabelStyle);
+		
+		toAddTo.add(labelShoutOut).colspan(2);
+		toAddTo.row();
+	}
+	
+	protected void addCreditsHeader (String header, Table toAddTo) {
+		Label labelHeader = new Label(header, GuiStyles.normalLabelStyle);
+		
+		toAddTo.add(labelHeader).colspan(2).padTop(40);
 		toAddTo.row();
 	}
 
