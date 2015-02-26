@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mcprog.ragnar.lib.Assets;
+import com.mcprog.ragnar.screens.CreditsScreen;
 import com.mcprog.ragnar.screens.GameScreen;
 import com.mcprog.ragnar.screens.HighscoreScreen;
 import com.mcprog.ragnar.screens.KillScreen;
@@ -24,6 +25,7 @@ public class Ragnar extends Game {
 	public WinScreen winScreen;
 	public MenuScreen menuScreen;
 	public HighscoreScreen highscoreScreen;
+	public CreditsScreen creditsScreen;
 	public static DebugUtility debugger;
 	public static boolean isMobile;
 	

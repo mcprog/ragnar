@@ -46,5 +46,11 @@ public class MenuTable extends Table {
 				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.highscoreScreen);
 			}
 		});
+		credits.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.creditsScreen);
+			}
+		});
 	}
 }

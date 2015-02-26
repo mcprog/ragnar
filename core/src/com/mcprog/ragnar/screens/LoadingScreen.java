@@ -46,6 +46,7 @@ public class LoadingScreen extends ScreenDrawable {
 			game.settingsScreen = new SettingsScreen(game);
 			game.menuScreen = new MenuScreen(game);
 			game.highscoreScreen = new HighscoreScreen(game);
+			game.creditsScreen = new CreditsScreen(game);
 			if (Gdx.input.justTouched()) {
 				game.setScreen(game.menuScreen);
 			}
