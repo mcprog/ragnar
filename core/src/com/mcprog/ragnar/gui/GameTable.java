@@ -23,20 +23,30 @@ public class GameTable extends Table {
 		add(score).left().expandX();
 		add(dishonor).right().expandX();
 		row();
-		add(pause);
 		
 		pad(60);
 		top();
 		
+		pause.addListener(new ClickListener () {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if (Ragnar.gameInstance.gameScreen.isPaused()) {
+					Ragnar.gameInstance.gameScreen.resume();
+				} else {
+					Ragnar.gameInstance.gameScreen.pause();
+				}
+			}
+		});
+		
 	}
 	
+	public void pause () {
+		pause.setText("|>");
+	}
 	
 	public void update (float score, int dishonor) {
 		this.score.setText("Score: " + (int)score);
 		this.dishonor.setText("Dishonor: " + dishonor);
-		if (pause.isPressed()) {
-			Ragnar.gameInstance.gameScreen.pause();
-		}
 	}
 
 }

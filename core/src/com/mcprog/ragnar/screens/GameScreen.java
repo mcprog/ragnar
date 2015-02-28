@@ -1,12 +1,14 @@
 package com.mcprog.ragnar.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -22,9 +24,9 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GameTable;
 import com.mcprog.ragnar.gui.MobileControls;
+import com.mcprog.ragnar.gui.PauseTable;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
-import com.mcprog.ragnar.utility.DebugUtility;
 import com.mcprog.ragnar.world.Arrow;
 import com.mcprog.ragnar.world.ArrowSpawner;
 import com.mcprog.ragnar.world.Bounds;
@@ -38,7 +40,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private Array<Body> bodies;
 	private Array<Body> bodiesToDelete;
 	private Stage stage;
+	private Stage pauseStage;
 	private GameTable table;
+	private PauseTable pauseTable;
 	
 	private float stateTime;
 	private Bounds bounds;
@@ -50,6 +54,8 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private OrthographicCamera treeCamera;
 	private Sound arrowHit;
 	private boolean gamePaused;
+	private InputMultiplexer inputMultiplexer;
+	private ShapeRenderer shapeRenderer;
 	
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);
@@ -70,13 +76,30 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		table = new GameTable();
 		table.setFillParent(true);
 		stage.addActor(table);
+		
+		pauseStage = new Stage();
+		pauseStage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
+		pauseTable = new PauseTable();
+		pauseTable.setFillParent(true);
+		pauseStage.addActor(pauseTable);
+		
+		
+		inputMultiplexer = new InputMultiplexer();
 	}
 	
 	@Override
 	public void render(float delta) {
+		pauseStage.act();
+		pauseStage.draw();
 		if (gamePaused) {
-			return;
+			
+		} else {
+			updateRunning(delta);
 		}
+		
+	}
+	
+	protected void updateRunning (float delta) {
 		super.render(delta);
 		Gdx.gl.glClearColor(.15f, .4f, .15f, 1);//Black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -123,6 +146,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	@Override
 	public void show() {
+		inputMultiplexer.clear();
 		timeInGame = 0;
 		world = new World(Vector2.Zero, true);
 		player = new Player(world, Vector2.Zero, camera);
@@ -132,7 +156,11 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		if (Ragnar.debugger.on) {
 			stage.setDebugAll(true);
 		}
-		Gdx.input.setInputProcessor(player);
+		gamePaused = false;
+		inputMultiplexer.addProcessor(stage);
+		inputMultiplexer.addProcessor(pauseStage);
+		inputMultiplexer.addProcessor(player);
+		Gdx.input.setInputProcessor(inputMultiplexer);
 	}
 	
 	@Override
@@ -143,16 +171,18 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		System.out.println("GameScreen resized");
 		super.resize(width, height);
 		stage.getViewport().update(width, height, true);
+		pauseStage.getViewport().update(width, height, true);
 	}
 	
 	@Override
 	public void pause() {
 		gamePaused = true;
+		pauseTable.pause();
+		System.out.println("gamepaused!!");
 	}
 	
-	@Override
-	public void resume() {
-		gamePaused  = false;
+	public boolean isPaused () {
+		return gamePaused;
 	}
 	
 	private void safelyDestroyBodies () {
