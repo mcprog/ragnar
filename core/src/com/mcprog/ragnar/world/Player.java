@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.RagnarConfig;
 
@@ -256,6 +257,9 @@ public class Player implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		if (!Ragnar.isMobile) {
+			return false;
+		}
 		touch.set(screenX, screenY);
 		touchCoords.set(screenX, screenY, 0);
 		return true;
@@ -263,6 +267,9 @@ public class Player implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		if (!Ragnar.isMobile) {
+			return false;
+		}
 		setToIdle();
 		left = false;
 		right = false;
