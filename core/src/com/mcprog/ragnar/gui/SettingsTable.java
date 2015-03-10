@@ -14,7 +14,9 @@ public class SettingsTable extends Table {
 	
 	private Label header;
 	private Label playerKey;
+	private Label vibrateKey;
 	private TextButton buttonPlayerType;
+	private TextButton buttonVibrate;
 	private PlayButton playButton;
 	private MenuButton menuButton;
 	
@@ -23,10 +25,12 @@ public class SettingsTable extends Table {
 		
 		header = new Label("Settings", GuiStyles.headerLabelStyle);
 		playerKey = new Label("Player Type:", GuiStyles.normalLabelStyle);
+		vibrateKey = new Label("Vibrate:", GuiStyles.normalLabelStyle);
 		
 		playButton = new PlayButton();
 		menuButton = new MenuButton();
 		buttonPlayerType = new TextButton(getPlayerType(), GuiStyles.smallButtonStyle);
+		buttonVibrate = new TextButton(String.valueOf(RagnarConfig.vibrate), GuiStyles.smallButtonStyle);
 		
 		addFunctionality();
 		
@@ -34,6 +38,9 @@ public class SettingsTable extends Table {
 		row();
 		add(playerKey).left();
 		add(buttonPlayerType).right().pad(20);
+		row();
+		add(vibrateKey).left();
+		add(buttonVibrate).right().pad(20);
 		row();
 		add(playButton).pad(20);
 		add(menuButton).pad(20);
@@ -45,12 +52,19 @@ public class SettingsTable extends Table {
 			public void clicked(InputEvent event, float x, float y) {
 				if (RagnarConfig.playerType == 0) {
 					RagnarConfig.playerType = 1;
-					RagnarConfig.updateFile();
 				} else {
 					RagnarConfig.playerType = 0;
-					RagnarConfig.updateFile();
 				}
+				RagnarConfig.updateFile();
 				buttonPlayerType.setText(getPlayerType());
+			}
+		});
+		buttonVibrate.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				RagnarConfig.vibrate = !RagnarConfig.vibrate;
+				RagnarConfig.updateFile();
+				buttonVibrate.setText(String.valueOf(RagnarConfig.vibrate));
 			}
 		});
 	}

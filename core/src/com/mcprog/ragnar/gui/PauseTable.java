@@ -14,43 +14,68 @@ public class PauseTable extends Table {
 	private MenuButton menu;
 	private PlayButton restart;
 	
+	private boolean isPaused;
+	
 	public PauseTable() {
 		GuiStyles.init();
-		resume = new TextButton("Resume", GuiStyles.largeButtonStyleLight);
+		resume = new TextButton("Pause", GuiStyles.largeButtonStyleLight);
 		menu = new MenuButton(GuiStyles.largeButtonStyleLight);
-		menu.setVisible(false);
+		menu.addFunctionality();
 		restart = new PlayButton(GuiStyles.largeButtonStyleLight);
 		restart.setText("Restart");
-		restart.setVisible(false);
 		restart.addFunctionality();
 		
 		add(resume);
-		row();
-		add(menu);
-		row();
-		add(restart);
 		
 		resume.addListener(new ClickListener () {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (Ragnar.gameInstance.gameScreen.isPaused()) {
+				if (isPaused) {
 					resume();
 					
 				} else {
 					pause();
+					
 				}
 			}
 		});
 	}
 	
+	public void render () {
+//		if (isPaused) {
+//			pause();
+//		} else {
+//			resume();
+//		}
+	}
+	
 	public void pause () {
-		menu.setVisible(true);
-		restart.setVisible(true);
+		clear();
+		reset();
+		removeActor(resume);
+		resume.setText("Resume");
+//		add(resume);
+		row();
+		add(menu);
+		row();
+		add(restart);
+		isPaused = true;
 	}
 	
 	public void resume () {
-		menu.setVisible(false);
-		restart.setVisible(false);
-		resume.setText("Resume");
+		clear();
+		reset();
+		removeActor(resume);
+		resume.setText("Pause");
+//		add(resume);
+		isPaused = false;
+	}
+	
+	public boolean isPaused () {
+		return isPaused;
+	}
+	
+	public void setPauseState (boolean state) {
+		isPaused = state;
 	}
 }

@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -27,6 +29,7 @@ import com.mcprog.ragnar.gui.MobileControls;
 import com.mcprog.ragnar.gui.PauseTable;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
+import com.mcprog.ragnar.lib.RagnarConfig;
 import com.mcprog.ragnar.world.Arrow;
 import com.mcprog.ragnar.world.ArrowSpawner;
 import com.mcprog.ragnar.world.Bounds;
@@ -40,9 +43,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private Array<Body> bodies;
 	private Array<Body> bodiesToDelete;
 	private Stage stage;
-	private Stage pauseStage;
+//	private Stage pauseStage;
 	private GameTable table;
-	private PauseTable pauseTable;
+//	private PauseTable pauseTable;
 	
 	private float stateTime;
 	private Bounds bounds;
@@ -56,12 +59,18 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private boolean gamePaused;
 	private InputMultiplexer inputMultiplexer;
 	private ShapeRenderer shapeRenderer;
+	private String actionToResume;
 	
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);
 		
 		bodies = new Array<Body>();
 		
+		if (Ragnar.isMobile) {
+			actionToResume = "Touch";
+		} else {
+			actionToResume = "Click";
+		}
 		
 		bodiesToDelete = new Array<Body>();
 		
@@ -77,11 +86,13 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		pauseStage = new Stage();
-		pauseStage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
-		pauseTable = new PauseTable();
-		pauseTable.setFillParent(true);
-		pauseStage.addActor(pauseTable);
+		shapeRenderer = new ShapeRenderer();
+		
+//		pauseStage = new Stage();
+//		pauseStage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
+//		pauseTable = new PauseTable();
+//		pauseTable.setFillParent(true);
+//		pauseStage.addActor(pauseTable);
 		
 		
 		inputMultiplexer = new InputMultiplexer();
@@ -89,10 +100,42 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	
 	@Override
 	public void render(float delta) {
-		pauseStage.act();
-		pauseStage.draw();
+		if (Gdx.input.justTouched() && !game.isMobile) {
+			if (gamePaused) {
+				gamePaused = false;
+			} else {
+				gamePaused = true;
+			}
+		}
+		else if (!Gdx.input.isTouched() && game.isMobile) {
+//			if (gamePaused) {
+//				gamePaused = false;
+//			} else {
+				gamePaused = true;
+//			}
+		}
+		else if (Gdx.input.isTouched() && game.isMobile) {
+			gamePaused = false;
+		}
+		
 		if (gamePaused) {
-			
+//			Vector3 fixedTouchCoords = Player.touchCoords;
+//			shapeRenderer.setProjectionMatrix(camera.combined);
+//			shapeRenderer.begin(ShapeType.Line);
+//			shapeRenderer.setColor(0, 0, 0, 1f);
+//			shapeRenderer.circle(0, 0, 2, 24);
+//			shapeRenderer.end();
+//			shapeRenderer.begin(ShapeType.Line);
+//			shapeRenderer.setColor(0, 0, 0, 1f);
+//			shapeRenderer.triangle(-.5f, 1, 1f, 0, -.5f, -1);
+//			shapeRenderer.end();
+			Gdx.gl.glClearColor(0, 0, 0, 1);//Black
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			fontBatch.setProjectionMatrix(fontCamera.combined);
+			fontBatch.begin();
+			Assets.ragnarFont.draw(fontBatch, "Game Paused", -fontCamera.viewportWidth / 8f, fontCamera.viewportHeight / 8f);
+			Assets.ragnarFont.draw(fontBatch, actionToResume + " to resume", -fontCamera.viewportWidth / 6f, 0);
+			fontBatch.end();
 		} else {
 			updateRunning(delta);
 		}
@@ -117,7 +160,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 				game.setScreen(game.winScreen);
 			} else {
 				arrowHit.play();
-				if (Ragnar.isMobile) {
+				if (Ragnar.isMobile && RagnarConfig.vibrate) {
 					Gdx.input.vibrate(300);
 				}
 				game.setToKillScreen(KillScreen.STABBED);
@@ -158,7 +201,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		}
 		gamePaused = false;
 		inputMultiplexer.addProcessor(stage);
-		inputMultiplexer.addProcessor(pauseStage);
+//		inputMultiplexer.addProcessor(pauseStage);
 		inputMultiplexer.addProcessor(player);
 		Gdx.input.setInputProcessor(inputMultiplexer);
 	}
@@ -171,15 +214,19 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		System.out.println("GameScreen resized");
 		super.resize(width, height);
 		stage.getViewport().update(width, height, true);
-		pauseStage.getViewport().update(width, height, true);
+//		pauseStage.getViewport().update(width, height, true);
 	}
 	
 	@Override
 	public void pause() {
-		gamePaused = true;
-		pauseTable.pause();
+//		pauseTable.pause();
 		System.out.println("gamepaused!!");
 	}
+	
+//	@Override
+//	public void resume() {
+//		gamePaused = false;
+//	}
 	
 	public boolean isPaused () {
 		return gamePaused;
