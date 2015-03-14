@@ -1,93 +1,97 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640">
-
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="css/ragnar-theme.css" rel="stylesheet">
     <title>Ragnar by mcprog</title>
   </head>
 
   <body>
-    <a id="forkme_banner" href="https://github.com/mcprog/ragnar">View on GitHub</a>
-    <div class="shell">
-
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Ragnar</h1>
-            <h2>Blasted bowmen!</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
-
-      <section id="downloads">
-        <span class="inner">
-          <a href="http://adf.ly/x3aQc" class="zip" target="_blank"><em>download</em>AdFly</a><a href="http://www.mediafire.com/download/abvzsu4xc5cjux5/ragnar_mcprog2.0.0.jar" class="tgz" target="_blank"><em>download</em>MediaFire</a>
-        </span>
-      </section>
-
-
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
-        <h1>
-<a id="welcome-to-the-ragnar-project-site" class="anchor" href="#welcome-to-the-ragnar-project-site" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to the <strong>Ragnar</strong> project site.</h1>
-
-<p><strong>Ragnar</strong> is a 2D single level game about a Viking being attacked by unseen English bowmen. The goal of the game is to survive the longest.</p>
-<a href="http://adf.ly/x3wzb" target="_blank"><button>v2.0.0 .EXE</button></a>
-<h4>Older Downloads</h4>
-<p><a href="http://www.mediafire.com/download/9wc99w3jjcn8644/ragnar_bleutech1.0.3.jar">Download Ragnar 1.0.3 on Mediafire</a></p>
-
-<h3>
-<a id="changelog-for-v-200" class="anchor" href="#changelog-for-v-200" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changelog for v 2.0.0</h3>
-
-<ul>
-<li>Added despawning of offscreen arrows</li>
-<li>Arrows spawn more and more frequently over a 30,000secs (50mins or 8.333hrs) time period. Eventually they spawn with .5secs btween them</li>
-<li>Font updated</li>
-<li>Ported to android (alpha not release)</li>
-<li>More efficinet arrow spawning</li>
-<li>mcprog icons for mac windows and linux</li>
-</ul>
-
-<h3>
-<a id="2.0.0-highscores" class="anchor" href="#2.0.0-highscores" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.0.0 Highscores</h3>
-<ol>
-<li>mcprog - 217</li>
-</ol>
-        
-      </section>
-
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/mcprog">mcprog</a> can be found on <a href="https://github.com/mcprog/ragnar">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
-
-    </div>
-
+       
+      <div class="container">
+            <nav class="navbar navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Project name</a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="index.html">Home</a></li>
+              <li><a href="downloads.html">Downloads</a></li>
+              <li><a href="#mcprog">mcprog</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav> 
+            <div class="jumbotron">
+            <h1>Ragnar for Desktop</h1>
+            <p><a class="btn btn-lg btn-primary" href="files/ragnar_mcprog2.0.0.jar" download="" role="button">
+                <span class="glyphicon glyphicon-download-alt"></span> Download Latest Stable Build
+            </a><a class="btn btn-lg btn-default" href="downloads.html" role="button">
+                <span class="glyphicon glyphicon-link"></span> Other Downloads
+            </a></p>
+            </div>
+            <!-- What? -->
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">What is Ragnar?</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Ragnar is a video game compatible on Windows, Mac, Linux, and Android. The player has just arrived in England, and is being ambushed by English bowmen. Avoid the bowmen's arrows to gain honor until you get enough to reach Valhalla. Score is based off of time in seconds that you survive.</p>
+                </div>
+            </div>
+            <!-- Who? -->
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Who is Ragnar?</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Ragnar Lothbrok is a Viking Legend and the scrouge of England. He led many raids and expeditions to England.</p>
+                </div>
+            </div>
+            <!-- How? -->
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">How is Ragnar made?</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Ragnar is programmed using a programming language called Java. It also uses a collection of tools called a library: <a href="http://libgdx.badlogicgames.com/" target="_blank"><button type="button" class="btn btn-xs btn-link">libGDX</button></a></p>
+                    <p>LibGDX allows the game to only have to be programmed once in Java and be runnable on multiple platforms.</p>
+                </div>
+            </div>
+            <!-- When? -->
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">When did Ragnar start?</h3>
+                </div>
+                <div class="panel-body">
+                    <p>mcprog started programming Ragnar on December 5th 2014. The first beta release of Ragnar was on January 31st 2015. Commit  history of Ragnar can be viewd at the <a href="https://github.com/mcprog/ragnar/graphs/contributors" target="_blank"><button type="button" class="btn btn-xs btn-link">GitHub repository</button></a></p>
+                </div>
+            </div>
+            <!-- Why? -->
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Why did mcprog make Ragnar?</h3>
+                </div>
+                <div class="panel-body">
+                    <p>mcprog has had an interest in Norse mythology since fourth grade. mcprog was inspired by The History Channel's TV show: <a href="http://www.history.com/shows/vikings" target="_blank"><button type="button" class="btn btn-xs btn-link">Vikings</button></a></p>
+                </div>
+            </div>
+      </div>
+      
     
   </body>
 </html>
