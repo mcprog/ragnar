@@ -12,3 +12,18 @@ body {
 .jumbotron .btn {
   margin: 5px;
 }
+
+.platform-tron {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+#platform-desktop {
+    background-image: url("http://emovu.com/Content/Images/developers/platforms.png");   
+}
+
+#platform-mobile {
+    background-image: url(../files/android-bg.jpg);
+    background-size: cover;
+}
