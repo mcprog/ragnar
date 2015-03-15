@@ -45,7 +45,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private Stage stage;
 //	private Stage pauseStage;
 	private GameTable table;
-//	private PauseTable pauseTable;
+	private PauseTable pauseTable;
 	
 	private float stateTime;
 	private Bounds bounds;
@@ -67,7 +67,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		bodies = new Array<Body>();
 		
 		if (Ragnar.isMobile) {
-			actionToResume = "Touch";
+			actionToResume = "Hold";
 		} else {
 			actionToResume = "Click";
 		}
@@ -90,9 +90,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		
 //		pauseStage = new Stage();
 //		pauseStage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
-//		pauseTable = new PauseTable();
-//		pauseTable.setFillParent(true);
-//		pauseStage.addActor(pauseTable);
+		pauseTable = new PauseTable();
+		pauseTable.setFillParent(true);
+		stage.addActor(pauseTable);
 		
 		
 		inputMultiplexer = new InputMultiplexer();
@@ -100,52 +100,55 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	
 	@Override
 	public void render(float delta) {
-		if (Gdx.input.justTouched() && !game.isMobile) {
-			if (gamePaused) {
-				gamePaused = false;
-			} else {
-				gamePaused = true;
-			}
-		}
-		else if (!Gdx.input.isTouched() && game.isMobile) {
+		super.render(delta);
+		Gdx.gl.glClearColor(.15f, .4f, .15f, 1);//Black
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.setProjectionMatrix(treeCamera.combined);
+		batch.begin();
+		batch.draw(Assets.treeLeft, -treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
+		batch.draw(Assets.treeLeft, treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
+		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, treeCamera.viewportHeight / 2 - 16);
+		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, -treeCamera.viewportHeight / 2 - 16);
+		batch.end();
+//		if (Gdx.input.justTouched() && !game.isMobile) {
 //			if (gamePaused) {
 //				gamePaused = false;
 //			} else {
-				gamePaused = true;
+//				gamePaused = true;
 //			}
-		}
-		else if (Gdx.input.isTouched() && game.isMobile) {
-			gamePaused = false;
-		}
+//		}
+//		else if (!Gdx.input.isTouched() && game.isMobile) {
+////			if (gamePaused) {
+////				gamePaused = false;
+////			} else {
+//				gamePaused = true;
+////			}
+//		}
+//		else if (Gdx.input.isTouched() && game.isMobile) {
+//			gamePaused = false;
+//		}
+		gamePaused = pauseTable.isPaused();
 		
 		if (gamePaused) {
-//			Vector3 fixedTouchCoords = Player.touchCoords;
-//			shapeRenderer.setProjectionMatrix(camera.combined);
-//			shapeRenderer.begin(ShapeType.Line);
-//			shapeRenderer.setColor(0, 0, 0, 1f);
-//			shapeRenderer.circle(0, 0, 2, 24);
-//			shapeRenderer.end();
-//			shapeRenderer.begin(ShapeType.Line);
-//			shapeRenderer.setColor(0, 0, 0, 1f);
-//			shapeRenderer.triangle(-.5f, 1, 1f, 0, -.5f, -1);
-//			shapeRenderer.end();
-			Gdx.gl.glClearColor(0, 0, 0, 1);//Black
-			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-			fontBatch.setProjectionMatrix(fontCamera.combined);
-			fontBatch.begin();
-			Assets.ragnarFont.draw(fontBatch, "Game Paused", -fontCamera.viewportWidth / 8f, fontCamera.viewportHeight / 8f);
-			Assets.ragnarFont.draw(fontBatch, actionToResume + " to resume", -fontCamera.viewportWidth / 6f, 0);
-			fontBatch.end();
+//			Gdx.gl.glClearColor(0, 0, 0, 1);//Black
+//			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//			fontBatch.setProjectionMatrix(fontCamera.combined);
+//			fontBatch.begin();
+//			Assets.ragnarFont.draw(fontBatch, "Game Paused", -fontCamera.viewportWidth / 8f, fontCamera.viewportHeight / 8f);
+//			Assets.ragnarFont.draw(fontBatch, actionToResume + " to resume", -fontCamera.viewportWidth / 6f, 0);
+//			fontBatch.end();
+			pauseTable.textToResume();
+			stage.act(delta);
+			stage.draw();
 		} else {
+			pauseTable.textToPause();
 			updateRunning(delta);
 		}
 		
 	}
 	
 	protected void updateRunning (float delta) {
-		super.render(delta);
-		Gdx.gl.glClearColor(.15f, .4f, .15f, 1);//Black
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		timeInGame += delta;
 		world.step(1/60f, 8, 3);
 		safelyDestroyBodies();
@@ -173,13 +176,13 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		stage.draw();
 		player.draw(stateTime, batch);
 		Arrow.drawArrows(batch, bodies);
-		batch.setProjectionMatrix(treeCamera.combined);
-		batch.begin();
-		batch.draw(Assets.treeLeft, -treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
-		batch.draw(Assets.treeLeft, treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
-		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, treeCamera.viewportHeight / 2 - 16);
-		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, -treeCamera.viewportHeight / 2 - 16);
-		batch.end();
+//		batch.setProjectionMatrix(treeCamera.combined);
+//		batch.begin();
+//		batch.draw(Assets.treeLeft, -treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
+//		batch.draw(Assets.treeLeft, treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
+//		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, treeCamera.viewportHeight / 2 - 16);
+//		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, -treeCamera.viewportHeight / 2 - 16);
+//		batch.end();
 		drawText(fontBatch);
 		Ragnar.debugger.addDebug("FPS", Gdx.graphics.getFramesPerSecond());
 		Ragnar.debugger.addDebug("Control Angle", (int) (MathUtils.radiansToDegrees * player.dragAngle));
@@ -219,8 +222,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	
 	@Override
 	public void pause() {
-//		pauseTable.pause();
-		System.out.println("gamepaused!!");
+		gamePaused = true;
 	}
 	
 //	@Override
