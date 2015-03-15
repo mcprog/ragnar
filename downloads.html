@@ -53,7 +53,7 @@
                             </a>
                         </p>
                         <p>
-                            <a class="btn btn-lg btn-default" href="downloads.html" role="button">
+                            <a id="more-desktop" class="btn btn-lg btn-default" href="#desktop-details" role="button" data-toggle="tab">
                                 <span class="glyphicon glyphicon-link"></span> Other Downloads
                             </a>
                         </p>
@@ -69,10 +69,24 @@
                             </a>
                         </p>
                         <p>
-                            <a class="btn btn-lg btn-default" href="downloads.html" role="button">
+                            <a id="more-mobile" class="btn btn-lg btn-default" href="#mobile-details" role="button" data-toggle="tab">
                                 <span class="glyphicon glyphicon-link"></span> Other Downloads
                             </a>
                         </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tabbable">
+                <ul class="nav nav-pills" role="tablist">
+                    <li id="desktop-pill" class="platform-pill" role="presentation"><a href="#desktop-details" data-toggle="tab">Desktop</a></li>
+                    <li id="mobile-pill" class="platform-pill" role="presentation"><a href="#mobile-details" data-toggle="tab">Mobile</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="desktop-details" class="tab-pane fade">
+                        <p>desktop</p>
+                    </div>
+                    <div id="mobile-details" class="tab-pane fade">
+                        <p>mobile</p>
                     </div>
                 </div>
             </div>
@@ -83,5 +97,6 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/ragnar-downloads.js"></script>
     </body>
 </html>
