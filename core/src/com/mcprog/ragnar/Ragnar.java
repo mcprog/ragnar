@@ -10,7 +10,6 @@ import com.mcprog.ragnar.screens.HighscoreScreen;
 import com.mcprog.ragnar.screens.KillScreen;
 import com.mcprog.ragnar.screens.LoadingScreen;
 import com.mcprog.ragnar.screens.MenuScreen;
-import com.mcprog.ragnar.screens.PauseScreen;
 import com.mcprog.ragnar.screens.SettingsScreen;
 import com.mcprog.ragnar.screens.WinScreen;
 import com.mcprog.ragnar.utility.DebugUtility;
@@ -19,7 +18,6 @@ public class Ragnar extends Game {
 	
 	public GameScreen gameScreen;
 	public KillScreen killScreen;
-	public PauseScreen pauseScreen;
 	public LoadingScreen loadingScreen;
 	public SettingsScreen settingsScreen;
 	public WinScreen winScreen;

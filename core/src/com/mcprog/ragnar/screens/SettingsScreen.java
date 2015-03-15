@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mcprog.ragnar.Ragnar;
-import com.mcprog.ragnar.gui.SettingsTable;
+import com.mcprog.ragnar.gui.tables.SettingsTable;
 import com.mcprog.ragnar.lib.Constants;
 
 public class SettingsScreen extends ScreenDrawable {
@@ -17,7 +17,6 @@ public class SettingsScreen extends ScreenDrawable {
 	public SettingsScreen(Ragnar game) {
 		super(game);
 		settingsTable = new SettingsTable();
-		settingsTable.setFillParent(true);
 		stage = new Stage();
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
 		

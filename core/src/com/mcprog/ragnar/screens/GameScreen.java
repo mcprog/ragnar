@@ -24,9 +24,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mcprog.ragnar.Ragnar;
-import com.mcprog.ragnar.gui.GameTable;
 import com.mcprog.ragnar.gui.MobileControls;
-import com.mcprog.ragnar.gui.PauseTable;
+import com.mcprog.ragnar.gui.tables.GameTable;
+import com.mcprog.ragnar.gui.tables.PauseTable;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
 import com.mcprog.ragnar.lib.RagnarConfig;
@@ -83,7 +83,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		stage = new Stage();
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
 		table = new GameTable();
-		table.setFillParent(true);
 		stage.addActor(table);
 		
 		shapeRenderer = new ShapeRenderer();
@@ -91,7 +90,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 //		pauseStage = new Stage();
 //		pauseStage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
 		pauseTable = new PauseTable();
-		pauseTable.setFillParent(true);
 		stage.addActor(pauseTable);
 		
 		
@@ -101,42 +99,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		Gdx.gl.glClearColor(.15f, .4f, .15f, 1);//Black
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.setProjectionMatrix(treeCamera.combined);
-		batch.begin();
-		batch.draw(Assets.treeLeft, -treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
-		batch.draw(Assets.treeLeft, treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
-		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, treeCamera.viewportHeight / 2 - 16);
-		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, -treeCamera.viewportHeight / 2 - 16);
-		batch.end();
-//		if (Gdx.input.justTouched() && !game.isMobile) {
-//			if (gamePaused) {
-//				gamePaused = false;
-//			} else {
-//				gamePaused = true;
-//			}
-//		}
-//		else if (!Gdx.input.isTouched() && game.isMobile) {
-////			if (gamePaused) {
-////				gamePaused = false;
-////			} else {
-//				gamePaused = true;
-////			}
-//		}
-//		else if (Gdx.input.isTouched() && game.isMobile) {
-//			gamePaused = false;
-//		}
+		updateAlways(delta);
 		gamePaused = pauseTable.isPaused();
 		
 		if (gamePaused) {
-//			Gdx.gl.glClearColor(0, 0, 0, 1);//Black
-//			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//			fontBatch.setProjectionMatrix(fontCamera.combined);
-//			fontBatch.begin();
-//			Assets.ragnarFont.draw(fontBatch, "Game Paused", -fontCamera.viewportWidth / 8f, fontCamera.viewportHeight / 8f);
-//			Assets.ragnarFont.draw(fontBatch, actionToResume + " to resume", -fontCamera.viewportWidth / 6f, 0);
-//			fontBatch.end();
 			pauseTable.textToResume();
 			stage.act(delta);
 			stage.draw();
@@ -147,28 +113,26 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		
 	}
 	
+	protected void updateAlways (float delta) {
+		Gdx.gl.glClearColor(.15f, .4f, .15f, 1);//Black
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.setProjectionMatrix(treeCamera.combined);
+		batch.begin();
+		batch.draw(Assets.treeLeft, -treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
+		batch.draw(Assets.treeLeft, treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
+		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, treeCamera.viewportHeight / 2 - 16);
+		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, -treeCamera.viewportHeight / 2 - 16);
+		batch.end();
+	}
+	
 	protected void updateRunning (float delta) {
-		
 		timeInGame += delta;
+		stateTime += delta;
 		world.step(1/60f, 8, 3);
 		safelyDestroyBodies();
 		world.getBodies(bodies);
-		stateTime += delta;
 		player.update(delta);
-		if (player.getBody().getWorldCenter().x - player.getHalfWidth() < -camera.viewportWidth / 2 
-				|| player.getBody().getWorldCenter().x + player.getHalfWidth() > camera.viewportWidth / 2 
-				|| player.getBody().getWorldCenter().y + player.getHalfHeight() > camera.viewportHeight / 2 
-				|| player.getBody().getWorldCenter().y - player.getHalfHeight() < -camera.viewportHeight / 2) {
-			if (spawner.getWin()) {
-				game.setScreen(game.winScreen);
-			} else {
-				arrowHit.play();
-				if (Ragnar.isMobile && RagnarConfig.vibrate) {
-					Gdx.input.vibrate(300);
-				}
-				game.setToKillScreen(KillScreen.STABBED);
-			}
-		}
+		handleBarrierDeath();
 		spawner.spawn(delta);
 		batch.setProjectionMatrix(camera.combined);
 		table.update(timeInGame, spawner.getArrowsLeft());
@@ -176,13 +140,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		stage.draw();
 		player.draw(stateTime, batch);
 		Arrow.drawArrows(batch, bodies);
-//		batch.setProjectionMatrix(treeCamera.combined);
-//		batch.begin();
-//		batch.draw(Assets.treeLeft, -treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
-//		batch.draw(Assets.treeLeft, treeCamera.viewportWidth / 2 - 16, -treeCamera.viewportHeight / 2);
-//		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, treeCamera.viewportHeight / 2 - 16);
-//		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, -treeCamera.viewportHeight / 2 - 16);
-//		batch.end();
 		drawText(fontBatch);
 		Ragnar.debugger.addDebug("FPS", Gdx.graphics.getFramesPerSecond());
 		Ragnar.debugger.addDebug("Control Angle", (int) (MathUtils.radiansToDegrees * player.dragAngle));
@@ -204,7 +161,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		}
 		gamePaused = false;
 		inputMultiplexer.addProcessor(stage);
-//		inputMultiplexer.addProcessor(pauseStage);
 		inputMultiplexer.addProcessor(player);
 		Gdx.input.setInputProcessor(inputMultiplexer);
 	}
@@ -217,7 +173,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		System.out.println("GameScreen resized");
 		super.resize(width, height);
 		stage.getViewport().update(width, height, true);
-//		pauseStage.getViewport().update(width, height, true);
 	}
 	
 	@Override
@@ -225,10 +180,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		gamePaused = true;
 	}
 	
-//	@Override
-//	public void resume() {
-//		gamePaused = false;
-//	}
+	@Override
+	public void resume() {
+		gamePaused = true;
+	}
 	
 	public boolean isPaused () {
 		return gamePaused;
@@ -245,6 +200,24 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 				if (!i.isActive()) {
 					world.destroyBody(i);
 				}
+			}
+		}
+	}
+	
+	private void handleBarrierDeath () {
+		if (player.getBody().getWorldCenter().x - player.getHalfWidth() < -camera.viewportWidth / 2 
+				|| player.getBody().getWorldCenter().x + player.getHalfWidth() > camera.viewportWidth / 2 
+				|| player.getBody().getWorldCenter().y + player.getHalfHeight() > camera.viewportHeight / 2 
+				|| player.getBody().getWorldCenter().y - player.getHalfHeight() < -camera.viewportHeight / 2) {
+			if (spawner.getWin()) {
+				game.setScreen(game.winScreen);
+			} else {
+				//TODO settings below
+				arrowHit.play();
+				if (Ragnar.isMobile && RagnarConfig.vibrate) {
+					Gdx.input.vibrate(300);
+				}
+				game.setToKillScreen(KillScreen.STABBED);
 			}
 		}
 	}

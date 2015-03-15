@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mcprog.ragnar.Ragnar;
-import com.mcprog.ragnar.gui.CreditsTable;
 import com.mcprog.ragnar.gui.GuiStyles;
+import com.mcprog.ragnar.gui.tables.CreditsTable;
 import com.mcprog.ragnar.lib.Constants;
 
 public class CreditsScreen extends ScreenDrawable {
@@ -18,7 +18,6 @@ public class CreditsScreen extends ScreenDrawable {
 		super(game);
 		GuiStyles.init();
 		creditsTable = new CreditsTable();
-		creditsTable.setFillParent(true);
 		stage = new Stage();
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
 		

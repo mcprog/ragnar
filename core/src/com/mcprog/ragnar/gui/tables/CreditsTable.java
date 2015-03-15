@@ -1,4 +1,4 @@
-package com.mcprog.ragnar.gui;
+package com.mcprog.ragnar.gui.tables;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -7,11 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.mcprog.ragnar.gui.GuiStyles;
 import com.mcprog.ragnar.gui.buttons.MenuButton;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
 import com.mcprog.ragnar.lib.Assets;
 
-public class CreditsTable extends Table {
+public class CreditsTable extends RagnarTable {
 	
 	private Label header;
 	private ScrollPane scrollPane;

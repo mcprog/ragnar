@@ -14,11 +14,16 @@ public class GuiStyles {
 	public static LabelStyle normalLabelStyleWhite;
 	public static LabelStyle tinyLabelStyle;
 	public static LabelStyle tinyLabelStyleWhite;
+	
 	public static TextButtonStyle largeButtonStyle;
 	public static TextButtonStyle largeButtonStyleLight;
 	public static TextButtonStyle smallButtonStyle;
+	public static TextButtonStyle tinyButtonStyleLight;
 	
 	public static void init () {
+		if (headerLabelStyle != null) {
+			return;
+		}
 		headerLabelStyle = new LabelStyle(Assets.ragnarFont, Color.DARK_GRAY);
 		normalLabelStyle = new LabelStyle(Assets.smallFont, Color.DARK_GRAY);
 		headerLabelStyleWhite = new LabelStyle(Assets.ragnarFont, Color.WHITE);
@@ -29,6 +34,7 @@ public class GuiStyles {
 		largeButtonStyle = makeTextButtonStyle(Assets.scoreFont, Color.DARK_GRAY, Color.LIGHT_GRAY);
 		largeButtonStyleLight = makeTextButtonStyle(Assets.scoreFont, Color.LIGHT_GRAY, Color.WHITE);
 		smallButtonStyle = makeTextButtonStyle(Assets.smallFont, Color.DARK_GRAY, Color.LIGHT_GRAY);
+		tinyButtonStyleLight = makeTextButtonStyle(Assets.tinyFont, Color.LIGHT_GRAY, Color.WHITE);
 	}
 	
 	private static TextButtonStyle makeTextButtonStyle (BitmapFont font, Color color, Color active) {

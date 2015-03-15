@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
-import com.mcprog.ragnar.gui.KillTable;
+import com.mcprog.ragnar.gui.tables.KillTable;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
 import com.mcprog.ragnar.lib.RagnarConfig;
@@ -35,7 +35,6 @@ public class KillScreen extends ScreenDrawable {
 		stage = new Stage();
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
 		killTable = new KillTable();
-		killTable.setFillParent(true);
 		if (Ragnar.isMobile) {
 			deathMsgSuffix = "\nTap screen to retry\n";
 		} else {

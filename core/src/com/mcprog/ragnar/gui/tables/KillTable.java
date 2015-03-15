@@ -1,4 +1,4 @@
-package com.mcprog.ragnar.gui;
+package com.mcprog.ragnar.gui.tables;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.mcprog.ragnar.Ragnar;
+import com.mcprog.ragnar.gui.GuiStyles;
 import com.mcprog.ragnar.gui.buttons.MenuButton;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
 import com.mcprog.ragnar.lib.Assets;
@@ -19,7 +20,7 @@ import com.mcprog.ragnar.lib.RagnarConfig;
 import com.mcprog.ragnar.screens.KillScreen;
 
 
-public class KillTable extends Table {
+public class KillTable extends RagnarTable {
 
 	private Label deathMsg;
 	private Label score;

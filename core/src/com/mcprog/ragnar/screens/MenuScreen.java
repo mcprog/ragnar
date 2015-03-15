@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mcprog.ragnar.Ragnar;
-import com.mcprog.ragnar.gui.MenuTable;
+import com.mcprog.ragnar.gui.tables.MenuTable;
 import com.mcprog.ragnar.lib.Constants;
 
 public class MenuScreen extends ScreenDrawable {
@@ -16,7 +16,6 @@ public class MenuScreen extends ScreenDrawable {
 	public MenuScreen(Ragnar game) {
 		super(game);
 		menuTable = new MenuTable();
-		menuTable.setFillParent(true);
 		stage = new Stage();
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
 		
