@@ -9,6 +9,10 @@ body {
     border-bottom: 1px solid #e5e5e5;
 }
 
+.jumbotron-content {
+   background-color: blanchedalmond;
+}
+
 .jumbotron .btn {
   margin: 5px;
 }
@@ -16,14 +20,20 @@ body {
 .platform-tron {
     background-repeat: no-repeat;
     background-position: center;
-    background-size: contain;
+    
+    
 }
 
 #platform-desktop {
     background-image: url("http://emovu.com/Content/Images/developers/platforms.png");   
+    background-size: contain;
 }
 
 #platform-mobile {
     background-image: url(../files/android-bg.jpg);
     background-size: cover;
+}
+
+.table-margined {
+    margin-top: 5px;   
 }

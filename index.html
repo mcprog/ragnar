@@ -31,7 +31,7 @@
                     </div>
                     <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li class="active"><a href="index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li><a href="downloads.html">Downloads</a></li>
                         <li><a href="#mcprog">mcprog</a></li>
                     </ul>
@@ -43,9 +43,9 @@
                 <strong>Patience!</strong> As mcprog is rewriting this webpage, some funtionality is not yet implemented.
             </div>
             <!-- Jumbotron -->
-            <div class="jumbotron">
+            <div class="jumbotron platform-tron" id="platform-desktop">
                 <h1>Ragnar for Desktop</h1>
-                <p><a class="btn btn-lg btn-primary" href="files/ragnar_mcprog2.0.0.jar" download="" role="button">
+                <p><a class="btn btn-lg btn-primary" href="files/releases/ragnar_mcprog2.0.0.jar" download="" role="button">
                     <span class="glyphicon glyphicon-download-alt"></span> Download Latest Stable Build
                 </a><a class="btn btn-lg btn-default" href="downloads.html" role="button">
                     <span class="glyphicon glyphicon-link"></span> Other Downloads
@@ -56,8 +56,11 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">What is Ragnar?</h3>
                 </div>
-                <div class="panel-body">
-                    <p>Ragnar is a video game compatible on Windows, Mac, Linux, and Android. The player has just arrived in England, and is being ambushed by English bowmen. Avoid the bowmen's arrows to gain honor until you get enough to reach Valhalla. Score is based off of time in seconds that you survive.</p>
+                <div class="panel-body row">
+                    <p class="col-md-10">Ragnar is a video game compatible on Windows, Mac, Linux, and Android. The player has just arrived in England, and is being ambushed by English bowmen. Avoid the bowmen's arrows to gain honor until you get enough to reach Valhalla. Score is based off of time in seconds that you survive.</p>
+                    <div class="col-md-2">
+                        <img src="files/icon.png" class="img-thumbnail pull-right" width="96" height="96"/>
+                    </div>
                 </div>
             </div>
             <!-- Who? -->
@@ -65,8 +68,11 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Who is Ragnar?</h3>
                 </div>
-                <div class="panel-body">
-                    <p>Ragnar Lothbrok is a Viking Legend and the scrouge of England. He led many raids and expeditions to England.</p>
+                <div class="panel-body row">
+                    <div class="col-md-2">
+                    <img src="files/ragnar-lodbrok.png" class="img-thumbnail"/>
+                    </div>
+                    <p class="col-md-10">Ragnar Lothbrok is a Viking Legend and the scrouge of England. He led many raids and expeditions to England.</p>
                 </div>
             </div>
             <!-- How? -->
@@ -74,9 +80,15 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">How is Ragnar made?</h3>
                 </div>
-                <div class="panel-body">
-                    <p>Ragnar is programmed using a programming language called Java. It also uses a collection of tools called a library: <a href="http://libgdx.badlogicgames.com/" target="_blank"><button type="button" class="btn btn-xs btn-link">libGDX</button></a></p>
-                    <p>LibGDX allows the game to only have to be programmed once in Java and be runnable on multiple platforms.</p>
+                <div class="panel-body row">
+                    <div class="col-md-8">
+                        <p>Ragnar is programmed using a programming language called Java. It also uses a collection of tools called a library: <a href="http://libgdx.badlogicgames.com/" target="_blank"><button type="button" class="btn btn-xs btn-link">libGDX</button></a></p>
+                        <p>LibGDX allows the game to only have to be programmed once in Java and be runnable on multiple platforms.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="files/libgdx-logo.png" class="img-thumbnail"/>
+                    </div>
+                    
                 </div>
             </div>
             <!-- When? -->
@@ -93,8 +105,11 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Why did mcprog make Ragnar?</h3>
                 </div>
-                <div class="panel-body">
-                    <p>mcprog has had an interest in Norse mythology since fourth grade. mcprog was inspired by The History Channel's TV show: <a href="http://www.history.com/shows/vikings" target="_blank"><button type="button" class="btn btn-xs btn-link">Vikings</button></a></p>
+                <div class="panel-body row">
+                    <p class="col-md-9">mcprog has had an interest in Norse mythology since fourth grade. mcprog was inspired by The History Channel's TV show: <a href="http://www.history.com/shows/vikings" target="_blank"><button type="button" class="btn btn-xs btn-link">Vikings</button></a></p>
+                    <div class="col-md-3">
+                        <img src="files/travis-fimmel-ragnar-lodbrok.jpg" class="img-thumbnail pull-right" width="200"/>
+                    </div>
                 </div>
             </div>
       </div>
