@@ -10,12 +10,14 @@ public class RagnarConfig {
 	public static int playerType;
 	public static int highScore;
 	public static boolean vibrate;
+	public static boolean sound;
 	
 	public static void init () {
 		preferences = Gdx.app.getPreferences("ragnar-preferences");
 		playerType = preferences.getInteger("player-type", 0);
 		highScore = preferences.getInteger("highscore", 0);
 		vibrate = preferences.getBoolean("vibrate", true);
+		sound = preferences.getBoolean("sound", true);
 //		preferences.putInteger("highscore", 0);
 //		preferences.flush();
 	}
@@ -24,6 +26,7 @@ public class RagnarConfig {
 		preferences.putInteger("player-type", playerType);
 		preferences.putInteger("highscore", highScore);
 		preferences.putBoolean("vibrate", vibrate);
+		preferences.putBoolean("sound", sound);
 		preferences.flush();
 	}
 }

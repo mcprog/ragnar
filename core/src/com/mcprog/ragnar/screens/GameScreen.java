@@ -208,7 +208,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 				game.setScreen(game.winScreen);
 			} else {
 				//TODO settings below
-				arrowHit.play();
+				if (RagnarConfig.sound) {
+					
+					arrowHit.play();
+				}
 				if (Ragnar.isMobile && RagnarConfig.vibrate) {
 					Gdx.input.vibrate(300);
 				}
@@ -233,7 +236,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 				if (spawner.getWin()) {
 					game.setScreen(game.winScreen);
 				} else {
-					arrowHit.play();
+					if (RagnarConfig.sound) {
+						
+						arrowHit.play();
+					}
 					if (Ragnar.isMobile) {
 						Gdx.input.vibrate(300);
 					}
