@@ -21,6 +21,7 @@ public class SettingsTable extends RagnarTable {
 	private TextButton buttonSound;
 	private PlayButton playButton;
 	private MenuButton menuButton;
+    private TextButton highscores;
 	
 	public SettingsTable() {
 		GuiStyles.init();
@@ -35,6 +36,7 @@ public class SettingsTable extends RagnarTable {
 		buttonPlayerType = new TextButton(getPlayerType(), GuiStyles.smallButtonStyle);
 		buttonVibrate = new TextButton(String.valueOf(RagnarConfig.vibrate), GuiStyles.smallButtonStyle);
 		buttonSound = new TextButton(String.valueOf(RagnarConfig.sound), GuiStyles.smallButtonStyle);
+        highscores = new TextButton("Leaderboards", GuiStyles.smallButtonStyle);
 		
 		addFunctionality();
 		
@@ -53,6 +55,10 @@ public class SettingsTable extends RagnarTable {
 		row();
 		add(playButton).pad(20);
 		add(menuButton).pad(20);
+        if (Ragnar.isMobile) {
+            row();
+            add(highscores).colspan(2);
+        }
 	}
 	
 	private void addFunctionality () {
@@ -84,6 +90,12 @@ public class SettingsTable extends RagnarTable {
 				buttonSound.setText(String.valueOf(RagnarConfig.sound));
 			}
 		});
+        highscores.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Ragnar.gameInstance.gpgs.getLeaderBoard();
+            }
+        });
 	}
 	
 	private String getPlayerType () {
