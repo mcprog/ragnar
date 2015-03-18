@@ -3,6 +3,7 @@ package com.mcprog.ragnar;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.mcprog.ragnar.gameservices.IGooglePlayGameServices;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.screens.CreditsScreen;
 import com.mcprog.ragnar.screens.GameScreen;
@@ -24,10 +25,21 @@ public class Ragnar extends Game {
 	public MenuScreen menuScreen;
 	public HighscoreScreen highscoreScreen;
 	public CreditsScreen creditsScreen;
+	
 	public static DebugUtility debugger;
 	public static boolean isMobile;
 	
+	public IGooglePlayGameServices gpgs;
+	
 	public static Ragnar gameInstance;
+	
+	public Ragnar(IGooglePlayGameServices gpgs) {
+		this.gpgs = gpgs;
+	}
+	
+	public Ragnar() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	@Override
 	public void create () {
