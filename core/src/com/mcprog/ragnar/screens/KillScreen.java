@@ -47,10 +47,11 @@ public class KillScreen extends ScreenDrawable {
 	public void show() {
 		newTouchUp = false;
 		Gdx.input.setInputProcessor(stage);
-		Gdx.input.setCatchBackKey(true);
+		//Gdx.input.setCatchBackKey(true);
+        game.gpgs.submitHighscore((int) game.gameScreen.timeInGame);
 		if (RagnarConfig.highScore < (int) (game.gameScreen.timeInGame)) {
 			RagnarConfig.highScore = (int) (game.gameScreen.timeInGame);
-            game.gpgs.submitHighscore((int) game.gameScreen.timeInGame);
+            game.gpgs.submitHighscore(RagnarConfig.highScore);
 		}
 		RagnarConfig.updateFile();
 		killTable.show(assembleMessage(), "You lasted " + (int)(game.gameScreen.timeInGame) + " seconds", "Highscore: " + RagnarConfig.highScore, deathType);

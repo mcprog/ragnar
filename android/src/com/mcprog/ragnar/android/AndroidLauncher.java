@@ -59,18 +59,21 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 
 	@Override
 	public void signIn() {
-		try {
-			runOnUiThread(new Runnable() {
-				
-				@Override
-				public void run() {
-					gameHelper.beginUserInitiatedSignIn();
-					
-				}
-			});
-		} catch (final Exception ex) {
-			
-		}
+        if (!gameHelper.isConnecting()) {
+            try {
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        gameHelper.beginUserInitiatedSignIn();
+
+                    }
+                });
+            } catch (final Exception ex) {
+
+            }
+        }
+
 		
 	}
 
@@ -102,7 +105,7 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 		if (isSignedIn()) {
 			Games.Leaderboards.submitScore(gameHelper.getApiClient(), getString(R.string.leaderboard_id), score);
 		} else {
-//			signIn();
+			signIn();
 		}
 		
 	}
@@ -113,7 +116,7 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 			
 			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
 		} else {
-//			signIn();
+			signIn();
 		}
 		
 	}
