@@ -1,6 +1,9 @@
 package com.mcprog.ragnar.android;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import com.badlogic.gdx.Game;
@@ -59,7 +62,11 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 
 	@Override
 	public void signIn() {
-        if (!gameHelper.isConnecting()) {
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if (isConnected) {
             try {
                 runOnUiThread(new Runnable() {
 
@@ -102,7 +109,8 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 
 	@Override
 	public void submitHighscore(int score) {
-		if (isSignedIn()) {
+
+        if (isSignedIn()) {
 			Games.Leaderboards.submitScore(gameHelper.getApiClient(), getString(R.string.leaderboard_id), score);
 		} else {
 			signIn();
@@ -121,7 +129,35 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 		
 	}
 
-	@Override
+    @Override
+    public void unlockAchievement(int achievement) {
+        if (isSignedIn()) {
+            switch (achievement) {
+                case 1:
+                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_ambushed_id));
+                    break;
+                case 2:
+                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_shot_id));
+                    break;
+                case 3:
+                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_ambushed_id));
+                    break;
+                case 4:
+                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_ambushed_id));
+                    break;
+                case 5:
+                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_ambushed_id));
+                    break;
+               default:
+                   break;
+            }
+
+        } else {
+            signIn();
+        }
+    }
+
+    @Override
 	public void onSignInFailed() {
 		// TODO Auto-generated method stub
 		

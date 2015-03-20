@@ -17,11 +17,12 @@ public class ArrowSpawner {
 	private int arrowsLeft;
 	private float spawnTimer;
 	private float spawnInterval;
+    public int honorLimit;
 	
 	public ArrowSpawner(World world, Player player) {
 		this.world = world;
 		this.player = player;
-		arrowsLeft = 300;
+        honorLimit = 7;
 		spawnInterval = 1;
 		Ragnar.debugger.setTimer(getClass().getSimpleName(), 0);
 	}
@@ -34,8 +35,8 @@ public class ArrowSpawner {
 			radius = Math.sqrt(Math.pow(Gdx.graphics.getHeight() / 16, 2) + Math.pow(Gdx.graphics.getWidth() / 16, 2));
 			arrow = new Arrow(world, new Vector2((float)(radius * Math.cos(angle) + player.getBody().getPosition().x), (float)(radius * Math.sin(angle)) + player.getBody().getPosition().y), (float) angle);
 			
-			if (arrowsLeft > 0) {
-				--arrowsLeft;
+			if (arrowsLeft < honorLimit) {
+				++arrowsLeft;
 			}
 			spawnTimer = 0;
 			if (spawnInterval > .5f) {
@@ -60,7 +61,7 @@ public class ArrowSpawner {
 	}
 	
 	public boolean getWin () {
-		return arrowsLeft <= 0;
+		return arrowsLeft >= honorLimit;
 		
 	}
 

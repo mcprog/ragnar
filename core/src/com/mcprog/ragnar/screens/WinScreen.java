@@ -37,8 +37,15 @@ public class WinScreen extends ScreenDrawable {
 		Gdx.input.setInputProcessor(angel);
 		Gdx.input.setCatchBackKey(true);
 	}
-	
-	@Override
+
+    @Override
+    public void show() {
+        if (Ragnar.isMobile) {
+            game.gpgs.unlockAchievement(4);
+        }
+    }
+
+    @Override
 	public void render(float delta) {
 		super.render(delta);
 		Gdx.gl.glClearColor(0, .69f, 1, 1);//Color of Valhalla

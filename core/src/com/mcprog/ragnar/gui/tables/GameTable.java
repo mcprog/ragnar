@@ -10,18 +10,18 @@ import com.mcprog.ragnar.gui.GuiStyles;
 public class GameTable extends RagnarTable {
 	
 	private Label score;
-	private Label dishonor;
+	private Label honor;
 	private TextButton pause;
 	
 	public GameTable() {
 		GuiStyles.init();
 		
 		score = new Label("Score: ", GuiStyles.tinyLabelStyleWhite);
-		dishonor = new Label("Dishonor:", GuiStyles.tinyLabelStyleWhite);
+		honor = new Label("Honor:", GuiStyles.tinyLabelStyleWhite);
 		pause = new TextButton("||", GuiStyles.smallButtonStyle);
 		
 		add(score).left().expandX();
-		add(dishonor).right().expandX();
+		add(honor).right().expandX();
 		row();
 		
 		pad(60);
@@ -44,9 +44,9 @@ public class GameTable extends RagnarTable {
 		pause.setText("|>");
 	}
 	
-	public void update (float score, int dishonor) {
+	public void update (float score, int honor) {
 		this.score.setText("Score: " + (int)score);
-		this.dishonor.setText("Dishonor: " + dishonor);
+		this.honor.setText("Honor: " + honor + "/200");
 	}
 
 }

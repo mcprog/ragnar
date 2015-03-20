@@ -24,8 +24,9 @@ public class LoadingScreen extends ScreenDrawable {
 			 */
 			fontBatch.setProjectionMatrix(fontCamera.combined);
 			fontBatch.begin();
-			Assets.ragnarFont.draw(fontBatch, "Assets loaded", -fontCamera.viewportWidth / 4,  Assets.ragnarFont.getCapHeight() / 2);
-			fontBatch.end();
+			Assets.ragnarFont.draw(fontBatch, "Assets loaded", -fontCamera.viewportWidth / 6,  Assets.ragnarFont.getCapHeight() / 2);
+			Assets.ragnarFont.draw(fontBatch, "Continue", -fontCamera.viewportWidth / 8,  -Assets.ragnarFont.getCapHeight() * 2);
+            fontBatch.end();
 			setupAfterLoadOnce();
 			if (Gdx.input.justTouched()) {
 				game.setScreen(game.menuScreen);

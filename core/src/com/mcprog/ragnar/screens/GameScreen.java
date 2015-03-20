@@ -158,6 +158,9 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		inputMultiplexer.addProcessor(stage);
 		inputMultiplexer.addProcessor(player);
 		Gdx.input.setInputProcessor(inputMultiplexer);
+        if (Ragnar.isMobile) {
+            game.gpgs.unlockAchievement(1);
+        }
 	}
 	
 	@Override
