@@ -4,56 +4,53 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mcprog.ragnar.gui.GuiStyles;
+import com.mcprog.ragnar.gui.buttons.PlayButton;
+import com.mcprog.ragnar.gui.buttons.QuitGame;
+import com.mcprog.ragnar.screens.GameScreen;
 
 public class PauseTable extends RagnarTable {
 
 	private TextButton pauseResume;
+    private QuitGame quitButton;
+    private PlayButton restart;
+    private GameScreen screen;
 	
-	private boolean isPaused;
-	
-	public PauseTable() {
+	public PauseTable(final GameScreen screen) {
+        this.screen = screen;
 		setFillParent(true);
 		GuiStyles.init();
 		pauseResume = new TextButton("Pause", GuiStyles.smallButtonStyleLight);
-		
-		add(pauseResume);
-		pad(60);
-		right();
-		bottom();
+        quitButton = new QuitGame(GuiStyles.smallButtonStyleLight);
+        restart = new PlayButton(GuiStyles.smallButtonStyleLight);
+        restart.setText("Restart");
 		
 		pauseResume.addListener(new ClickListener () {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (isPaused) {
-					resume();
-				} else {
-					pause();
-					
-				}
+                screen.setGameToPaused(!screen.isPaused());
+                screen.setJustPaused(true);
 			}
 		});
 	}
-	
-	public void textToPause () {
-		pauseResume.setText("pause");
+
+    public void show() {
+        clear();
+        add(pauseResume);
+        pauseResume.setText("Pause");
+        pad(60);
         right();
         bottom();
-	}
-	
-	public void textToResume () {
-		pauseResume.setText("resume");
+        System.out.println("Pause table show called");
+    }
+
+    public void showPaused() {
+        clear();
+        add(pauseResume);
+        pauseResume.setText("Resume");
+        row();
+        add(restart);
+        row();
+        add(quitButton);
         center();
-	}
-	
-	public void pause () {
-		isPaused = true;
-	}
-	
-	public void resume () {
-		isPaused = false;
-	}
-	
-	public boolean isPaused () {
-		return isPaused;
-	}
+    }
 }

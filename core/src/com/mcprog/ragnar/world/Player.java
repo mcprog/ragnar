@@ -22,6 +22,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.RagnarConfig;
+import com.mcprog.ragnar.screens.GameScreen;
+import com.mcprog.ragnar.screens.ScreenDrawable;
 
 public class Player implements InputProcessor {
 
@@ -37,7 +39,6 @@ public class Player implements InputProcessor {
 	private float tolerance = 45;
     private float mVX;
     private float mVY;
-    private boolean isPaused;
     public Vector2 dragVector;
 	
 	
@@ -69,10 +70,13 @@ public class Player implements InputProcessor {
 	public static final int RIGHT_BLOCK = 	9;
 	public static final int UP_BLOCK = 		10;
 	public static final int DOWN_BLOCK = 	11;
+
+    private GameScreen screen;
 	
-	public Player(World world, Vector2 position, OrthographicCamera camera) {
+	public Player(World world, Vector2 position, OrthographicCamera camera, GameScreen screen) {
 		this.world = world;
 		this.camera = camera;
+        this.screen = screen;
 		
 		hWidth = .6f;
 		hHeight = 1;
@@ -124,11 +128,6 @@ public class Player implements InputProcessor {
 	
 	public void update (float delta) {
 		checkInvincibility(delta);
-//		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
-//			handleInputMobile();
-//		} else {
-//			handleInput();
-//		}
 		int vX = 0;
 		int vY = 0;
 		if (left) {
@@ -227,10 +226,6 @@ public class Player implements InputProcessor {
 		return glow;
 	}
 
-    public boolean isPaused () {
-        return isPaused;
-    }
-
 	@Override
 	public boolean keyDown(int keycode) {
 		if (keycode == Keys.A) {
@@ -268,7 +263,8 @@ public class Player implements InputProcessor {
 			down = false;
 		}
         if (keycode == Keys.SPACE) {
-            isPaused = !isPaused;
+            screen.setGameToPaused(!screen.isPaused());
+            screen.setJustPaused(true);
         }
 		return true;
 	}

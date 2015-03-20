@@ -41,7 +41,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private Array<Body> bodies;
 	private Array<Body> bodiesToDelete;
 	private Stage stage;
-//	private Stage pauseStage;
 	private GameTable table;
 	private PauseTable pauseTable;
 	
@@ -55,6 +54,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private OrthographicCamera treeCamera;
 	private Sound arrowHit;
 	private boolean gamePaused;
+    private boolean justPaused;
 	private InputMultiplexer inputMultiplexer;
 	private ShapeRenderer shapeRenderer;
 	private String actionToResume;
@@ -84,7 +84,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		stage.addActor(table);
 		
 		shapeRenderer = new ShapeRenderer();
-		pauseTable = new PauseTable();
+		pauseTable = new PauseTable(this);
 		stage.addActor(pauseTable);
 		
 		
@@ -95,17 +95,21 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	public void render(float delta) {
 		super.render(delta);
 		updateAlways(delta);
-		gamePaused = pauseTable.isPaused() || player.isPaused();
 		
 		if (gamePaused) {
-			pauseTable.textToResume();
+            if (justPaused()) {
+                pauseTable.showPaused();
+                setJustPaused(false);
+            }
 			stage.act(delta);
 			stage.draw();
 		} else {
-			pauseTable.textToPause();
+            if (justPaused()) {
+                pauseTable.show();
+                setJustPaused(false);
+            }
 			updateRunning(delta);
 		}
-		
 	}
 	
 	protected void updateAlways (float delta) {
@@ -147,14 +151,16 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		inputMultiplexer.clear();
 		timeInGame = 0;
 		world = new World(Vector2.Zero, true);
-		player = new Player(world, Vector2.Zero, camera);
+		player = new Player(world, Vector2.Zero, camera, this);
 		spawner = new ArrowSpawner(world, player);
 		bounds = new Bounds(world, Gdx.graphics.getWidth() / 8);
+
 		world.setContactListener(this);
 		if (Ragnar.debugger.on) {
 			stage.setDebugAll(true);
 		}
 		gamePaused = false;
+        pauseTable.show();
 		inputMultiplexer.addProcessor(stage);
 		inputMultiplexer.addProcessor(player);
 		Gdx.input.setInputProcessor(inputMultiplexer);
@@ -186,6 +192,14 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	public boolean isPaused () {
 		return gamePaused;
 	}
+
+    public boolean justPaused () {
+        return  justPaused;
+    }
+
+    public void setJustPaused (boolean state) {
+        justPaused = state;
+    }
 	
 	private void safelyDestroyBodies () {
 		world.getBodies(bodies);
@@ -210,7 +224,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			if (spawner.getWin()) {
 				game.setScreen(game.winScreen);
 			} else {
-				//TODO settings below
 				if (RagnarConfig.sound) {
 					
 					arrowHit.play();
@@ -222,6 +235,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			}
 		}
 	}
+
+    public void setGameToPaused (boolean state) {
+        gamePaused = state;
+    }
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -255,11 +272,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	}
 	
 	private void drawText (SpriteBatch batch) {
-//		batch.setProjectionMatrix(fontCamera.combined);
-//		batch.begin();
-//		Assets.scoreFont.draw(batch, "Score: " + (int)(this.timeInGame), -fontCamera.viewportWidth / 2 * .9f, fontCamera.viewportHeight / 2 * .8f);
-//		Assets.scoreFont.draw(batch, "Dishonor: " + spawner.getArrowsLeft(), fontCamera.viewportWidth / 2 * .65f, fontCamera.viewportHeight / 2 * .8f);
-//		batch.end();
 		Ragnar.debugger.textDebug(fontBatch, fontCamera);
 	}
 

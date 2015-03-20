@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
+import com.mcprog.ragnar.screens.GameScreen;
 
 public class Angel extends Player {
 
@@ -16,7 +18,7 @@ public class Angel extends Player {
 	private final float angelSpeed = 2;
 
 	public Angel(World world, Vector2 position, OrthographicCamera camera) {
-		super(world, position, camera);
+		super(world, position, camera, new GameScreen(Ragnar.gameInstance));
 		body.getFixtureList().first().setRestitution(.5f);
 		gust = new Sprite(new Texture(Gdx.files.internal("gust.png")));
 	}
