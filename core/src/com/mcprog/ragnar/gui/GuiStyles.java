@@ -18,6 +18,7 @@ public class GuiStyles {
 	public static TextButtonStyle largeButtonStyle;
 	public static TextButtonStyle largeButtonStyleLight;
 	public static TextButtonStyle smallButtonStyle;
+    public static TextButtonStyle smallButtonStyleLight;
 	public static TextButtonStyle tinyButtonStyleLight;
 	
 	public static void init () {
@@ -34,6 +35,7 @@ public class GuiStyles {
 		largeButtonStyle = makeTextButtonStyle(Assets.scoreFont, Color.DARK_GRAY, Color.LIGHT_GRAY);
 		largeButtonStyleLight = makeTextButtonStyle(Assets.scoreFont, Color.LIGHT_GRAY, Color.WHITE);
 		smallButtonStyle = makeTextButtonStyle(Assets.smallFont, Color.DARK_GRAY, Color.LIGHT_GRAY);
+        smallButtonStyleLight = makeTextButtonStyle(Assets.smallFont, Color.LIGHT_GRAY, Color.WHITE);
 		tinyButtonStyleLight = makeTextButtonStyle(Assets.tinyFont, Color.LIGHT_GRAY, Color.WHITE);
 	}
 	

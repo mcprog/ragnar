@@ -14,7 +14,7 @@ public class PauseTable extends RagnarTable {
 	public PauseTable() {
 		setFillParent(true);
 		GuiStyles.init();
-		pauseResume = new TextButton("Pause", GuiStyles.tinyButtonStyleLight);
+		pauseResume = new TextButton("Pause", GuiStyles.smallButtonStyleLight);
 		
 		add(pauseResume);
 		pad(60);
@@ -36,10 +36,13 @@ public class PauseTable extends RagnarTable {
 	
 	public void textToPause () {
 		pauseResume.setText("pause");
+        right();
+        bottom();
 	}
 	
 	public void textToResume () {
 		pauseResume.setText("resume");
+        center();
 	}
 	
 	public void pause () {

@@ -95,7 +95,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	public void render(float delta) {
 		super.render(delta);
 		updateAlways(delta);
-		gamePaused = pauseTable.isPaused();
+		gamePaused = pauseTable.isPaused() || player.isPaused();
 		
 		if (gamePaused) {
 			pauseTable.textToResume();
@@ -139,7 +139,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		Ragnar.debugger.addDebug("FPS", Gdx.graphics.getFramesPerSecond());
 		Ragnar.debugger.addDebug("Control Angle", (int) (MathUtils.radiansToDegrees * player.dragAngle));
 		Ragnar.debugger.renderDebug(world, camera.combined);
-		mobileControls.update(delta);
+		mobileControls.update(delta, player.dragVector);
 	}
 
 	@Override

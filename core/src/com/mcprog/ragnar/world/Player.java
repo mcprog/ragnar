@@ -35,6 +35,10 @@ public class Player implements InputProcessor {
 	private Vector2 directionFactors = new Vector2();
 	private Vector2 touch = new Vector2();
 	private float tolerance = 45;
+    private float mVX;
+    private float mVY;
+    private boolean isPaused;
+    public Vector2 dragVector;
 	
 	
 	protected Body body;
@@ -72,7 +76,8 @@ public class Player implements InputProcessor {
 		
 		hWidth = .6f;
 		hHeight = 1;
-		
+
+        dragVector = new Vector2();
 		
 		glow = new Sprite(new Texture(Gdx.files.internal("glow.png")));
 		
@@ -142,7 +147,12 @@ public class Player implements InputProcessor {
 			vY = -1;
 			direction = DOWN;
 		}
-		setLinearVelocityAndDirection(vX, vY);
+        if (Ragnar.isMobile) {
+            setLinearVelocityAndDirection(mVX, mVY);
+        } else {
+            setLinearVelocityAndDirection(vX, vY);
+        }
+
 	}
 	
 	private void checkInvincibility(float delta) {
@@ -159,6 +169,13 @@ public class Player implements InputProcessor {
 		}
 		body.setLinearVelocity(vX * playerSpeed, vY * playerSpeed);
 	}
+
+    protected void setLinearVelocityAndDirection (float mVX, float mVY) {
+        if (!isIdle) {
+            direction = left ? LEFT : right ? RIGHT : up ? UP : DOWN;
+        }
+        body.setLinearVelocity(mVX * playerSpeed, mVY * playerSpeed);
+    }
 	
 	protected void setToIdle () {
 		if ((left && (up || down)) || left) {
@@ -210,6 +227,10 @@ public class Player implements InputProcessor {
 		return glow;
 	}
 
+    public boolean isPaused () {
+        return isPaused;
+    }
+
 	@Override
 	public boolean keyDown(int keycode) {
 		if (keycode == Keys.A) {
@@ -246,6 +267,9 @@ public class Player implements InputProcessor {
 		else if (keycode == Keys.S) {
 			down = false;
 		}
+        if (keycode == Keys.SPACE) {
+            isPaused = !isPaused;
+        }
 		return true;
 	}
 
@@ -275,13 +299,18 @@ public class Player implements InputProcessor {
 		right = false;
 		up = false;
 		down = false;
+        mVX = 0;
+        mVY = 0;
 		return true;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		if (Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS)) {
+		if (Ragnar.isMobile) {
 			dragAngle = MathUtils.atan2(screenY - touch.y, screenX - touch.x);
+            dragVector.set(screenX - touch.x, -screenY + touch.y).setLength(1);
+            mVX = dragVector.x;
+            mVY = dragVector.y;
 			if (Math.abs(dragAngle) >= MathUtils.PI * 5/8) {
 				left = true;
 				isIdle = false;
