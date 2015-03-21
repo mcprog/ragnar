@@ -8,12 +8,14 @@ import com.mcprog.ragnar.gui.GuiStyles;
 
 public class PlayButton extends TextButton implements ICustomButton {
 
+    private boolean pauseState;
 	
 	public PlayButton(TextButtonStyle style) {
 		super("Play", style);
-		
+
 		addFunctionality();
 	}
+
 	
 	public PlayButton () {
 		this(GuiStyles.largeButtonStyle);

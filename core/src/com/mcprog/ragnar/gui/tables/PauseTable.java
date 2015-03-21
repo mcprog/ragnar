@@ -45,12 +45,13 @@ public class PauseTable extends RagnarTable {
 
     public void showPaused() {
         clear();
-        add(pauseResume);
+        add(pauseResume).pad(30);
         pauseResume.setText("Resume");
         row();
-        add(restart);
+        add(restart).pad(30);
         row();
-        add(quitButton);
+        add(quitButton).pad(30);
         center();
+
     }
 }

@@ -22,7 +22,7 @@ public class ArrowSpawner {
 	public ArrowSpawner(World world, Player player) {
 		this.world = world;
 		this.player = player;
-        honorLimit = 7;
+        honorLimit = 200;
 		spawnInterval = 1;
 		Ragnar.debugger.setTimer(getClass().getSimpleName(), 0);
 	}

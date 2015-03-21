@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
+import com.mcprog.ragnar.gui.buttons.QuitApp;
 
 public class MenuTable extends RagnarTable {
 
@@ -13,6 +14,7 @@ public class MenuTable extends RagnarTable {
 	private TextButton settings;
 	private TextButton highscore;
 	private TextButton credits;
+    private QuitApp quit;
 	
 	public MenuTable () {
 		GuiStyles.init();
@@ -21,6 +23,7 @@ public class MenuTable extends RagnarTable {
 		settings = new TextButton("Settings", GuiStyles.largeButtonStyle);
 		highscore = new TextButton("Highscore", GuiStyles.largeButtonStyle);
 		credits = new TextButton("Credits", GuiStyles.largeButtonStyle);
+        quit = new QuitApp();
 		
 		add(playButton).pad(20);
 		row();
@@ -29,6 +32,8 @@ public class MenuTable extends RagnarTable {
 		add(highscore).pad(20);
 		row();
 		add(credits).pad(20);
+        row();
+        add(quit).pad(20);
 		
 		addFunctionality();
 	}
