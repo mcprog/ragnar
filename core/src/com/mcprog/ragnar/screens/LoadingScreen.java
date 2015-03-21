@@ -63,6 +63,7 @@ public class LoadingScreen extends ScreenDrawable {
 		game.menuScreen = new MenuScreen(game);
 		game.highscoreScreen = new HighscoreScreen(game);
 		game.creditsScreen = new CreditsScreen(game);
+        game.optionsScreen = new OptionsScreen(game);
 		
 		setup = true;
 	}

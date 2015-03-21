@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
+import com.mcprog.ragnar.gui.buttons.LeaderboardsButton;
 import com.mcprog.ragnar.gui.buttons.MenuButton;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
 import com.mcprog.ragnar.lib.RagnarConfig;
@@ -17,14 +18,15 @@ public class HighscoreTable extends RagnarTable {
 	private Label highscoreVal;
 	private PlayButton playButton;
 	private MenuButton menuButton;
-    private TextButton highscores;
+    //private TextButton highscores;
+    private LeaderboardsButton leaderboardsButton;
 	
 	public HighscoreTable() {
 		GuiStyles.init();
 		
 		playButton = new PlayButton();
 		menuButton = new MenuButton();
-        highscores = new TextButton("Leaderboards", GuiStyles.smallButtonStyle);
+        leaderboardsButton = new LeaderboardsButton(GuiStyles.largeButtonStyle);
 		
 		header = new Label("Highscore", GuiStyles.headerLabelStyle);
 		
@@ -39,7 +41,7 @@ public class HighscoreTable extends RagnarTable {
 		add(highscoreVal).right().pad(20);
         if (Ragnar.isMobile) {
             row();
-            add(highscores).colspan(2);
+            add(leaderboardsButton).colspan(2);
         }
         row();
 		add(playButton).pad(20);
@@ -48,12 +50,6 @@ public class HighscoreTable extends RagnarTable {
 	}
 
     private void addFunctionality () {
-        highscores.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Ragnar.gameInstance.gpgs.getLeaderBoard();
-            }
-        });
     }
 	
 	public void show () {

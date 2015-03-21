@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
+import com.mcprog.ragnar.gui.buttons.LeaderboardsButton;
 import com.mcprog.ragnar.gui.buttons.MenuButton;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
 import com.mcprog.ragnar.lib.Assets;
@@ -22,6 +24,7 @@ public class KillTable extends RagnarTable {
 	private PlayButton playButton;
 	private MenuButton menuButton;
 	private Image deathImg;
+    private LeaderboardsButton leaderboardsButton;
 	
 	public KillTable () {
 		GuiStyles.init();
@@ -34,6 +37,7 @@ public class KillTable extends RagnarTable {
 		
 		playButton = new PlayButton(GuiStyles.largeButtonStyleLight);
 		menuButton = new MenuButton(GuiStyles.largeButtonStyleLight);
+        leaderboardsButton = new LeaderboardsButton(GuiStyles.largeButtonStyleLight);
 		
 		deathImg = new Image(Assets.getLoadedTexture(Assets.DEAD_PLAYER_PATH));
 		
@@ -51,6 +55,10 @@ public class KillTable extends RagnarTable {
         if (newHighscore) {
             add(newHighscoreKey).colspan(2);
             row();
+            if (Ragnar.isMobile) {
+                add(leaderboardsButton).colspan(2);
+                row();
+            }
             //TODO make leaderboards custom button
         } else {
             add(highscore).colspan(2);

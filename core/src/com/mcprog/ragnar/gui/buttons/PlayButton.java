@@ -5,15 +5,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
+import com.mcprog.ragnar.gui.handlers.SetScreenListener;
+import com.mcprog.ragnar.screens.ScreenDrawable;
 
-public class PlayButton extends TextButton implements ICustomButton {
+public class PlayButton extends TextButton implements IScreenSetter {
 
     private boolean pauseState;
+    private SetScreenListener setScreenListener;
 	
 	public PlayButton(TextButtonStyle style) {
 		super("Play", style);
-
-		addFunctionality();
+        setScreenToSet(Ragnar.gameInstance, Ragnar.gameInstance.gameScreen);
 	}
 
 	
@@ -21,14 +23,8 @@ public class PlayButton extends TextButton implements ICustomButton {
 		this(GuiStyles.largeButtonStyle);
 	}
 
-	public void addFunctionality() {
-		addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.gameScreen);
-			}
-		});
-		
-	}
-
+    @Override
+    public void setScreenToSet(Ragnar game, ScreenDrawable screen) {
+        addListener(new SetScreenListener(game, screen));
+    }
 }

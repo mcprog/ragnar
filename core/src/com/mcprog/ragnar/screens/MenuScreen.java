@@ -17,7 +17,7 @@ public class MenuScreen extends ScreenDrawable {
 		super(game);
 		if (game.isMobile) {
 			
-			game.gpgs.signIn();
+			//game.gpgs.signIn();
 		}
 		menuTable = new MenuTable();
 		stage = new Stage();

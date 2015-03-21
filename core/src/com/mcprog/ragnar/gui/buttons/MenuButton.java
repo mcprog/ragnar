@@ -5,27 +5,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
+import com.mcprog.ragnar.gui.handlers.SetScreenListener;
+import com.mcprog.ragnar.screens.ScreenDrawable;
 
-public class MenuButton extends TextButton implements ICustomButton {
+public class MenuButton extends TextButton implements IScreenSetter {
 
 	public MenuButton(TextButtonStyle style) {
 		super("Menu", style);
-		addFunctionality();
+        setScreenToSet(Ragnar.gameInstance, Ragnar.gameInstance.menuScreen);
 	}
 	
 	public MenuButton() {
 		this(GuiStyles.largeButtonStyle);
 	}
 
-	@Override
-	public void addFunctionality() {
-		addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Ragnar.gameInstance.setScreen(Ragnar.gameInstance.menuScreen);
-			}
-		});
-		
-	}
-
+    @Override
+    public void setScreenToSet(Ragnar game, ScreenDrawable screen) {
+        addListener(new SetScreenListener(game, screen));
+    }
 }
