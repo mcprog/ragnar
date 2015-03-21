@@ -25,6 +25,7 @@ public class KillScreen extends ScreenDrawable {
 	private boolean newTouchUp;
 	private Stage stage;
 	private KillTable killTable;
+    private boolean newHighscore;
 	
 	public int deathType = -1;
 	
@@ -45,6 +46,7 @@ public class KillScreen extends ScreenDrawable {
 	
 	@Override
 	public void show() {
+        newHighscore = false;
         if (Ragnar.isMobile) {
             game.gpgs.unlockAchievement(5);
         }
@@ -60,10 +62,10 @@ public class KillScreen extends ScreenDrawable {
             if (Ragnar.isMobile) {
                 game.gpgs.submitHighscore(RagnarConfig.highScore);
             }
-
+            newHighscore = true;
 		}
 		RagnarConfig.updateFile();
-		killTable.show(assembleMessage(), "You lasted " + (int)(game.gameScreen.timeInGame) + " seconds", "Highscore: " + RagnarConfig.highScore, deathType);
+		killTable.show(assembleMessage(), "You lasted " + (int)(game.gameScreen.timeInGame) + " seconds", "Highscore: " + RagnarConfig.highScore, deathType, newHighscore);
 	}
 	
 	@Override

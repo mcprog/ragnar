@@ -16,9 +16,11 @@ public class SettingsTable extends RagnarTable {
 	private Label playerKey;
 	private Label vibrateKey;
 	private Label soundKey;
+    private Label pauseRightKey;
 	private TextButton buttonPlayerType;
 	private TextButton buttonVibrate;
 	private TextButton buttonSound;
+    private TextButton buttonPauseRight;
 	private PlayButton playButton;
 	private MenuButton menuButton;
 
@@ -29,14 +31,15 @@ public class SettingsTable extends RagnarTable {
 		header = new Label("Settings", GuiStyles.headerLabelStyle);
 		playerKey = new Label("Player Type:", GuiStyles.normalLabelStyle);
 		vibrateKey = new Label("Vibrate:", GuiStyles.normalLabelStyle);
-		soundKey = new Label("Sound", GuiStyles.normalLabelStyle);
+		soundKey = new Label("Sound:", GuiStyles.normalLabelStyle);
+        pauseRightKey = new Label("Pause Location:", GuiStyles.normalLabelStyle);
 		
 		playButton = new PlayButton();
 		menuButton = new MenuButton();
 		buttonPlayerType = new TextButton(getPlayerType(), GuiStyles.smallButtonStyle);
-		buttonVibrate = new TextButton(String.valueOf(RagnarConfig.vibrate), GuiStyles.smallButtonStyle);
-		buttonSound = new TextButton(String.valueOf(RagnarConfig.sound), GuiStyles.smallButtonStyle);
-
+		buttonVibrate = new TextButton(RagnarConfig.vibrate ? "On" : "Off", GuiStyles.smallButtonStyle);
+		buttonSound = new TextButton(RagnarConfig.sound ? "On" : "Off", GuiStyles.smallButtonStyle);
+        buttonPauseRight = new TextButton(RagnarConfig.isPauseOnRight ? "Right" : "Left", GuiStyles.smallButtonStyle);
 		
 		addFunctionality();
 		
@@ -53,6 +56,9 @@ public class SettingsTable extends RagnarTable {
 		add(soundKey).left();
 		add(buttonSound).right().pad(20);
 		row();
+        add(pauseRightKey).left();
+        add(buttonPauseRight).right().pad(20);
+        row();
 		add(playButton).pad(20);
 		add(menuButton).pad(20);
 
@@ -76,7 +82,7 @@ public class SettingsTable extends RagnarTable {
 			public void clicked(InputEvent event, float x, float y) {
 				RagnarConfig.vibrate = !RagnarConfig.vibrate;
 				RagnarConfig.updateFile();
-				buttonVibrate.setText(String.valueOf(RagnarConfig.vibrate));
+				buttonVibrate.setText(RagnarConfig.vibrate ? "On" : "Off");
 			}
 		});
 		buttonSound.addListener(new ClickListener() {
@@ -84,10 +90,17 @@ public class SettingsTable extends RagnarTable {
 			public void clicked(InputEvent event, float x, float y) {
 				RagnarConfig.sound = !RagnarConfig.sound;
 				RagnarConfig.updateFile();
-				buttonSound.setText(String.valueOf(RagnarConfig.sound));
+				buttonSound.setText(RagnarConfig.sound ? "On" : "Off");
 			}
 		});
-
+        buttonPauseRight.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                RagnarConfig.isPauseOnRight ^= true;//this toggling is soooo cool
+                RagnarConfig.updateFile();
+                buttonPauseRight.setText(RagnarConfig.isPauseOnRight ? "Right": "Left");
+            }
+        });
 	}
 	
 	private String getPlayerType () {

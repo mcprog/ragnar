@@ -121,7 +121,7 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 	@Override
 	public void getLeaderBoard() {
 		if (isSignedIn()) {
-			
+			submitHighscore(RagnarConfig.highScore);
 			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
 		} else {
 			signIn();

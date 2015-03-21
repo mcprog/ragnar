@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mcprog.ragnar.gui.GuiStyles;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
 import com.mcprog.ragnar.gui.buttons.QuitGame;
+import com.mcprog.ragnar.lib.RagnarConfig;
 import com.mcprog.ragnar.screens.GameScreen;
 
 public class PauseTable extends RagnarTable {
@@ -38,7 +39,12 @@ public class PauseTable extends RagnarTable {
         add(pauseResume);
         pauseResume.setText("Pause");
         pad(60);
-        right();
+        if (RagnarConfig.isPauseOnRight) {
+            right();
+        } else {
+            left();
+        }
+
         bottom();
         System.out.println("Pause table show called");
     }

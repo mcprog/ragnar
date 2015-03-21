@@ -266,6 +266,12 @@ public class Player implements InputProcessor {
             screen.setGameToPaused(!screen.isPaused());
             screen.setJustPaused(true);
         }
+        else if (keycode == Keys.R) {
+            screen.show();
+        }
+        else if (keycode == Keys.Q) {
+            Ragnar.gameInstance.setScreen(Ragnar.gameInstance.menuScreen);
+        }
 		return true;
 	}
 
