@@ -10,7 +10,7 @@ import com.mcprog.ragnar.gui.buttons.MenuButton;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
 import com.mcprog.ragnar.lib.RagnarConfig;
 
-public class SettingsTable extends RagnarTable {
+public class SettingsTable extends NavigationTable {
 	
 	private Label header;
 	private Label playerKey;

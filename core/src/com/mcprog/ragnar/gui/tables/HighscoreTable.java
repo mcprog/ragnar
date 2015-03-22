@@ -1,9 +1,6 @@
 package com.mcprog.ragnar.gui.tables;
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
 import com.mcprog.ragnar.gui.buttons.LeaderboardsButton;
@@ -11,7 +8,7 @@ import com.mcprog.ragnar.gui.buttons.MenuButton;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
 import com.mcprog.ragnar.lib.RagnarConfig;
 
-public class HighscoreTable extends RagnarTable {
+public class HighscoreTable extends NavigationTable {
 
 	private Label header;
 	private Label highscoreKey;

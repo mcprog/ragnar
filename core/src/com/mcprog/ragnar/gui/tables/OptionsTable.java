@@ -12,7 +12,7 @@ import com.mcprog.ragnar.gui.buttons.PlayButton;
 /**
  * Created by Michael on 3/21/2015.
  */
-public class OptionsTable extends RagnarTable {
+public class OptionsTable extends NavigationTable {
 
     private Label header;
     private MenuButton menuButton;

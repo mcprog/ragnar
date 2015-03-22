@@ -25,18 +25,20 @@ public class GuiStyles {
 		if (headerLabelStyle != null) {
 			return;
 		}
-		headerLabelStyle = new LabelStyle(Assets.ragnarFont, Color.DARK_GRAY);
-		normalLabelStyle = new LabelStyle(Assets.smallFont, Color.DARK_GRAY);
+		headerLabelStyle = new LabelStyle(Assets.ragnarFont, Color.WHITE);
+		normalLabelStyle = new LabelStyle(Assets.smallFont, Color.WHITE);
 		headerLabelStyleWhite = new LabelStyle(Assets.ragnarFont, Color.WHITE);
 		normalLabelStyleWhite = new LabelStyle(Assets.smallFont, Color.WHITE);
-		tinyLabelStyle = new LabelStyle(Assets.tinyFont, Color.DARK_GRAY);
+		tinyLabelStyle = new LabelStyle(Assets.tinyFont, Color.WHITE);
 		tinyLabelStyleWhite = new LabelStyle(Assets.tinyFont, Color.WHITE);
 		
-		largeButtonStyle = makeTextButtonStyle(Assets.scoreFont, Color.DARK_GRAY, Color.LIGHT_GRAY);
+		largeButtonStyle = makeTextButtonStyle(Assets.scoreFont, Color.LIGHT_GRAY, Color.WHITE);
 		largeButtonStyleLight = makeTextButtonStyle(Assets.scoreFont, Color.LIGHT_GRAY, Color.WHITE);
-		smallButtonStyle = makeTextButtonStyle(Assets.smallFont, Color.DARK_GRAY, Color.LIGHT_GRAY);
+		smallButtonStyle = makeTextButtonStyle(Assets.smallFont, Color.LIGHT_GRAY, Color.WHITE);
         smallButtonStyleLight = makeTextButtonStyle(Assets.smallFont, Color.LIGHT_GRAY, Color.WHITE);
 		tinyButtonStyleLight = makeTextButtonStyle(Assets.tinyFont, Color.LIGHT_GRAY, Color.WHITE);
+
+
 	}
 	
 	private static TextButtonStyle makeTextButtonStyle (BitmapFont font, Color color, Color active) {
@@ -45,6 +47,8 @@ public class GuiStyles {
 		tbs.fontColor = color;
 		tbs.downFontColor = active;
 		tbs.overFontColor = active;
+        tbs.pressedOffsetX = 5;
+        tbs.pressedOffsetY = -5;
 		return tbs;
 	}
 

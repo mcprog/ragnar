@@ -8,7 +8,7 @@ import com.mcprog.ragnar.gui.GuiStyles;
 import com.mcprog.ragnar.gui.buttons.MenuButton;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
 
-public class CreditsTable extends RagnarTable {
+public class CreditsTable extends NavigationTable {
 	
 	private Label header;
 	private ScrollPane scrollPane;
