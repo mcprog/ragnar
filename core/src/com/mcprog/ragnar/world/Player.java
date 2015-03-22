@@ -1,8 +1,5 @@
 package com.mcprog.ragnar.world;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -23,7 +20,8 @@ import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.RagnarConfig;
 import com.mcprog.ragnar.screens.GameScreen;
-import com.mcprog.ragnar.screens.ScreenDrawable;
+
+import java.util.ArrayList;
 
 public class Player implements InputProcessor {
 
@@ -40,6 +38,7 @@ public class Player implements InputProcessor {
     private float mVX;
     private float mVY;
     public Vector2 dragVector;
+    private Vector2 dragRatio;
 	
 	
 	protected Body body;
@@ -82,6 +81,7 @@ public class Player implements InputProcessor {
 		hHeight = 1;
 
         dragVector = new Vector2();
+        dragRatio = new Vector2();
 		
 		glow = new Sprite(new Texture(Gdx.files.internal("glow.png")));
 		
@@ -310,9 +310,10 @@ public class Player implements InputProcessor {
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		if (Ragnar.isMobile) {
 			dragAngle = MathUtils.atan2(screenY - touch.y, screenX - touch.x);
-            dragVector.set(screenX - touch.x, -screenY + touch.y).setLength(1);
-            mVX = dragVector.x;
-            mVY = dragVector.y;
+            dragVector.set(screenX - touch.x, -screenY + touch.y);
+            dragRatio.set(dragVector).setLength(1);
+            mVX = dragRatio.x;
+            mVY = dragRatio.y;
 			if (Math.abs(dragAngle) >= MathUtils.PI * 5/8) {
 				left = true;
 				isIdle = false;

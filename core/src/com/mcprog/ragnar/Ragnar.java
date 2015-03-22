@@ -34,6 +34,16 @@ public class Ragnar extends Game {
 	public IGooglePlayGameServices gpgs;
 	
 	public static Ragnar gameInstance;
+
+    public static final int GAME_ID = 0;
+    public static final int KILL_ID = 1;
+    public static final int LOADING_ID = 2;
+    public static final int SETTINGS_ID = 3;
+    public static final int WIN_ID = 4;
+    public static final int MENU_ID = 5;
+    public static final int HIGHSCORE_ID = 6;
+    public static final int CREDITS_ID = 7;
+    public static final int OPTIONS_ID = 8;
 	
 	public Ragnar(IGooglePlayGameServices gpgs) {
 		this.gpgs = gpgs;
@@ -50,7 +60,7 @@ public class Ragnar extends Game {
 		debugger = new DebugUtility();
 		debugger.off();
 		Assets.queueAll();
-		loadingScreen = new LoadingScreen(this);
+		loadingScreen = new LoadingScreen(gameInstance);
 		setScreen(loadingScreen);
 	}
 	
@@ -58,4 +68,38 @@ public class Ragnar extends Game {
 		killScreen.deathType = deathType;
 		setScreen(killScreen);
 	}
+
+    public void setToScreen (int screenID) {
+        switch (screenID) {
+            case GAME_ID:
+                setScreen(gameScreen);
+                break;
+            case KILL_ID:
+                setScreen(killScreen);
+                break;
+            case LOADING_ID:
+                setScreen(loadingScreen);
+                break;
+            case SETTINGS_ID:
+                setScreen(settingsScreen);
+                break;
+            case WIN_ID:
+                setScreen(winScreen);
+                break;
+            case MENU_ID:
+                setScreen(menuScreen);
+                break;
+            case HIGHSCORE_ID:
+                setScreen(highscoreScreen);
+                break;
+            case CREDITS_ID:
+                setScreen(creditsScreen);
+                break;
+            case OPTIONS_ID:
+                setScreen(optionsScreen);
+                break;
+            default:
+                break;
+        }
+    }
 }

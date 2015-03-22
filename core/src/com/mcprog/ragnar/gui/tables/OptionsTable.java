@@ -27,7 +27,7 @@ public class OptionsTable extends RagnarTable {
         highscoreButton = new TextButton("Highscore", GuiStyles.largeButtonStyle);
         settingsButton = new TextButton("Settings", GuiStyles.largeButtonStyle);
 
-        addFuntionality();
+        addFunctionality();
 
         add(header).colspan(2);
         row();
@@ -39,7 +39,7 @@ public class OptionsTable extends RagnarTable {
         add(menuButton).pad(20);
     }
 
-    private void addFuntionality () {
+    private void addFunctionality () {
         highscoreButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

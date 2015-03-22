@@ -3,6 +3,7 @@ package com.mcprog.ragnar.gui.tables;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
 import com.mcprog.ragnar.gui.buttons.PlayButton;
 import com.mcprog.ragnar.gui.buttons.QuitGame;
@@ -32,6 +33,12 @@ public class PauseTable extends RagnarTable {
                 screen.setJustPaused(true);
 			}
 		});
+        restart.addListener(new ClickListener () {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Ragnar.gameInstance.setScreen(Ragnar.gameInstance.gameScreen);
+            }
+        });
 	}
 
     public void show() {
