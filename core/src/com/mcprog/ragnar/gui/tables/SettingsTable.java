@@ -102,7 +102,7 @@ public class SettingsTable extends NavigationTable {
         buttonPauseRight.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                RagnarConfig.isPauseOnRight ^= true;//this toggling is soooo cool
+                RagnarConfig.isPauseOnRight = !RagnarConfig.isPauseOnRight;
                 RagnarConfig.updateFile();
                 buttonPauseRight.setText(RagnarConfig.isPauseOnRight ? "Right": "Left");
             }

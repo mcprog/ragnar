@@ -62,7 +62,6 @@ public class Ragnar extends Game {
 		Assets.queueAll();
 		loadingScreen = new LoadingScreen(gameInstance);
 		setScreen(loadingScreen);
-
 	}
 
 

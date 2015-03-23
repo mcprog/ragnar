@@ -5,7 +5,6 @@ import com.badlogic.gdx.Preferences;
 
 public class RagnarConfig {
 
-	public static Preferences preferences;
 	
 	public static int playerType;
 	public static int highScore;
@@ -15,25 +14,28 @@ public class RagnarConfig {
     public static boolean gpgsEnabled;
 	
 	public static void init () {
-		preferences = Gdx.app.getPreferences("ragnar-preferences");
+		Preferences preferences = Gdx.app.getPreferences("ragnar-preferences");
 		playerType = preferences.getInteger("player-type", 0);
 		highScore = preferences.getInteger("highscore", 0);
 		vibrate = preferences.getBoolean("vibrate", true);
 		sound = preferences.getBoolean("sound", true);
-        sound = preferences.getBoolean("pauseRight", true);
+        isPauseOnRight = preferences.getBoolean("pauseRight", true);
         gpgsEnabled = preferences.getBoolean("gpgs", true);
 		//preferences.putInteger("highscore", 0);
         //preferences.clear();
 		//preferences.flush();
+        //preferences.flush();
+        updateFile();
 	}
 	
 	public static void updateFile () {
-		preferences.putInteger("player-type", playerType);
-		preferences.putInteger("highscore", highScore);
-		preferences.putBoolean("vibrate", vibrate);
-		preferences.putBoolean("sound", sound);
-        preferences.putBoolean("pauseRight", isPauseOnRight);
-        preferences.putBoolean("gpgs", gpgsEnabled);
-		preferences.flush();
+        Preferences preferences = Gdx.app.getPreferences("ragnar-preferences");
+		preferences.putInteger("player-type", playerType).flush();
+		preferences.putInteger("highscore", highScore).flush();
+		preferences.putBoolean("vibrate", vibrate).flush();
+		preferences.putBoolean("sound", sound).flush();
+        preferences.putBoolean("pauseRight", isPauseOnRight).flush();
+        preferences.putBoolean("gpgs", gpgsEnabled).flush();
+		//preferences.flush();
 	}
 }

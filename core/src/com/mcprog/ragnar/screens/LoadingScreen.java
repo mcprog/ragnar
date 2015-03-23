@@ -16,6 +16,11 @@ public class LoadingScreen extends ScreenDrawable {
 	}
 
     @Override
+    public void show() {
+        RagnarConfig.init();
+    }
+
+    @Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -56,7 +61,7 @@ public class LoadingScreen extends ScreenDrawable {
 		/*
 		 * instantiate screens
 		 */
-		RagnarConfig.init();
+
 		Assets.testLoadI18N();
 		game.gameScreen = new GameScreen(game);
 		game.killScreen = new KillScreen(game);
