@@ -6,12 +6,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.badlogic.gdx.backends.android.surfaceview.ResolutionStrategy;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.internal.ga;
 import com.google.example.games.basegameutils.GameHelper;
 import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
 import com.mcprog.ragnar.Ragnar;
@@ -36,6 +33,12 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
             gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
             gameHelper.enableDebugLog(true);
         }
+        /*if (!RagnarConfig.gpgsEnabled) {*/
+            gameHelper.setMaxAutoSignInAttempts(0);
+        /*} else {
+            gameHelper.setMaxAutoSignInAttempts(1);
+        }*/
+
         gameHelper.setup(this);
 	}
 	
@@ -66,7 +69,7 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        if (isConnected) {
+        if (isConnected && RagnarConfig.gpgsEnabled) {
             try {
                 runOnUiThread(new Runnable() {
 

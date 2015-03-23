@@ -17,12 +17,12 @@ public class MenuScreen extends ScreenDrawable {
 		super(game);
 		if (game.isMobile) {
 			
-			//game.gpgs.signIn();
+			game.gpgs.signIn();
 		}
 		menuTable = new MenuTable();
 		stage = new Stage();
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
-		
+
 		stage.addActor(menuTable);
 		
 		if (Ragnar.debugger.on) {

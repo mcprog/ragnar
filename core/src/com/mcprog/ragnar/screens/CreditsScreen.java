@@ -1,6 +1,7 @@
 package com.mcprog.ragnar.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -35,6 +36,9 @@ public class CreditsScreen extends ScreenDrawable {
 	
 	@Override
 	public void render(float delta) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+            game.setToScreen(Ragnar.MENU_ID);
+        }
 		Gdx.gl.glClearColor(.5f, .5f, .5f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		

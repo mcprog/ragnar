@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
 
 /**
@@ -24,6 +23,7 @@ public class QuitApp extends TextButton implements  ICustomButton {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
+                System.exit(0);//needs to be called to fix graphical glitch
             }
         });
     }

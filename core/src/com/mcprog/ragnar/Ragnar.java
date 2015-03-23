@@ -62,9 +62,18 @@ public class Ragnar extends Game {
 		Assets.queueAll();
 		loadingScreen = new LoadingScreen(gameInstance);
 		setScreen(loadingScreen);
+
 	}
-	
-	public void setToKillScreen (int deathType) {
+
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        System.out.println("Ragnar disposed");
+
+    }
+
+    public void setToKillScreen (int deathType) {
 		killScreen.deathType = deathType;
 		setScreen(killScreen);
 	}

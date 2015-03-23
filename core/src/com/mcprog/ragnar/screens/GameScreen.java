@@ -1,6 +1,7 @@
 package com.mcprog.ragnar.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -113,7 +114,11 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	}
 	
 	protected void updateAlways (float delta) {
-		Gdx.gl.glClearColor(.15f, .4f, .15f, 1);//Black
+		if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+            setGameToPaused(true);
+            setJustPaused(true);
+        }
+        Gdx.gl.glClearColor(.15f, .4f, .15f, 1);//Black
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.setProjectionMatrix(treeCamera.combined);
 		batch.begin();
@@ -152,6 +157,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		timeInGame = 0;
 		world = new World(Vector2.Zero, true);
 		player = new Player(world, Vector2.Zero, camera, this);
+        player.init();
 		spawner = new ArrowSpawner(world, player);
 		bounds = new Bounds(world, Gdx.graphics.getWidth() / 8);
 

@@ -100,7 +100,8 @@ public class Player implements InputProcessor {
 	}
 	
 	public void init () {
-		direction = 7;
+		direction = Player.DOWN_IDLE;
+        isIdle = true;
 	}
 	
 	public void draw (float stateTime, SpriteBatch batch) {

@@ -77,6 +77,9 @@ public class KillScreen extends ScreenDrawable {
 		if (Gdx.input.isKeyJustPressed(Keys.R)) {
 			game.setScreen(game.gameScreen);
 		}
+        else if (Gdx.input.isKeyJustPressed(Keys.BACK)) {
+            game.setToScreen(Ragnar.MENU_ID);
+        }
 		
 		stage.act(delta);
 		stage.draw();

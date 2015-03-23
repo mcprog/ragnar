@@ -1,10 +1,7 @@
 package com.mcprog.ragnar.lib;
 
-import java.util.Locale;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,9 +9,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.I18NBundle;
 
+import java.util.Locale;
+
 public class Assets {
 	
-	public static final AssetManager assetManager = new AssetManager();
+	public static AssetManager assetManager = new AssetManager();
 	
 	private static TextureRegion[][] map;
 	public static Animation[] playerAnimations;
@@ -66,6 +65,7 @@ public class Assets {
 	}
 	
 	public static void queueAll () {
+
 		queueFonts();
 		queueTextures();
 	}
@@ -188,6 +188,4 @@ public class Assets {
 	public static float getLoadingProgress () {
 		return assetManager.getProgress() * 100;
 	}
-	
-
 }
