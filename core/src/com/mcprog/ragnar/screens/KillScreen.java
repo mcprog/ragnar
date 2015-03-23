@@ -50,6 +50,18 @@ public class KillScreen extends ScreenDrawable {
         if (Ragnar.isMobile) {
             game.gpgs.unlockAchievement(5);
         }
+        if (deathType == SHOT) {
+            Assets.deadPlayerSprite.draw(batch);
+            if (Ragnar.isMobile) {
+                game.gpgs.unlockAchievement(2);
+            }
+        }
+        else if (deathType == STABBED) {
+            Assets.deadPlayerStabbedSprite.draw(batch);
+            if (Ragnar.isMobile) {
+                game.gpgs.unlockAchievement(3);
+            }
+        }
 		newTouchUp = false;
 		Gdx.input.setInputProcessor(stage);
 		//Gdx.input.setCatchBackKey(true);
@@ -99,18 +111,7 @@ public class KillScreen extends ScreenDrawable {
 		Assets.deadPlayerSprite.setCenter(0, -fontCamera.viewportHeight / 4);
 		Assets.deadPlayerStabbedSprite.setSize(21 * fontCamera.viewportHeight / 84, 28 * fontCamera.viewportHeight / 84);
 		Assets.deadPlayerStabbedSprite.setCenter(0, -fontCamera.viewportHeight / 4);
-		if (deathType == SHOT) {
-			Assets.deadPlayerSprite.draw(batch);
-            if (Ragnar.isMobile) {
-                game.gpgs.unlockAchievement(2);
-            }
-		}
-		else if (deathType == STABBED) {
-			Assets.deadPlayerStabbedSprite.draw(batch);
-            if (Ragnar.isMobile) {
-                game.gpgs.unlockAchievement(3);
-            }
-		}
+
 	}
 
 }
