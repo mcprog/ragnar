@@ -27,7 +27,7 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useAccelerometer = false;
 		config.useCompass = false;
-		config.useWakelock = true;
+		config.useWakelock = false;
 		initialize(new Ragnar(this), config);
         if (gameHelper == null) {
             gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
@@ -143,13 +143,13 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
                     Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_shot_id));
                     break;
                 case 3:
-                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_ambushed_id));
+                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_stabbed_id));
                     break;
                 case 4:
-                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_ambushed_id));
+                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_win_id));
                     break;
                 case 5:
-                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_ambushed_id));
+                    Games.Achievements.unlock(gameHelper.getApiClient(), getString(R.string.achievement_die_id));
                     break;
                default:
                    break;

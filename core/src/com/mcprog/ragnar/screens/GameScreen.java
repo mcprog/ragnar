@@ -187,12 +187,12 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	
 	@Override
 	public void pause() {
-		gamePaused = true;
+	    setGameToPaused(true);
+        setJustPaused(true);
 	}
 	
 	@Override
 	public void resume() {
-		gamePaused = true;
 	}
 	
 	public boolean isPaused () {
