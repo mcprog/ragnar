@@ -2,12 +2,21 @@ package com.mcprog.ragnar.android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.GameHelper;
 import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
@@ -18,17 +27,39 @@ import com.mcprog.ragnar.lib.RagnarConfig;
 public class AndroidLauncher extends AndroidApplication implements IGooglePlayGameServices, GameHelperListener {
 
     private GameHelper gameHelper;
+    private AdView adView;
+    protected View gameView;
 
 	private static final int REQUEST_CODE_UNUSED = 7;
 	
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		config.useAccelerometer = false;
-		config.useCompass = false;
-		config.useWakelock = false;
-		initialize(new Ragnar(this), config);
+
+        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        config.useAccelerometer = false;
+        config.useCompass = false;
+        config.useWakelock = false;
+        //initialize(new Ragnar(this), config);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+
+        RelativeLayout layout = new RelativeLayout(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        layout.setLayoutParams(params);
+
+
+
+        AdView adMobView = createAdView();
+        layout.addView(adMobView);
+        View gameView = createGameView(config);
+        layout.addView(gameView);
+
+        setContentView(layout);
+        startAdvertising(adMobView);
+
         if (gameHelper == null) {
             gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
             gameHelper.enableDebugLog(true);
@@ -39,10 +70,63 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
             gameHelper.setMaxAutoSignInAttempts(1);
         }*/
 
+
         gameHelper.setup(this);
 	}
-	
-	@Override
+
+    private AdView createAdView() {
+        adView = new AdView(this);
+        adView.setAdSize(AdSize.BANNER);
+        adView.setAdUnitId(getString(R.string.ad_banner1));
+        adView.setId(12345);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        adView.setLayoutParams(params);
+        adView.setBackgroundColor(Color.BLACK);
+        return adView;
+    }
+
+    private View createGameView (AndroidApplicationConfiguration cfg) {
+        gameView = initializeForView(new Ragnar(this), cfg);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.BELOW, adView.getId());
+        gameView.setLayoutParams(params);
+        return gameView;
+    }
+
+    private void startAdvertising (AdView adView) {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.pause();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    @Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
