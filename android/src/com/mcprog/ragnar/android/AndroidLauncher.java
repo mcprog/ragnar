@@ -27,7 +27,7 @@ import com.mcprog.ragnar.lib.RagnarConfig;
 public class AndroidLauncher extends AndroidApplication implements IGooglePlayGameServices, GameHelperListener {
 
     private GameHelper gameHelper;
-    private AdView adView;
+    protected AdView adView;
     protected View gameView;
 
 	private static final int REQUEST_CODE_UNUSED = 7;
@@ -57,6 +57,8 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
         View gameView = createGameView(config);
         layout.addView(gameView);
 
+        //adMobView.bringToFront();
+
         setContentView(layout);
         startAdvertising(adMobView);
 
@@ -76,11 +78,11 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 
     private AdView createAdView() {
         adView = new AdView(this);
-        adView.setAdSize(AdSize.BANNER);
+        adView.setAdSize(AdSize.SMART_BANNER);
         adView.setAdUnitId(getString(R.string.ad_banner1));
         adView.setId(12345);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         adView.setLayoutParams(params);
         adView.setBackgroundColor(Color.BLACK);
@@ -92,13 +94,18 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        params.addRule(RelativeLayout.BELOW, adView.getId());
+        params.addRule(RelativeLayout.ABOVE, adView.getId());
         gameView.setLayoutParams(params);
         return gameView;
     }
 
     private void startAdvertising (AdView adView) {
         AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+    }
+
+    private void startTestAdvertising (AdView adView) {
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("5B8F71A3D3FED6DAB7374305AB82FF34").addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         adView.loadAd(adRequest);
     }
 

@@ -115,5 +115,5 @@ idea {
     }
 }
 dependencies {
-    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.google.android.gms:play-services:7.0.0'
 }
