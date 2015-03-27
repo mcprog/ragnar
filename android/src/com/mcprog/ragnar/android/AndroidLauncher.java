@@ -29,6 +29,7 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 
     private GameHelper gameHelper;
     private AdView adView;
+    private boolean testMode = false;
 
 	private static final int REQUEST_CODE_UNUSED = 7;
 	
@@ -57,7 +58,7 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
         View gameView = createGameView(config);
         layout.addView(gameView);
 
-        //adMobView.bringToFront();
+        //adView.b
 
         setContentView(layout);
         //startTestAdvertising(adView);
@@ -115,7 +116,11 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
             @Override
             public void run() {
                 adView.setVisibility(View.VISIBLE);
-                adView.loadAd(new AdRequest.Builder().build());
+                if (!testMode) {
+                    adView.loadAd(new AdRequest.Builder().build());
+                } else {
+                    adView.loadAd(new AdRequest.Builder().addTestDevice("5B8F71A3D3FED6DAB7374305AB82FF34").addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+                }
             }
         });
     }
@@ -128,7 +133,7 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
             @Override
             public void run() {
                 adView.setVisibility(View.VISIBLE);
-                adView.loadAd(new AdRequest.Builder().addTestDevice("5B8F71A3D3FED6DAB7374305AB82FF34").addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+
             }
         });
     }

@@ -20,7 +20,7 @@ public class KillScreen extends ScreenDrawable {
 	public static final int SHOT = 0;
 	public static final int STABBED = 1;
 	public static final String SHOT_MSG = "You got shot by the bowmen";
-	public static final String STABBED_MSG = "You got too close to the english and they speared you";
+	public static final String STABBED_MSG = "You got stabbed by the english";
 	private String deathMsgSuffix;
 	private boolean newTouchUp;
 	private Stage stage;
@@ -46,9 +46,9 @@ public class KillScreen extends ScreenDrawable {
 	
 	@Override
 	public void show() {
-        if (Ragnar.isMobile) {
+        /*if (Ragnar.isMobile) {
             game.adRefresher.showBanner();
-        }
+        }*/
         newHighscore = false;
         if (Ragnar.isMobile) {
             game.gpgs.unlockAchievement(5);

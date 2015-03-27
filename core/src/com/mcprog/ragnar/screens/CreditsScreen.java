@@ -32,6 +32,9 @@ public class CreditsScreen extends ScreenDrawable {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
+        /*if (Ragnar.isMobile) {
+            game.adRefresher.hideBanner();
+        }*/
 	}
 	
 	@Override

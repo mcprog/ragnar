@@ -47,26 +47,25 @@ public class KillTable extends RagnarTable {
 
     private void loadUI (boolean newHighscore) {
         clear();
-        add(deathMsg).center().width(800).colspan(2);
+        add(deathMsg).center().width(800).colspan(3);
         row();
-        add(score).colspan(2);
+        add(score).colspan(3);
         row();
 
         if (newHighscore) {
-            add(newHighscoreKey).colspan(2);
+            add(newHighscoreKey).colspan(3);
             row();
             if (Ragnar.isMobile) {
-                add(leaderboardsButton).colspan(2);
+                add(leaderboardsButton).colspan(3);
                 row();
             }
             //TODO make leaderboards custom button
         } else {
-            add(highscore).colspan(2);
+            add(highscore).colspan(3);
             row();
         }
-        add(deathImg).colspan(2).center().size(deathImg.getWidth() * 8, deathImg.getHeight() * 8);
-        row();
         add(playButton);
+        add(deathImg).center().size(deathImg.getWidth() * 8, deathImg.getHeight() * 8);
         add(menuButton);
     }
 	
