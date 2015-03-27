@@ -172,6 +172,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		Gdx.input.setInputProcessor(inputMultiplexer);
         if (Ragnar.isMobile) {
             game.gpgs.unlockAchievement(1);
+            game.adRefresher.hideBanner();
         }
 	}
 	

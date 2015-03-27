@@ -3,7 +3,6 @@ package com.mcprog.ragnar;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.mcprog.ragnar.gameservices.IGooglePlayGameServices;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.screens.CreditsScreen;
 import com.mcprog.ragnar.screens.GameScreen;
@@ -14,6 +13,8 @@ import com.mcprog.ragnar.screens.MenuScreen;
 import com.mcprog.ragnar.screens.OptionsScreen;
 import com.mcprog.ragnar.screens.SettingsScreen;
 import com.mcprog.ragnar.screens.WinScreen;
+import com.mcprog.ragnar.services.IAdRefresher;
+import com.mcprog.ragnar.services.IGooglePlayGameServices;
 import com.mcprog.ragnar.utility.DebugUtility;
 
 public class Ragnar extends Game {
@@ -32,6 +33,7 @@ public class Ragnar extends Game {
 	public static boolean isMobile;
 	
 	public IGooglePlayGameServices gpgs;
+    public IAdRefresher adRefresher;
 	
 	public static Ragnar gameInstance;
 
@@ -45,8 +47,9 @@ public class Ragnar extends Game {
     public static final int CREDITS_ID = 7;
     public static final int OPTIONS_ID = 8;
 	
-	public Ragnar(IGooglePlayGameServices gpgs) {
+	public Ragnar(IGooglePlayGameServices gpgs, IAdRefresher adRefresher) {
 		this.gpgs = gpgs;
+        this.adRefresher = adRefresher;
 	}
 	
 	public Ragnar() {

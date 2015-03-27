@@ -21,14 +21,14 @@ import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.GameHelper;
 import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
 import com.mcprog.ragnar.Ragnar;
-import com.mcprog.ragnar.gameservices.IGooglePlayGameServices;
 import com.mcprog.ragnar.lib.RagnarConfig;
+import com.mcprog.ragnar.services.IAdRefresher;
+import com.mcprog.ragnar.services.IGooglePlayGameServices;
 
-public class AndroidLauncher extends AndroidApplication implements IGooglePlayGameServices, GameHelperListener {
+public class AndroidLauncher extends AndroidApplication implements IGooglePlayGameServices, GameHelperListener, IAdRefresher {
 
     private GameHelper gameHelper;
-    protected AdView adView;
-    protected View gameView;
+    private AdView adView;
 
 	private static final int REQUEST_CODE_UNUSED = 7;
 	
@@ -52,15 +52,15 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 
 
 
-        AdView adMobView = createAdView();
-        layout.addView(adMobView);
+        adView = createAdView();
+        layout.addView(adView);
         View gameView = createGameView(config);
         layout.addView(gameView);
 
         //adMobView.bringToFront();
 
         setContentView(layout);
-        startAdvertising(adMobView);
+        //startTestAdvertising(adView);
 
         if (gameHelper == null) {
             gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
@@ -77,7 +77,7 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
 	}
 
     private AdView createAdView() {
-        adView = new AdView(this);
+        AdView adView = new AdView(this);
         adView.setAdSize(AdSize.SMART_BANNER);
         adView.setAdUnitId(getString(R.string.ad_banner1));
         adView.setId(12345);
@@ -90,7 +90,7 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
     }
 
     private View createGameView (AndroidApplicationConfiguration cfg) {
-        gameView = initializeForView(new Ragnar(this), cfg);
+        View gameView = initializeForView(new Ragnar(this, this), cfg);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
@@ -107,6 +107,41 @@ public class AndroidLauncher extends AndroidApplication implements IGooglePlayGa
     private void startTestAdvertising (AdView adView) {
         AdRequest adRequest = new AdRequest.Builder().addTestDevice("5B8F71A3D3FED6DAB7374305AB82FF34").addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         adView.loadAd(adRequest);
+    }
+
+    @Override
+    public void showBanner() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adView.setVisibility(View.VISIBLE);
+                adView.loadAd(new AdRequest.Builder().build());
+            }
+        });
+    }
+
+    @Override
+    public void showTestBanner() {
+
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adView.setVisibility(View.VISIBLE);
+                adView.loadAd(new AdRequest.Builder().addTestDevice("5B8F71A3D3FED6DAB7374305AB82FF34").addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+            }
+        });
+    }
+
+    @Override
+    public void hideBanner() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adView.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     @Override

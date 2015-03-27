@@ -46,6 +46,9 @@ public class KillScreen extends ScreenDrawable {
 	
 	@Override
 	public void show() {
+        if (Ragnar.isMobile) {
+            game.adRefresher.showBanner();
+        }
         newHighscore = false;
         if (Ragnar.isMobile) {
             game.gpgs.unlockAchievement(5);

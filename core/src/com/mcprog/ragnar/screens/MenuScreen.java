@@ -33,6 +33,10 @@ public class MenuScreen extends ScreenDrawable {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
+        if (Ragnar.isMobile) {
+            game.adRefresher.showBanner();
+        }
+
 	}
 	
 	@Override

@@ -18,6 +18,9 @@ public class LoadingScreen extends ScreenDrawable {
     @Override
     public void show() {
         RagnarConfig.init();
+        if (Ragnar.isMobile) {
+            game.adRefresher.showBanner();
+        }
     }
 
     @Override
