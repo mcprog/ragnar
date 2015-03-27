@@ -43,6 +43,9 @@ public class WinScreen extends ScreenDrawable {
         if (Ragnar.isMobile) {
             game.gpgs.unlockAchievement(4);
         }
+        if (Ragnar.isMobile) {
+            game.gpgs.submitHighscore((int) game.gameScreen.timeInGame);
+        }
     }
 
     @Override

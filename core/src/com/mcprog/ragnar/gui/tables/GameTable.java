@@ -44,9 +44,9 @@ public class GameTable extends RagnarTable {
 		pause.setText("|>");
 	}
 	
-	public void update (float score, int honor) {
-		this.score.setText("Score: " + (int)score);
-		this.honor.setText("Honor: " + honor + "/200");
+	public void update (int score, int limit) {
+		this.score.setText("Score: " + score);
+		this.honor.setText("Honor: " + Math.min(score, limit) + "/200");
 	}
 
 }

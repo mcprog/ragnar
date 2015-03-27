@@ -59,6 +59,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private InputMultiplexer inputMultiplexer;
 	private ShapeRenderer shapeRenderer;
 	private String actionToResume;
+    private int winTime = 200;
 	
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);
@@ -139,7 +140,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		handleBarrierDeath();
 		spawner.spawn(delta);
 		batch.setProjectionMatrix(camera.combined);
-		table.update(timeInGame, spawner.getArrowsLeft());
+		table.update((int)timeInGame, winTime);
 		stage.act(delta);
 		stage.draw();
 		player.draw(stateTime, batch);
@@ -228,7 +229,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 				|| player.getBody().getWorldCenter().x + player.getHalfWidth() > camera.viewportWidth / 2 
 				|| player.getBody().getWorldCenter().y + player.getHalfHeight() > camera.viewportHeight / 2 
 				|| player.getBody().getWorldCenter().y - player.getHalfHeight() < -camera.viewportHeight / 2) {
-			if (spawner.getWin()) {
+			if (timeInGame > winTime) {
 				game.setScreen(game.winScreen);
 			} else {
 				if (RagnarConfig.sound) {
@@ -247,6 +248,10 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
         gamePaused = state;
     }
 
+    private int getHonor () {
+        return Math.min(winTime, (int)timeInGame);
+    }
+
 	@Override
 	public void beginContact(Contact contact) {
 		Fixture a = contact.getFixtureA();
@@ -260,7 +265,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		}
 		if (a.getBody().getUserData() instanceof Animation[] || b.getBody().getUserData() instanceof Animation[]) {
 			if (!player.invincible) {
-				if (spawner.getWin()) {
+				if (timeInGame > winTime) {
 					game.setScreen(game.winScreen);
 				} else {
 					if (RagnarConfig.sound) {
