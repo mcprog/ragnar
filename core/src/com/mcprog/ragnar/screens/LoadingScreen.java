@@ -60,6 +60,7 @@ public class LoadingScreen extends ScreenDrawable {
 		 */
 		Assets.playerAnimations = Assets.loadAnimation(Assets.PLAYER_PATH);
 		Assets.playerGirlAnimations = Assets.loadAnimation(Assets.PLAYER_GIRL_PATH);
+        Assets.wingsAnimation = Assets.loadWings();
 		Assets.assignLoadedAssets();
 		/*
 		 * instantiate screens

@@ -31,7 +31,7 @@ public class Player implements InputProcessor {
 	private Sprite glow;
 	private ArrayList<Integer> lastTwoDirections = new ArrayList<Integer>();
 	private int currentDirection;
-	private boolean left, right, up, down;
+	protected boolean left, right, up, down;
 	private Vector2 directionFactors = new Vector2();
 	private Vector2 touch = new Vector2();
 	private float tolerance = 45;

@@ -14,6 +14,7 @@ import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.world.Angel;
 import com.mcprog.ragnar.world.Bounds;
+import com.mcprog.ragnar.world.Meteor;
 
 public class WinScreen extends ScreenDrawable {
 	
@@ -25,10 +26,12 @@ public class WinScreen extends ScreenDrawable {
 	private Sprite rightSidebar;
 	private SpriteBatch fontBatch;
 	private ShapeRenderer shapeRenderer;
+    private Meteor testMeteor;
 	
 	public WinScreen(Ragnar game) {
 		super(game);
 		world = new World(new Vector2(0, -9.81f), true);
+        testMeteor = new Meteor(world);
 		angel = new Angel(world, Vector2.Zero, camera);
 		bounds = new Bounds(world, Gdx.graphics.getWidth() / 32f, Gdx.graphics.getHeight() / 32f);
 		leftSidebar = new Sprite(new Texture(Gdx.files.internal("heaven_sidebar.png")));
@@ -36,6 +39,7 @@ public class WinScreen extends ScreenDrawable {
 		fontBatch = new SpriteBatch();
 		Gdx.input.setInputProcessor(angel);
 		Gdx.input.setCatchBackKey(true);
+
 	}
 
     @Override
@@ -46,6 +50,7 @@ public class WinScreen extends ScreenDrawable {
         if (Ragnar.isMobile) {
             game.gpgs.submitHighscore((int) game.gameScreen.timeInGame);
         }
+        Gdx.input.setInputProcessor(angel);
     }
 
     @Override
@@ -68,27 +73,16 @@ public class WinScreen extends ScreenDrawable {
 		Assets.ragnarFont.drawWrapped(fontBatch, "You Win Entrance to Valhalla", -fontCamera.viewportWidth * .375f, fontCamera.viewportHeight * .375f, fontCamera.viewportWidth * .75f, HAlignment.CENTER);
 		Assets.scoreFont.drawWrapped(fontBatch, "Score " + (int)(game.gameScreen.timeInGame) + " seconds", -fontCamera.viewportWidth * .375f, -fontCamera.viewportHeight * .375f, fontCamera.viewportWidth * .75f, HAlignment.CENTER);
 		fontBatch.end();
-		
-		angel.draw(stateTime, batch);
+
+        angel.draw(stateTime, batch);
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		if (Gdx.input.isKeyPressed(Keys.W)) {
-			angel.getGust().draw(batch);
-		}
 		leftSidebar.draw(batch);
 		rightSidebar.draw(batch);
 		batch.end();
+
+        Ragnar.debugger.renderDebug(world, camera.combined);
 	}
-	
-//	@Override
-//	public void resize(int width, int height) {
-//		super.resize(width, height);
-//		camera.viewportWidth = width / 16;
-//		camera.viewportHeight = height / 16;
-//		camera.update();
-//		leftSidebar.setBounds(-camera.viewportWidth / 2, -camera.viewportHeight / 2, (camera.viewportWidth - camera.viewportHeight) / 2, camera.viewportHeight);
-//		rightSidebar.setBounds(camera.viewportWidth / 2 - (camera.viewportWidth - camera.viewportHeight) / 2, -camera.viewportHeight / 2, (camera.viewportWidth - camera.viewportHeight) / 2, camera.viewportHeight);
-//	}
 	
 	
 

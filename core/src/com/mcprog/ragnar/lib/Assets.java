@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.Locale;
@@ -18,6 +19,7 @@ public class Assets {
 	private static TextureRegion[][] map;
 	public static Animation[] playerAnimations;
 	public static Animation[] playerGirlAnimations;
+    public static Animation wingsAnimation;
 	
 	public static BitmapFont ragnarFont;
 	public static BitmapFont scoreFont;
@@ -43,6 +45,7 @@ public class Assets {
 	
 	public static final String TREE_TOP_PATH = "tree-top.png";
 	public static final String TREE_LEFT_PATH = "tree-left.png";
+    public static final String WINGS_PATH = "wings.png";
 	
 	public static final String FONT_DIR = "font/";
 	public static final String VIKING_FONT_PATH = FONT_DIR + "viking128.fnt";
@@ -80,6 +83,7 @@ public class Assets {
 		assetManager.load(DEAD_PLAYER_STABBED_GIRL_PATH, Texture.class);
 		assetManager.load(TREE_TOP_PATH, Texture.class);
 		assetManager.load(TREE_LEFT_PATH, Texture.class);
+        assetManager.load(WINGS_PATH, Texture.class);
 	}
 	
 	public static void queueFonts () {
@@ -96,6 +100,16 @@ public class Assets {
 	public static BitmapFont getLoadedFont (String path) {
 		return assetManager.get(path);
 	}
+
+    public static Animation loadWings () {
+        map = TextureRegion.split(getLoadedTexture(WINGS_PATH), 24, 24);
+
+        Array<TextureRegion> holder = new Array<TextureRegion>();
+        holder.add(map[0][0]);
+        holder.add(map[1][0]);
+        holder.add(map[2][0]);
+        return new Animation(.2f, holder, Animation.PlayMode.LOOP_PINGPONG);
+    }
 	
 	public static Animation[] loadAnimation (String path) {
 		map = TextureRegion.split(getLoadedTexture(path), 16, 24);

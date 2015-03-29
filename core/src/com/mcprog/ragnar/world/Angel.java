@@ -1,66 +1,100 @@
 package com.mcprog.ragnar.world;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
-import com.mcprog.ragnar.screens.GameScreen;
+import com.mcprog.ragnar.lib.RagnarConfig;
 
 public class Angel extends Player {
 
 	private Sprite gust;
 	private final float angelSpeed = 2;
+    private float minBumpSpeed = 10;
+    private float maxBumpSpeed = 20;
+    private TextureRegion wingsFrame;
+    private Sprite wingsSprite;
 
 	public Angel(World world, Vector2 position, OrthographicCamera camera) {
-		super(world, position, camera, new GameScreen(Ragnar.gameInstance));
-		body.getFixtureList().first().setRestitution(.5f);
-		gust = new Sprite(new Texture(Gdx.files.internal("gust.png")));
+		super(world, position, camera, Ragnar.gameInstance.gameScreen);
+        playerSpeed = 8;
+        body.getFixtureList().first().setRestitution(.5f);
+        body.setLinearDamping(1);
+
 	}
 
-	@Override
-	public void draw (float stateTime, SpriteBatch batch) {
-		frame = Assets.playerAnimations[getDirection()].getKeyFrame(stateTime, true);
-		frameSprite = new Sprite(frame);
-		frameSprite.setCenter(getPosition().x, getPosition().y);
-		frameSprite.setScale(.125f);
+    public void draw (float stateTime, SpriteBatch batch) {
+        switch (RagnarConfig.playerType) {
+            case 1:
 
-		batch.begin();
-		frameSprite.draw(batch);
-		batch.end();
-	}
+                frame = Assets.playerGirlAnimations[getDirection()].getKeyFrame(stateTime, true);
+                break;
 
-	public Sprite getGust() {
-		gust.setBounds(getPosition().x - frameSprite.getWidth() / 2 * .125f + .5f, getPosition().y - frameSprite.getHeight() * .125f - 2f, 1, 4);
-		gust.setAlpha(.3f);
-		return gust;
-	}
-	
-	private void setLinearImpulseWithDirection (int dir) {
-		direction = dir;
-		Vector2 vel = new Vector2();
-		switch (dir) {
-		case LEFT:
-			vel.set(-angelSpeed, 0);
-			break;
-		case RIGHT:
-			vel.set(angelSpeed, 0);
-			break;
-		case UP:
-			vel.set(0, angelSpeed);
-			break;
-		case DOWN:
-			vel.set(0, -angelSpeed);
-			break;
-		default:
-			break;
-		}
-		body.applyLinearImpulse(vel, getPosition(), true);
-	}
+            default:
+                frame = Assets.playerAnimations[getDirection()].getKeyFrame(stateTime, true);
+                break;
+        }
+        wingsFrame = Assets.wingsAnimation.getKeyFrame(stateTime, true);
+        wingsSprite = new Sprite(wingsFrame);
+        wingsSprite.setCenter(getPosition().x, getPosition().y);
+        wingsSprite.setScale(.125f);
 
+        frameSprite = new Sprite(frame);
+        frameSprite.setCenter(getPosition().x, getPosition().y);
+        frameSprite.setScale(.125f);
+
+        batch.begin();
+
+        wingsSprite.draw(batch);
+        frameSprite.draw(batch);
+        if (invincible) {
+            getGlow().draw(batch);
+        }
+        batch.end();
+    }
+
+    @Override
+    public void update(float delta) {
+
+        if (left) {
+            direction = LEFT;
+            body.setLinearVelocity(-playerSpeed, getVelocity().y);
+        }
+        if (right) {
+            direction = RIGHT;
+            body.setLinearVelocity(playerSpeed, getVelocity().y);
+        }
+        if (left && right) {
+            body.setLinearVelocity(0, 0);
+        }
+        setToIdle();
+        if (Ragnar.isMobile) {
+            //setLinearVelocityAndDirection(mVX, mVY);
+        } else {
+            //setLinearVelocityAndDirection(vX, vY);
+
+        }
+        if (getPosition().y < 0) {
+            body.applyLinearImpulse(new Vector2(0, (float)(Math.random() * (maxBumpSpeed - minBumpSpeed)) + minBumpSpeed), getPosition(), true);
+        }
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Keys.A) {
+
+            left = true;
+        }
+        if (keycode == Keys.D) {
+
+            right = true;
+
+        }
+        return true;
+    }
 }
