@@ -59,7 +59,7 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 	private InputMultiplexer inputMultiplexer;
 	private ShapeRenderer shapeRenderer;
 	private String actionToResume;
-    private int winTime = 2;
+    private int winTime = 200;
 	
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);

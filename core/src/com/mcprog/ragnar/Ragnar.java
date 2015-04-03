@@ -61,7 +61,7 @@ public class Ragnar extends Game {
 		gameInstance = (Ragnar) (Gdx.app.getApplicationListener());
 		isMobile = Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS);
 		debugger = new DebugUtility();
-		debugger.on();
+		debugger.off();
 		Assets.queueAll();
 		loadingScreen = new LoadingScreen(gameInstance);
 		setScreen(loadingScreen);

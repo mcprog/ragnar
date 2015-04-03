@@ -80,13 +80,17 @@ public class KillTable extends RagnarTable {
 			} else {
 				deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(Assets.DEAD_PLAYER_STABBED_GIRL_PATH))));
 			}
-		} else {
+		}
+        else if (deathType == KillScreen.SHOT) {
 			if (RagnarConfig.playerType == 0) {
 				deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(Assets.DEAD_PLAYER_PATH))));
 			} else {
 				deathImg.setDrawable(new SpriteDrawable(new Sprite(Assets.getLoadedTexture(Assets.DEAD_PLAYER_GIRL_PATH))));
 			}
-		}
+		} else {
+            deathImg.setDrawable(new SpriteDrawable(Assets.meteorSprite));
+            deathImg.setSize(24, 24);
+        }
         loadUI(newHighscore);
 		sizeImage(deathImg, deathType);
 

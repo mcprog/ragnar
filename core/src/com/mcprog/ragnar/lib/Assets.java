@@ -31,6 +31,7 @@ public class Assets {
 	public static Sprite deadPlayerStabbedSprite;
 	public static Sprite deadPlayerGirlSprite;
 	public static Sprite deadPlayerStabbedGirlSprite;
+    public static Sprite meteorSprite;
 	
 	public static Texture treeTop;
 	public static Texture treeLeft;
@@ -42,6 +43,7 @@ public class Assets {
 	public static final String DEAD_PLAYER_STABBED_PATH = "dead-player-stabbed.png";
 	public static final String DEAD_PLAYER_GIRL_PATH = "dead-player-girl.png";
 	public static final String DEAD_PLAYER_STABBED_GIRL_PATH = "dead-player-stabbed-girl.png";
+    public static final String METEOR_PATH = "meteor.png";
 	
 	public static final String TREE_TOP_PATH = "tree-top.png";
 	public static final String TREE_LEFT_PATH = "tree-left.png";
@@ -84,6 +86,7 @@ public class Assets {
 		assetManager.load(TREE_TOP_PATH, Texture.class);
 		assetManager.load(TREE_LEFT_PATH, Texture.class);
         assetManager.load(WINGS_PATH, Texture.class);
+        assetManager.load(METEOR_PATH, Texture.class);
 	}
 	
 	public static void queueFonts () {
@@ -197,6 +200,8 @@ public class Assets {
 		deadPlayerStabbedGirlSprite = new Sprite(getLoadedTexture(DEAD_PLAYER_STABBED_GIRL_PATH));
 		treeTop = getLoadedTexture(TREE_TOP_PATH);
 		treeLeft = getLoadedTexture(TREE_LEFT_PATH);
+        meteorSprite = new Sprite(getLoadedTexture(METEOR_PATH));
+        meteorSprite.setSize(1, 1);
 	}
 	
 	public static float getLoadingProgress () {

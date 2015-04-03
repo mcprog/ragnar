@@ -19,8 +19,10 @@ public class KillScreen extends ScreenDrawable {
 //	private Ragnar game;
 	public static final int SHOT = 0;
 	public static final int STABBED = 1;
+    public static final int METEORED = 2;
 	public static final String SHOT_MSG = "You got shot by the bowmen";
 	public static final String STABBED_MSG = "You got stabbed by the english";
+    public static final String METEORED_MSG = "You got hit by a meteor";
 	private String deathMsgSuffix;
 	private boolean newTouchUp;
 	private Stage stage;
@@ -104,7 +106,7 @@ public class KillScreen extends ScreenDrawable {
 	}
 	
 	public String assembleMessage () {
-		return deathType == SHOT ? SHOT_MSG : STABBED_MSG;
+		return deathType == SHOT ? SHOT_MSG : deathType == STABBED ? STABBED_MSG : METEORED_MSG;
 	}
 	
 	private void drawDeath (SpriteBatch batch) {
@@ -112,12 +114,17 @@ public class KillScreen extends ScreenDrawable {
 		Assets.deadPlayerSprite.setCenter(0, -fontCamera.viewportHeight / 4);
 		Assets.deadPlayerStabbedSprite.setSize(21 * fontCamera.viewportHeight / 84, 28 * fontCamera.viewportHeight / 84);
 		Assets.deadPlayerStabbedSprite.setCenter(0, -fontCamera.viewportHeight / 4);
-        if (deathType == SHOT) {
+        Assets.meteorSprite.setSize(24 * fontCamera.viewportHeight / 96, 24 * fontCamera.viewportHeight / 96);
+        //Assets.meteorSprite.setCenter(0);
+        /*if (deathType == SHOT) {
             Assets.deadPlayerSprite.draw(batch);
         }
         else if (deathType == STABBED) {
             Assets.deadPlayerStabbedSprite.draw(batch);
         }
+        else if (deathType == METEORED) {
+            Assets.meteorSprite.draw(batch);
+        }*/
 
 	}
 
