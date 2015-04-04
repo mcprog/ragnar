@@ -38,30 +38,30 @@ public class Ragnar extends Game {
     /*
     Screen instances
      */
-	public GameScreen gameScreen;
-	public KillScreen killScreen;
-	public LoadingScreen loadingScreen;
-	public SettingsScreen settingsScreen;
-	public WinScreen winScreen;
-	public MenuScreen menuScreen;
-	public HighscoreScreen highscoreScreen;
-	public CreditsScreen creditsScreen;
+    public GameScreen gameScreen;
+    public KillScreen killScreen;
+    public LoadingScreen loadingScreen;
+    public SettingsScreen settingsScreen;
+    public WinScreen winScreen;
+    public MenuScreen menuScreen;
+    public HighscoreScreen highscoreScreen;
+    public CreditsScreen creditsScreen;
     public OptionsScreen optionsScreen;
 
     /*
     Debugging
      */
-	public static DebugUtility debugger;
+    public static DebugUtility debugger;
 
     /*
     Mobile components
      */
     public static boolean isMobile;
-	public IGooglePlayGameServices gpgs;
+    public IGooglePlayGameServices gpgs;
     public IAdRefresher adRefresher;
 
     //Static instance of this object
-	public static Ragnar gameInstance;
+    public static Ragnar gameInstance;
 
     /*
     Constant IDs for setToScreen(id) method
@@ -82,7 +82,7 @@ public class Ragnar extends Game {
      * @param adRefresher: AdMob (i.e., the launcher)
      */
 	public Ragnar(IGooglePlayGameServices gpgs, IAdRefresher adRefresher) {
-		this.gpgs = gpgs;
+        this.gpgs = gpgs;
         this.adRefresher = adRefresher;
 	}
 
