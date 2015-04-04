@@ -1,56 +1,69 @@
+/*
+ * Copyright 2015 Michael Curtis
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.mcprog.ragnar.screens;
 
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.GuiStyles;
 import com.mcprog.ragnar.gui.tables.KillTable;
-import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
 import com.mcprog.ragnar.lib.RagnarConfig;
 
 public class KillScreen extends ScreenDrawable {
 
-//	private Ragnar game;
 	public static final int SHOT = 0;
 	public static final int STABBED = 1;
     public static final int METEORED = 2;
 	public static final String SHOT_MSG = "You got shot by the bowmen";
 	public static final String STABBED_MSG = "You got stabbed by the english";
     public static final String METEORED_MSG = "You got hit by a meteor";
-	private String deathMsgSuffix;
-	private boolean newTouchUp;
+
+    private boolean newTouchUp;
 	private Stage stage;
 	private KillTable killTable;
     private boolean newHighscore;
 	
 	public int deathType = -1;
-	
+
+    /**
+     * Constructor initializes gui styles and sets ups stage and table
+     * @param gameInstance
+     */
 	public KillScreen(Ragnar gameInstance) {
 		super(gameInstance);
-//		game = gameInstance;
 		GuiStyles.init();
 		stage = new Stage();
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
 		killTable = new KillTable();
-		if (Ragnar.isMobile) {
-			deathMsgSuffix = "\nTap screen to retry\n";
-		} else {
-			deathMsgSuffix = "\nHit \"R\" to retry\n";
-		}
 		stage.addActor(killTable);
 	}
-	
+
+    /**
+     * Called when screen is shown
+     * Unlocks achievements shot, stabbed, and dies 5000 times
+     * Submits highscore
+     */
 	@Override
 	public void show() {
-        /*if (Ragnar.isMobile) {
-            game.adRefresher.showBanner();
-        }*/
         newHighscore = false;
         if (Ragnar.isMobile) {
             game.gpgs.unlockAchievement(5);
@@ -82,7 +95,12 @@ public class KillScreen extends ScreenDrawable {
 		RagnarConfig.updateFile();
 		killTable.show(assembleMessage(), "You lasted " + (int)(game.gameScreen.timeInGame) + " seconds", "Highscore: " + RagnarConfig.highScore, deathType, newHighscore);
 	}
-	
+
+    /**
+     * Handles back key and keyboard input
+     * Acts and draws stage
+     * @param delta: time from last frame in seconds (used here)
+     */
 	@Override
 	public void render(float delta) {
 		super.render(delta);
@@ -99,33 +117,23 @@ public class KillScreen extends ScreenDrawable {
 		stage.act(delta);
 		stage.draw();
 	}
-	
+
+    /**
+     * Adjusts stage to fit current dimensions
+     * @param width: current screen width
+     * @param height current screen height
+     */
 	@Override
 	public void resize(int width, int height) {
 		stage.getViewport().update(width, height, true);
 	}
-	
+
+    /**
+     * Determines death message based on death type
+     * @return the String for the appropriate death message
+     */
 	public String assembleMessage () {
 		return deathType == SHOT ? SHOT_MSG : deathType == STABBED ? STABBED_MSG : METEORED_MSG;
-	}
-	
-	private void drawDeath (SpriteBatch batch) {
-		Assets.deadPlayerSprite.setSize(24 * fontCamera.viewportHeight / 96, 16 * fontCamera.viewportHeight / 96);
-		Assets.deadPlayerSprite.setCenter(0, -fontCamera.viewportHeight / 4);
-		Assets.deadPlayerStabbedSprite.setSize(21 * fontCamera.viewportHeight / 84, 28 * fontCamera.viewportHeight / 84);
-		Assets.deadPlayerStabbedSprite.setCenter(0, -fontCamera.viewportHeight / 4);
-        Assets.meteorSprite.setSize(24 * fontCamera.viewportHeight / 96, 24 * fontCamera.viewportHeight / 96);
-        //Assets.meteorSprite.setCenter(0);
-        /*if (deathType == SHOT) {
-            Assets.deadPlayerSprite.draw(batch);
-        }
-        else if (deathType == STABBED) {
-            Assets.deadPlayerStabbedSprite.draw(batch);
-        }
-        else if (deathType == METEORED) {
-            Assets.meteorSprite.draw(batch);
-        }*/
-
 	}
 
 }

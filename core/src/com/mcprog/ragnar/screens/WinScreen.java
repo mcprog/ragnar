@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015 Michael Curtis
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.mcprog.ragnar.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -7,52 +23,61 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.lib.Assets;
 import com.mcprog.ragnar.lib.Constants;
 import com.mcprog.ragnar.world.Angel;
-import com.mcprog.ragnar.world.Bounds;
 import com.mcprog.ragnar.world.Meteor;
 
-public class WinScreen extends ScreenDrawable implements ContactListener {
-	
+public class WinScreen extends ScreenDrawable {
+
+    /*
+    Physics and World
+     */
 	private World world;
 	private Angel angel;
+    private Meteor[] meteors;
+
+    /*
+    Timing and Score
+     */
 	private float stateTime;
-	private Bounds bounds;
+
+    /*
+    Resources
+     */
 	private Sprite leftSidebar;
 	private Sprite rightSidebar;
 	private SpriteBatch fontBatch;
-	private ShapeRenderer shapeRenderer;
-    //private Meteor testMeteor;
-    private Meteor[] meteors;
-	
+
+    /**
+     * Constructor instantiates the meteors array
+     * @param game
+     */
 	public WinScreen(Ragnar game) {
 		super(game);
 
         meteors = new Meteor[10];
 	}
 
+    /**
+     * Called when screen is shown<br>
+     * Instantiates each meteor<br>
+     * Renews world and physics<br>
+     * Unlocks win achievement and submits highscore
+     */
     @Override
     public void show() {
         world = new World(new Vector2(0, -9.81f), true);
-        //testMeteor = new Meteor(world);
         for (int i = 0; i < meteors.length; ++i) {
             meteors[i] = new Meteor(world);
         }
         angel = new Angel(world, Vector2.Zero, camera);
-        //bounds = new Bounds(world, Gdx.graphics.getWidth() / 32f, Gdx.graphics.getHeight() / 32f);
         leftSidebar = new Sprite(new Texture(Gdx.files.internal("heaven_sidebar.png")));
         rightSidebar = new Sprite(new Texture(Gdx.files.internal("heaven_sidebar.png")));
         fontBatch = new SpriteBatch();
-        Gdx.input.setInputProcessor(angel);
         Gdx.input.setCatchBackKey(true);
         if (Ragnar.isMobile) {
             game.gpgs.unlockAchievement(4);
@@ -63,6 +88,11 @@ public class WinScreen extends ScreenDrawable implements ContactListener {
         Gdx.input.setInputProcessor(angel);
     }
 
+    /**
+     * Called every frame<br>
+     * Steps physics and draws to bodies
+     * @param delta time from last frame in seconds (used here)
+     */
     @Override
 	public void render(float delta) {
 		super.render(delta);
@@ -104,6 +134,10 @@ public class WinScreen extends ScreenDrawable implements ContactListener {
         Ragnar.debugger.renderDebug(world, camera.combined);
 	}
 
+    /**
+     * Called in render<br>
+     *     Kills player if player goes off the screen
+     */
     private void handleBarrierDeath () {
         if (angel.getBody().getPosition().x/* - angel.getHalfWidth()*/ < -Constants.SCALED_WIDTH / 2
                 || angel.getBody().getPosition().x + angel.getHalfWidth() > Constants.SCALED_WIDTH / 2
@@ -114,26 +148,5 @@ public class WinScreen extends ScreenDrawable implements ContactListener {
                 game.setToKillScreen(KillScreen.METEORED);
 
         }
-    }
-
-
-    @Override
-    public void beginContact(Contact contact) {
-
-    }
-
-    @Override
-    public void endContact(Contact contact) {
-
-    }
-
-    @Override
-    public void preSolve(Contact contact, Manifold oldManifold) {
-
-    }
-
-    @Override
-    public void postSolve(Contact contact, ContactImpulse impulse) {
-
     }
 }
