@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015 Michael Curtis
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.mcprog.ragnar.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -9,7 +25,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -36,41 +51,53 @@ import com.mcprog.ragnar.world.Player;
 
 public class GameScreen extends ScreenDrawable implements ContactListener {
 
+    /*
+    Physics and world
+     */
 	private World world;
+    private Bounds bounds;
 	private Player player;
 	private ArrowSpawner spawner;
 	private Array<Body> bodies;
 	private Array<Body> bodiesToDelete;
-	private Stage stage;
+
+    /*
+    UI and Control
+     */
+    private Stage stage;
 	private GameTable table;
 	private PauseTable pauseTable;
-	
+    private MobileControls mobileControls;
+    private InputMultiplexer inputMultiplexer;
+
+    /*
+    Timing and score
+     */
 	private float stateTime;
-	private Bounds bounds;
-	private MobileControls mobileControls;
-	public float timeInGame;
+    public float timeInGame;
+    private int winTime = 200;
+    private boolean gamePaused;
+    private boolean justPaused;
+
+    /*
+    Resources
+     */
 	private Texture treeTop;
 	private Texture treeLeft;
 	private SpriteBatch treeBatch;
 	private OrthographicCamera treeCamera;
 	private Sound arrowHit;
-	private boolean gamePaused;
-    private boolean justPaused;
-	private InputMultiplexer inputMultiplexer;
-	private ShapeRenderer shapeRenderer;
-	private String actionToResume;
-    private int winTime = 200;
-	
+
+    /**
+     * Instantiates the fields
+     * Sets up stage and adds tables to it
+     * @param gameInstance: Ragnar instance
+     */
 	public GameScreen(Ragnar gameInstance) {
 		super(gameInstance);
 		
 		bodies = new Array<Body>();
-		
-		if (Ragnar.isMobile) {
-			actionToResume = "Hold";
-		} else {
-			actionToResume = "Click";
-		}
+
 		
 		bodiesToDelete = new Array<Body>();
 		
@@ -84,15 +111,19 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
 		table = new GameTable();
 		stage.addActor(table);
-		
-		shapeRenderer = new ShapeRenderer();
 		pauseTable = new PauseTable(this);
 		stage.addActor(pauseTable);
 		
 		
 		inputMultiplexer = new InputMultiplexer();
 	}
-	
+
+    /**
+     * Called every frame
+     * Always calls the updateAlways() method
+     * Handles pausing and call updateRunning() is not paused
+     * @param delta
+     */
 	@Override
 	public void render(float delta) {
 		super.render(delta);
@@ -113,7 +144,14 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			updateRunning(delta);
 		}
 	}
-	
+
+    /**
+     * Renders what always needs to be rendered
+     * Pauses when back button is pressed
+     * Draws GL stuff
+     * Draws trees
+     * @param delta: time passed from last frame in seconds (unused here)
+     */
 	protected void updateAlways (float delta) {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
             setGameToPaused(true);
@@ -129,7 +167,15 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		batch.draw(Assets.treeTop, -treeCamera.viewportWidth / 2, -treeCamera.viewportHeight / 2 - 16);
 		batch.end();
 	}
-	
+
+    /**
+     * Renders what needs to be rendered when game is NOT paused
+     * Updates timers
+     * Steps world and updates physics in the world
+     * Draws arrows and player
+     * Renders debugger
+     * @param delta: time passed from last frame in seconds (used here)
+     */
 	protected void updateRunning (float delta) {
 		timeInGame += delta;
 		stateTime += delta;
@@ -152,6 +198,12 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		mobileControls.update(delta, player.dragVector);
 	}
 
+    /**
+     * Called when this screen is focused on
+     * Renews physics objects
+     * Renews input
+     * Mobile unlocks play for the 1st time achievement
+     */
 	@Override
 	public void show() {
 		inputMultiplexer.clear();
@@ -176,39 +228,75 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
             //game.adRefresher.hideBanner();
         }
 	}
-	
+
+    /**
+     * Updates cameras to adjust to current screen size
+     * Resizes stage
+     * @param width: current width of screen
+     * @param height: current height of screen
+     */
 	@Override
 	public void resize(int width, int height) {
+        //TODO test width should be tree width etc
 		treeCamera.viewportWidth = Constants.TEST_WIDTH;
 		treeCamera.viewportHeight = Constants.TEST_HEIGHT;
 		treeCamera.update();
-		System.out.println("GameScreen resized");
 		super.resize(width, height);
 		stage.getViewport().update(width, height, true);
 	}
-	
+
+    /**
+     * Called when window lose focus or android process is hid
+     * Pauses game
+     */
 	@Override
 	public void pause() {
 	    setGameToPaused(true);
         setJustPaused(true);
 	}
-	
-	@Override
-	public void resume() {
-	}
-	
+
+    /**
+     * Getter for the gamePaused field
+     * @return the value of gamePaused
+     */
 	public boolean isPaused () {
 		return gamePaused;
 	}
 
+    /**
+     * Setter for gamePaused field
+     * Sets whether game should be paused or not
+     * @param state: state the gamePause field should be set to
+     */
+    public void setGameToPaused (boolean state) {
+        gamePaused = state;
+    }
+
+    /**
+     * Getter for justPaused field
+     * Determines whether game was paused in the same frame as this method is called
+     * @return if the game was just paused
+     */
     public boolean justPaused () {
         return  justPaused;
     }
 
+    /**
+     * Setter for justPaused field
+     * Sets whether the game was just pause in the current frame
+     * @param state: value to set justPaused to
+     */
     public void setJustPaused (boolean state) {
         justPaused = state;
     }
-	
+
+    /**
+     * Safely destroys arrow that have been added to an array of bodies to remove
+     * These are arrows that have either hit each other, the player, or the outside bounds
+     * <li>1. sets the bodies inactive</li>
+     * <li>2. destroys the inactive bodies</li>
+     * This means that it takes 2 frames to completely delete the bodies
+     */
 	private void safelyDestroyBodies () {
 		world.getBodies(bodies);
 		if (!world.isLocked()) {
@@ -223,7 +311,14 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 			}
 		}
 	}
-	
+
+    /**
+     * Checks to make sure player has not gone offscreen<br>
+     * Kills the player is player goes off<br>
+     * Player enters valhalla is qualified<br>
+     * Sounds and vibrates if settings permit<br>
+     * Death type is stabbed
+     */
 	private void handleBarrierDeath () {
 		if (player.getBody().getWorldCenter().x - player.getHalfWidth() < -camera.viewportWidth / 2 
 				|| player.getBody().getWorldCenter().x + player.getHalfWidth() > camera.viewportWidth / 2 
@@ -244,14 +339,24 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		}
 	}
 
-    public void setGameToPaused (boolean state) {
-        gamePaused = state;
-    }
 
+    /**
+     * Gets the honor for display in the game table<br>
+     * Caps honor to the max honor<br>
+     * Apparently unused
+     * @return the lesser of the honor limit and the score
+     */
     private int getHonor () {
         return Math.min(winTime, (int)timeInGame);
     }
 
+    /**
+     * Called whenever two physics objects collide<br>
+     * Adds arrows that collide to arrays of bodies that are to be deleted<br>
+     * Handles player dies from being shot<br>
+     * This is a time locked method so the bodies cannot be deleted here
+     * @param contact
+     */
 	@Override
 	public void beginContact(Contact contact) {
 		Fixture a = contact.getFixtureA();
@@ -282,11 +387,20 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 		
 		
 	}
-	
+
+    /**
+     * Just used to render debug information
+     * @param batch: batch to draw info with
+     */
 	private void drawText (SpriteBatch batch) {
 		Ragnar.debugger.textDebug(fontBatch, fontCamera);
 	}
 
+    /**
+     * Called when physics objects stop contacting<br>
+     *     I don't use this since I just destroy bodies
+     * @param contact
+     */
 	@Override
 	public void endContact(Contact contact) {
 
@@ -294,7 +408,6 @@ public class GameScreen extends ScreenDrawable implements ContactListener {
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		// TODO Auto-generated method stub
 		
 	}
 
