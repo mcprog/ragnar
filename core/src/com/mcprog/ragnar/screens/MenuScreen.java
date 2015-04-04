@@ -16,15 +16,11 @@
 
 package com.mcprog.ragnar.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mcprog.ragnar.Ragnar;
 import com.mcprog.ragnar.gui.tables.MenuTable;
-import com.mcprog.ragnar.lib.Constants;
 
-public class MenuScreen extends ScreenDrawable {
+public class MenuScreen extends GUIScreen {
 
 	private Stage stage;
 	private MenuTable menuTable;
@@ -37,61 +33,14 @@ public class MenuScreen extends ScreenDrawable {
      * @param game: Ragnar instance
      */
 	public MenuScreen(Ragnar game) {
-		super(game);
+		super(game, new MenuTable());
 		if (game.isMobile) {
-			
 			game.gpgs.signIn();
 		}
-		menuTable = new MenuTable();
-		stage = new Stage();
-		stage.setViewport(new ExtendViewport(Constants.IDEAL_WIDTH, Constants.IDEAL_HEIGHT));
-
-		stage.addActor(menuTable);
-		
-		if (Ragnar.debugger.on) {
-			stage.setDebugAll(true);
-		}
 	}
 
-    /**
-     * Sets input to the stage
-     */
-	@Override
-	public void show() {
-		Gdx.input.setInputProcessor(stage);
-        /*if (Ragnar.isMobile) {
-            game.adRefresher.showBanner();
-        }*/
-
-	}
-
-    /**
-     * Acts the stage and then draws it
-     * @param delta: change in time from last frame (unused here)
-     */
-	@Override
-	public void render(float delta) {
-		Gdx.gl.glClearColor(.5f, .5f, .5f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		stage.act(delta);
-		stage.draw();
-		
-	}
-
-    /**
-     * updates stage to screen size
-     * @param width: current screen width
-     * @param height: current screen height
-     */
-	@Override
-	public void resize(int width, int height) {
-		stage.getViewport().update(width, height, true);
-	}
-	
-	@Override
-	public void dispose() {
-		stage.dispose();
-	}
-
+    @Override
+    protected void handleInput() {
+        //do nothing
+    }
 }
