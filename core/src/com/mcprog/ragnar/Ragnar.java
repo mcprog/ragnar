@@ -97,6 +97,7 @@ public class Ragnar extends Game {
 	
 	@Override
 	public void create () {
+        Gdx.input.setCatchBackKey(true);
 		gameInstance = (Ragnar) (Gdx.app.getApplicationListener());
 		isMobile = Gdx.app.getType().equals(ApplicationType.Android) || Gdx.app.getType().equals(ApplicationType.iOS);
 		debugger = new DebugUtility();
