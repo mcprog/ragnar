@@ -37,3 +37,9 @@ body {
 .table-margined {
     margin-top: 5px;   
 }
+
+.full-flip:hover {
+    -webkit-transform: rotate(360);
+    -ms-transform: rotate(360); // IE9 only
+    transform: rotate(360);
+}
