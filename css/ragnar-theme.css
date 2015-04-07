@@ -38,8 +38,14 @@ body {
     margin-top: 5px;   
 }
 
+.full-flip {
+    -webkit-transition: all 2s; /* Safari */
+    -moz-transition: all 2s;
+    transition: all 2s;
+}
+
 .full-flip:hover {
-    -webkit-transform: rotate(360);
-    -ms-transform: rotate(360); // IE9 only
-    transform: rotate(360);
+    -webkit-transform: rotate(160);
+    -ms-transform: rotate(160); // IE9 only
+    transform: rotate(160);
 }
