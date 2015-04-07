@@ -45,7 +45,7 @@ body {
 }
 
 .full-flip:hover {
-    -webkit-transform: rotate(160);
-    -ms-transform: rotate(160); // IE9 only
-    transform: rotate(160);
+    -webkit-transform: rotate(160deg);
+    -ms-transform: rotate(160deg); // IE9 only
+    transform: rotate(160deg);
 }
