@@ -44,7 +44,7 @@ body {
     transition: all 2s;
 }
 
-.full-flip:hover {
+a:hover > .full-flip {
     -webkit-transform: rotate(360deg);
     -ms-transform: rotate(360deg); // IE9 only
     transform: rotate(360deg);
