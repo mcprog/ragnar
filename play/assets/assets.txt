@@ -39,6 +39,7 @@ i:knob.png:192:image/png
 i:meteor.png:1006:image/png
 i:player-girl.png:3244:image/png
 i:player.png:3248:image/png
+i:ragnar-banner-gamejolt.png:8362:image/png
 i:ragnar-banner.png:20466:image/png
 t:ragnar-config.txt:12:text/plain
 i:scrollpane-bg.png:176:image/png
