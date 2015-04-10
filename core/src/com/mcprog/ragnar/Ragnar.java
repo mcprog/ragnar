@@ -107,7 +107,6 @@ public class Ragnar extends Game {
 		setScreen(loadingScreen);
 	}
 
-
     @Override
     public void dispose() {
         super.dispose();
